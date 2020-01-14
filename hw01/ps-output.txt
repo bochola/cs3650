@@ -1,0 +1,1127 @@
+UID         PID   PPID  C STIME TTY          TIME CMD
+root          1      0  0  2019 ?        00:18:03 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+root          2      0  0  2019 ?        00:00:05 [kthreadd]
+root          4      2  0  2019 ?        00:00:00 [kworker/0:0H]
+root          5      2  0  2019 ?        00:00:00 [kworker/u544:0]
+root          6      2  0  2019 ?        00:00:03 [ksoftirqd/0]
+root          7      2  0  2019 ?        00:00:01 [migration/0]
+root          8      2  0  2019 ?        00:00:00 [rcu_bh]
+root          9      2  0  2019 ?        00:54:51 [rcu_sched]
+root         10      2  0  2019 ?        00:00:00 [lru-add-drain]
+root         11      2  0  2019 ?        00:00:06 [watchdog/0]
+root         12      2  0  2019 ?        00:00:06 [watchdog/1]
+root         13      2  0  2019 ?        00:00:01 [migration/1]
+root         14      2  0  2019 ?        00:00:01 [ksoftirqd/1]
+root         16      2  0  2019 ?        00:00:00 [kworker/1:0H]
+root         18      2  0  2019 ?        00:00:05 [watchdog/2]
+root         19      2  0  2019 ?        00:00:01 [migration/2]
+root         20      2  0  2019 ?        00:00:01 [ksoftirqd/2]
+root         22      2  0  2019 ?        00:00:00 [kworker/2:0H]
+root         24      2  0  2019 ?        00:00:05 [watchdog/3]
+root         25      2  0  2019 ?        00:00:01 [migration/3]
+root         26      2  0  2019 ?        00:00:00 [ksoftirqd/3]
+root         28      2  0  2019 ?        00:00:00 [kworker/3:0H]
+root         29      2  0  2019 ?        00:00:05 [watchdog/4]
+root         30      2  0  2019 ?        00:00:01 [migration/4]
+root         31      2  0  2019 ?        00:00:01 [ksoftirqd/4]
+root         33      2  0  2019 ?        00:00:00 [kworker/4:0H]
+root         34      2  0  2019 ?        00:00:05 [watchdog/5]
+root         35      2  0  2019 ?        00:00:02 [migration/5]
+root         36      2  0  2019 ?        00:00:00 [ksoftirqd/5]
+root         38      2  0  2019 ?        00:00:00 [kworker/5:0H]
+root         39      2  0  2019 ?        00:00:05 [watchdog/6]
+root         40      2  0  2019 ?        00:00:01 [migration/6]
+root         41      2  0  2019 ?        00:00:01 [ksoftirqd/6]
+root         43      2  0  2019 ?        00:00:00 [kworker/6:0H]
+root         44      2  0  2019 ?        00:00:05 [watchdog/7]
+root         45      2  0  2019 ?        00:00:01 [migration/7]
+root         46      2  0  2019 ?        00:00:00 [ksoftirqd/7]
+root         48      2  0  2019 ?        00:00:00 [kworker/7:0H]
+root         49      2  0  2019 ?        00:00:05 [watchdog/8]
+root         50      2  0  2019 ?        00:00:01 [migration/8]
+root         51      2  0  2019 ?        00:00:01 [ksoftirqd/8]
+root         53      2  0  2019 ?        00:00:00 [kworker/8:0H]
+root         54      2  0  2019 ?        00:00:05 [watchdog/9]
+root         55      2  0  2019 ?        00:00:01 [migration/9]
+root         56      2  0  2019 ?        00:00:00 [ksoftirqd/9]
+root         58      2  0  2019 ?        00:00:00 [kworker/9:0H]
+root         59      2  0  2019 ?        00:00:05 [watchdog/10]
+root         60      2  0  2019 ?        00:00:01 [migration/10]
+root         61      2  0  2019 ?        00:00:01 [ksoftirqd/10]
+root         63      2  0  2019 ?        00:00:00 [kworker/10:0H]
+root         64      2  0  2019 ?        00:00:05 [watchdog/11]
+root         65      2  0  2019 ?        00:00:01 [migration/11]
+root         66      2  0  2019 ?        00:00:00 [ksoftirqd/11]
+root         68      2  0  2019 ?        00:00:00 [kworker/11:0H]
+root         69      2  0  2019 ?        00:00:05 [watchdog/12]
+root         70      2  0  2019 ?        00:00:01 [migration/12]
+root         71      2  0  2019 ?        00:00:04 [ksoftirqd/12]
+root         73      2  0  2019 ?        00:00:00 [kworker/12:0H]
+root         74      2  0  2019 ?        00:00:05 [watchdog/13]
+root         75      2  0  2019 ?        00:00:01 [migration/13]
+root         76      2  0  2019 ?        00:00:01 [ksoftirqd/13]
+root         78      2  0  2019 ?        00:00:00 [kworker/13:0H]
+root         79      2  0  2019 ?        00:00:05 [watchdog/14]
+root         80      2  0  2019 ?        00:00:01 [migration/14]
+root         81      2  0  2019 ?        00:00:02 [ksoftirqd/14]
+root         83      2  0  2019 ?        00:00:00 [kworker/14:0H]
+root         84      2  0  2019 ?        00:00:05 [watchdog/15]
+root         85      2  0  2019 ?        00:00:01 [migration/15]
+root         86      2  0  2019 ?        00:00:00 [ksoftirqd/15]
+root         88      2  0  2019 ?        00:00:00 [kworker/15:0H]
+root         89      2  0  2019 ?        00:00:05 [watchdog/16]
+root         90      2  0  2019 ?        00:00:01 [migration/16]
+root         91      2  0  2019 ?        00:00:01 [ksoftirqd/16]
+root         93      2  0  2019 ?        00:00:00 [kworker/16:0H]
+root         94      2  0  2019 ?        00:00:05 [watchdog/17]
+root         95      2  0  2019 ?        00:00:01 [migration/17]
+root         96      2  0  2019 ?        00:00:00 [ksoftirqd/17]
+root         98      2  0  2019 ?        00:00:00 [kworker/17:0H]
+root         99      2  0  2019 ?        00:00:05 [watchdog/18]
+root        100      2  0  2019 ?        00:00:01 [migration/18]
+root        101      2  0  2019 ?        00:00:16 [ksoftirqd/18]
+root        103      2  0  2019 ?        00:00:00 [kworker/18:0H]
+root        104      2  0  2019 ?        00:00:05 [watchdog/19]
+root        105      2  0  2019 ?        00:00:01 [migration/19]
+root        106      2  0  2019 ?        00:00:00 [ksoftirqd/19]
+root        108      2  0  2019 ?        00:00:00 [kworker/19:0H]
+root        109      2  0  2019 ?        00:00:05 [watchdog/20]
+root        110      2  0  2019 ?        00:00:01 [migration/20]
+root        111      2  0  2019 ?        00:00:01 [ksoftirqd/20]
+root        113      2  0  2019 ?        00:00:00 [kworker/20:0H]
+root        114      2  0  2019 ?        00:00:05 [watchdog/21]
+root        115      2  0  2019 ?        00:00:01 [migration/21]
+root        116      2  0  2019 ?        00:00:00 [ksoftirqd/21]
+root        118      2  0  2019 ?        00:00:00 [kworker/21:0H]
+root        119      2  0  2019 ?        00:00:05 [watchdog/22]
+root        120      2  0  2019 ?        00:00:01 [migration/22]
+root        121      2  0  2019 ?        00:00:01 [ksoftirqd/22]
+root        123      2  0  2019 ?        00:00:00 [kworker/22:0H]
+root        124      2  0  2019 ?        00:00:05 [watchdog/23]
+root        125      2  0  2019 ?        00:00:01 [migration/23]
+root        126      2  0  2019 ?        00:00:00 [ksoftirqd/23]
+root        128      2  0  2019 ?        00:00:00 [kworker/23:0H]
+root        129      2  0  2019 ?        00:00:05 [watchdog/24]
+root        130      2  0  2019 ?        00:00:01 [migration/24]
+root        131      2  0  2019 ?        00:00:01 [ksoftirqd/24]
+root        133      2  0  2019 ?        00:00:00 [kworker/24:0H]
+root        134      2  0  2019 ?        00:00:05 [watchdog/25]
+root        135      2  0  2019 ?        00:00:01 [migration/25]
+root        136      2  0  2019 ?        00:00:00 [ksoftirqd/25]
+root        138      2  0  2019 ?        00:00:00 [kworker/25:0H]
+root        139      2  0  2019 ?        00:00:05 [watchdog/26]
+root        140      2  0  2019 ?        00:00:05 [migration/26]
+root        141      2  0  2019 ?        00:00:20 [ksoftirqd/26]
+root        143      2  0  2019 ?        00:00:00 [kworker/26:0H]
+root        144      2  0  2019 ?        00:00:05 [watchdog/27]
+root        145      2  0  2019 ?        00:00:06 [migration/27]
+root        146      2  0  2019 ?        00:00:21 [ksoftirqd/27]
+root        148      2  0  2019 ?        00:00:00 [kworker/27:0H]
+root        149      2  0  2019 ?        00:00:05 [watchdog/28]
+root        150      2  0  2019 ?        00:00:01 [migration/28]
+root        151      2  0  2019 ?        00:00:05 [ksoftirqd/28]
+root        153      2  0  2019 ?        00:00:00 [kworker/28:0H]
+root        154      2  0  2019 ?        00:00:05 [watchdog/29]
+root        155      2  0  2019 ?        00:00:01 [migration/29]
+root        156      2  0  2019 ?        00:00:03 [ksoftirqd/29]
+root        158      2  0  2019 ?        00:00:00 [kworker/29:0H]
+root        159      2  0  2019 ?        00:00:05 [watchdog/30]
+root        160      2  0  2019 ?        00:00:01 [migration/30]
+root        161      2  0  2019 ?        00:00:03 [ksoftirqd/30]
+root        163      2  0  2019 ?        00:00:00 [kworker/30:0H]
+root        164      2  0  2019 ?        00:00:05 [watchdog/31]
+root        165      2  0  2019 ?        00:00:01 [migration/31]
+root        166      2  0  2019 ?        00:00:00 [ksoftirqd/31]
+root        168      2  0  2019 ?        00:00:00 [kworker/31:0H]
+root        169      2  0  2019 ?        00:00:05 [watchdog/32]
+root        170      2  0  2019 ?        00:00:02 [migration/32]
+root        171      2  0  2019 ?        00:00:19 [ksoftirqd/32]
+root        173      2  0  2019 ?        00:00:00 [kworker/32:0H]
+root        174      2  0  2019 ?        00:00:05 [watchdog/33]
+root        175      2  0  2019 ?        00:00:01 [migration/33]
+root        176      2  0  2019 ?        00:00:00 [ksoftirqd/33]
+root        178      2  0  2019 ?        00:00:00 [kworker/33:0H]
+root        179      2  0  2019 ?        00:00:05 [watchdog/34]
+root        180      2  0  2019 ?        00:00:02 [migration/34]
+root        181      2  0  2019 ?        00:04:32 [ksoftirqd/34]
+root        183      2  0  2019 ?        00:00:00 [kworker/34:0H]
+root        184      2  0  2019 ?        00:00:05 [watchdog/35]
+root        185      2  0  2019 ?        00:00:01 [migration/35]
+root        186      2  0  2019 ?        00:00:01 [ksoftirqd/35]
+root        188      2  0  2019 ?        00:00:00 [kworker/35:0H]
+root        189      2  0  2019 ?        00:00:05 [watchdog/36]
+root        190      2  0  2019 ?        00:00:03 [migration/36]
+root        191      2  0  2019 ?        00:04:19 [ksoftirqd/36]
+root        193      2  0  2019 ?        00:00:00 [kworker/36:0H]
+root        194      2  0  2019 ?        00:00:05 [watchdog/37]
+root        195      2  0  2019 ?        00:00:01 [migration/37]
+root        196      2  0  2019 ?        00:00:01 [ksoftirqd/37]
+root        198      2  0  2019 ?        00:00:00 [kworker/37:0H]
+root        199      2  0  2019 ?        00:00:05 [watchdog/38]
+root        200      2  0  2019 ?        00:00:02 [migration/38]
+root        201      2  0  2019 ?        00:04:15 [ksoftirqd/38]
+root        203      2  0  2019 ?        00:00:00 [kworker/38:0H]
+root        204      2  0  2019 ?        00:00:05 [watchdog/39]
+root        205      2  0  2019 ?        00:00:01 [migration/39]
+root        206      2  0  2019 ?        00:00:00 [ksoftirqd/39]
+root        208      2  0  2019 ?        00:00:00 [kworker/39:0H]
+root        209      2  0  2019 ?        00:00:05 [watchdog/40]
+root        210      2  0  2019 ?        00:00:01 [migration/40]
+root        211      2  0  2019 ?        00:00:02 [ksoftirqd/40]
+root        213      2  0  2019 ?        00:00:00 [kworker/40:0H]
+root        214      2  0  2019 ?        00:00:05 [watchdog/41]
+root        215      2  0  2019 ?        00:00:01 [migration/41]
+root        216      2  0  2019 ?        00:00:00 [ksoftirqd/41]
+root        218      2  0  2019 ?        00:00:00 [kworker/41:0H]
+root        219      2  0  2019 ?        00:00:05 [watchdog/42]
+root        220      2  0  2019 ?        00:00:01 [migration/42]
+root        221      2  0  2019 ?        00:00:02 [ksoftirqd/42]
+root        223      2  0  2019 ?        00:00:00 [kworker/42:0H]
+root        224      2  0  2019 ?        00:00:05 [watchdog/43]
+root        225      2  0  2019 ?        00:00:01 [migration/43]
+root        226      2  0  2019 ?        00:00:00 [ksoftirqd/43]
+root        228      2  0  2019 ?        00:00:00 [kworker/43:0H]
+root        229      2  0  2019 ?        00:00:05 [watchdog/44]
+root        230      2  0  2019 ?        00:00:01 [migration/44]
+root        231      2  0  2019 ?        00:00:02 [ksoftirqd/44]
+root        233      2  0  2019 ?        00:00:00 [kworker/44:0H]
+root        234      2  0  2019 ?        00:00:06 [watchdog/45]
+root        235      2  0  2019 ?        00:00:01 [migration/45]
+root        236      2  0  2019 ?        00:00:00 [ksoftirqd/45]
+root        238      2  0  2019 ?        00:00:00 [kworker/45:0H]
+root        239      2  0  2019 ?        00:00:05 [watchdog/46]
+root        240      2  0  2019 ?        00:00:01 [migration/46]
+root        241      2  0  2019 ?        00:00:01 [ksoftirqd/46]
+root        243      2  0  2019 ?        00:00:00 [kworker/46:0H]
+root        244      2  0  2019 ?        00:00:05 [watchdog/47]
+root        245      2  0  2019 ?        00:00:01 [migration/47]
+root        246      2  0  2019 ?        00:00:00 [ksoftirqd/47]
+root        248      2  0  2019 ?        00:00:00 [kworker/47:0H]
+root        251      2  0  2019 ?        00:00:00 [kdevtmpfs]
+root        252      2  0  2019 ?        00:00:00 [netns]
+root        253      2  0  2019 ?        00:00:02 [khungtaskd]
+root        254      2  0  2019 ?        00:00:00 [writeback]
+root        255      2  0  2019 ?        00:00:00 [kintegrityd]
+root        256      2  0  2019 ?        00:00:00 [bioset]
+root        257      2  0  2019 ?        00:00:00 [bioset]
+root        258      2  0  2019 ?        00:00:00 [bioset]
+root        259      2  0  2019 ?        00:00:00 [kblockd]
+root        260      2  0  2019 ?        00:00:00 [md]
+root        261      2  0  2019 ?        00:00:00 [edac-poller]
+root        262      2  0  2019 ?        00:00:00 [watchdogd]
+root        270      2  0  2019 ?        00:00:00 [kswapd0]
+root        271      2  0  2019 ?        00:00:00 [kswapd1]
+root        272      2  0  2019 ?        00:00:00 [ksmd]
+root        273      2  0  2019 ?        00:00:14 [khugepaged]
+root        274      2  0  2019 ?        00:00:00 [crypto]
+root        282      2  0  2019 ?        00:00:00 [kthrotld]
+root        284      2  0  2019 ?        00:00:00 [kmpath_rdacd]
+root        285      2  0  2019 ?        00:00:00 [kaluad]
+root        294      2  0  2019 ?        00:00:00 [kpsmoused]
+root        296      2  0  2019 ?        00:00:00 [ipv6_addrconf]
+root        309      2  0  2019 ?        00:00:00 [deferwq]
+root        310      2  0  2019 ?        00:00:41 [kworker/u544:1]
+root        350      2  0  2019 ?        00:00:13 [kauditd]
+root        540      2  0  2019 ?        00:00:00 [nfit]
+root        577      2  0  2019 ?        00:00:00 [scsi_eh_0]
+root        578      2  0  2019 ?        00:00:00 [ata_sff]
+root        579      2  0  2019 ?        00:00:00 [scsi_tmf_0]
+root        782      2  0  2019 ?        00:00:00 [scsi_eh_1]
+root        791      2  0  2019 ?        00:00:00 [scsi_tmf_1]
+root        802      2  0  2019 ?        00:00:00 [scsi_eh_2]
+root        804      2  0  2019 ?        00:00:00 [scsi_tmf_2]
+root        809      2  0  2019 ?        00:00:00 [scsi_eh_3]
+root        813      2  0  2019 ?        00:00:00 [scsi_tmf_3]
+root        816      2  0  2019 ?        00:00:00 [scsi_eh_4]
+root        824      2  0  2019 ?        00:00:00 [scsi_eh_5]
+root        826      2  0  2019 ?        00:00:00 [scsi_tmf_4]
+root        827      2  0  2019 ?        00:00:00 [scsi_tmf_5]
+root        828      2  0  2019 ?        00:00:00 [usb-storage]
+root        836      2  0  2019 ?        00:00:00 [scsi_eh_6]
+root        838      2  0  2019 ?        00:00:00 [scsi_tmf_6]
+root        845      2  0  2019 ?        00:00:00 [scsi_eh_7]
+root        846      2  0  2019 ?        00:00:00 [scsi_tmf_7]
+root        990      2  0  2019 ?        00:00:00 [scsi_eh_8]
+root        991      2  0  2019 ?        00:00:00 [scsi_tmf_8]
+root        992      2  0  2019 ?        00:00:00 [scsi_eh_9]
+root        993      2  0  2019 ?        00:00:00 [scsi_tmf_9]
+root        994      2  0  2019 ?        00:00:00 [scsi_eh_10]
+root        995      2  0  2019 ?        00:00:00 [scsi_tmf_10]
+root        996      2  0  2019 ?        00:00:00 [scsi_eh_11]
+root        997      2  0  2019 ?        00:00:00 [scsi_tmf_11]
+root        998      2  0  2019 ?        00:00:00 [scsi_eh_12]
+root        999      2  0  2019 ?        00:00:00 [scsi_tmf_12]
+root       1000      2  0  2019 ?        00:00:00 [scsi_eh_13]
+root       1001      2  0  2019 ?        00:00:00 [scsi_tmf_13]
+root       1002      2  0  2019 ?        00:00:00 [scsi_eh_14]
+root       1003      2  0  2019 ?        00:00:00 [scsi_tmf_14]
+root       1004      2  0  2019 ?        00:00:00 [scsi_eh_15]
+root       1005      2  0  2019 ?        00:00:00 [scsi_tmf_15]
+root       1019      2  0  2019 ?        00:00:00 [ttm_swap]
+root       1022      2  0  2019 ?        00:00:00 [poll_megasas0_s]
+root       1101      2  0  2019 ?        00:00:00 [kdmflush]
+root       1102      2  0  2019 ?        00:00:00 [bioset]
+root       1113      2  0  2019 ?        00:00:00 [kdmflush]
+root       1114      2  0  2019 ?        00:00:00 [bioset]
+root       1128      2  0  2019 ?        00:00:00 [bioset]
+root       1129      2  0  2019 ?        00:00:00 [xfsalloc]
+root       1130      2  0  2019 ?        00:00:00 [xfs_mru_cache]
+root       1131      2  0  2019 ?        00:00:00 [xfs-buf/dm-0]
+root       1132      2  0  2019 ?        00:00:00 [xfs-data/dm-0]
+root       1133      2  0  2019 ?        00:00:00 [xfs-conv/dm-0]
+root       1134      2  0  2019 ?        00:00:00 [xfs-cil/dm-0]
+root       1135      2  0  2019 ?        00:00:00 [xfs-reclaim/dm-]
+root       1136      2  0  2019 ?        00:00:00 [xfs-log/dm-0]
+root       1137      2  0  2019 ?        00:00:00 [xfs-eofblocks/d]
+root       1138      2  0  2019 ?        00:01:42 [xfsaild/dm-0]
+root       1146      2  0  2019 ?        00:00:00 [kworker/0:1H]
+root       1251      1  0  2019 ?        00:04:55 /usr/lib/systemd/systemd-journald
+root       1276      1  0  2019 ?        00:00:00 /usr/sbin/lvmetad -f
+root       1281      1  0  2019 ?        00:00:07 /usr/lib/systemd/systemd-udevd
+root       1397      2  0  2019 ?        00:00:00 [irq/81-mei_me]
+root       1449      2  0  2019 ?        00:00:00 [kvm-irqfd-clean]
+root       1450      2  0  2019 ?        00:00:00 [xfs-buf/sda1]
+root       1451      2  0  2019 ?        00:00:00 [xfs-data/sda1]
+root       1452      2  0  2019 ?        00:00:00 [xfs-conv/sda1]
+root       1453      2  0  2019 ?        00:00:00 [xfs-cil/sda1]
+root       1454      2  0  2019 ?        00:00:00 [xfs-reclaim/sda]
+root       1455      2  0  2019 ?        00:00:00 [xfs-log/sda1]
+root       1456      2  0  2019 ?        00:00:00 [xfs-eofblocks/s]
+root       1457      2  0  2019 ?        00:00:00 [xfsaild/sda1]
+root       1921      2  0  2019 ?        00:00:00 [kdmflush]
+root       1922      2  0  2019 ?        00:00:00 [bioset]
+root       1924      2  0  2019 ?        00:00:00 [kdmflush]
+root       1925      2  0  2019 ?        00:00:00 [bioset]
+root       1937      2  0  2019 ?        00:00:00 [xfs-buf/dm-2]
+root       1938      2  0  2019 ?        00:00:00 [xfs-data/dm-2]
+root       1941      2  0  2019 ?        00:00:00 [xfs-conv/dm-2]
+root       1942      2  0  2019 ?        00:00:00 [xfs-cil/dm-2]
+root       1943      2  0  2019 ?        00:00:00 [xfs-reclaim/dm-]
+root       1944      2  0  2019 ?        00:00:00 [xfs-log/dm-2]
+root       1945      2  0  2019 ?        00:00:00 [xfs-eofblocks/d]
+root       1946      2  0  2019 ?        00:07:31 [xfsaild/dm-2]
+root       1958      2  0  2019 ?        00:00:00 [jbd2/dm-3-8]
+root       1959      2  0  2019 ?        00:00:00 [ext4-rsv-conver]
+root       1983      2  0  2019 ?        00:00:00 [kworker/40:1H]
+root       1994      1  0  2019 ?        00:00:57 /sbin/auditd
+root       1997   1994  0  2019 ?        00:01:04 /sbin/audispd
+root       1999   1997  0  2019 ?        00:00:38 /usr/sbin/sedispatch
+root       2001      2  0  2019 ?        00:00:00 [rpciod]
+root       2002      2  0  2019 ?        00:00:00 [xprtiod]
+root       2035      1  0  2019 ?        00:17:20 /usr/sbin/irqbalance --foreground
+polkitd    2037      1  0  2019 ?        00:00:59 /usr/lib/polkit-1/polkitd --no-debug
+dbus       2039      1  0  2019 ?        00:10:02 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+rpc        2041      1  0  2019 ?        00:00:05 /sbin/rpcbind -w
+chrony     2046      1  0  2019 ?        00:00:05 /usr/sbin/chronyd
+root       2082      1  0  2019 ?        00:02:37 /usr/bin/python2 -Es /usr/sbin/firewalld --nofork --nopid
+root       2084      1  0  2019 ?        00:00:02 /usr/sbin/gssproxy -D
+root       2102      2  0  2019 ?        00:00:02 [kworker/15:1H]
+root       2108      1  0  2019 ?        00:05:28 /usr/lib/systemd/systemd-logind
+root       2110      1  0  2019 ?        00:01:04 /usr/sbin/NetworkManager --no-daemon
+root       2180      2  0  2019 ?        00:00:00 [kworker/29:1H]
+root       2243      2  0  2019 ?        00:00:00 [kworker/21:1H]
+root       2257      2  0  2019 ?        00:00:00 [kworker/5:1H]
+root       2262      2  0  2019 ?        00:00:00 [kworker/11:1H]
+root       2266      2  0  2019 ?        00:00:00 [kworker/23:1H]
+root       2269   2110  0  2019 ?        00:00:00 /sbin/dhclient -d -q -sf /usr/libexec/nm-dhcp-helper -pf /var/run/dhclient-em1.pid -lf /var/lib/NetworkManager/dhclient-1dad842d-1912-ef5a-a43a-bc238fb267e7-em1.lease -cf /var/lib/NetworkManager/dhclient-em1.conf em1
+root       2274      2  0  2019 ?        00:00:00 [kworker/2:1H]
+root       2276      2  0  2019 ?        00:00:00 [kworker/17:1H]
+root       2281      2  0  2019 ?        00:00:00 [kworker/8:1H]
+root       2282      2  0  2019 ?        00:00:00 [kworker/20:1H]
+root       2477      1  0  2019 ?        00:01:26 /usr/sbin/sshd -D
+root       2478      1  0  2019 ?        00:03:03 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+root       2479      1  0  2019 ?        00:00:00 /usr/sbin/cupsd -f
+root       2480      1  0  2019 ?        00:55:53 /usr/bin/python /usr/bin/goferd --foreground
+root       2482      1  0  2019 ?        00:01:30 /opt/puppetlabs/puppet/bin/ruby /opt/puppetlabs/puppet/bin/puppet agent --no-daemonize
+root       2488      1  0  2019 ?        00:02:49 /usr/sbin/rsyslogd -n
+root       2492      1  0  2019 ?        00:00:00 /usr/bin/rhsmcertd
+root       2496      1  0  2019 ?        00:26:48 /usr/bin/python -s /usr/bin/fail2ban-server -xf start
+rpcuser    2497      1  0  2019 ?        00:00:02 /usr/sbin/rpc.statd
+root       2499      2  0  2019 ?        00:00:00 [kworker/14:1H]
+root       2535      2  0  2019 ?        00:00:00 [nfsiod]
+root       2545      2  0  2019 ?        00:00:00 [kworker/6:1H]
+root       2546      2  0  2019 ?        00:00:00 [kworker/16:1H]
+root       2549      2  0  2019 ?        00:00:00 [kworker/18:1H]
+root       2550      2  0  2019 ?        00:00:00 [lockd]
+root       2566      1  0  2019 ?        00:00:24 /usr/sbin/crond -n
+root       2567      1  0  2019 ?        00:00:00 /usr/sbin/atd -f
+root       2601      2  0  2019 ?        00:00:00 [kworker/12:1H]
+root       2648      1  0  2019 tty1     00:00:00 /sbin/agetty --noclear tty1 linux
+root       2958      1  0  2019 ?        00:00:20 /usr/libexec/postfix/master -w
+postfix    2969   2958  0  2019 ?        00:00:06 qmgr -l -t unix -u
+root       3696      2  0  2019 ?        00:00:00 [kworker/4:1H]
+kzhangs+   3724 226004  0 Jan11 pts/15   00:00:00 -bash
+kzhangs+   3809 226004  0 Jan11 pts/21   00:00:00 -bash
+root       5952      2  0  2019 ?        00:00:00 [kworker/22:1H]
+root       6553      2  0  2019 ?        00:00:00 [kworker/27:1H]
+root       7144      2  0  2019 ?        00:00:00 [kworker/36:1H]
+root       7347      2  0  2019 ?        00:16:28 [kworker/34:1H]
+root       7542      2  0  2019 ?        00:00:00 [kworker/13:1H]
+root       8140      2  0  2019 ?        00:00:01 [kworker/28:1H]
+root       8687      2  0  2019 ?        00:00:00 [kworker/39:1H]
+root       9186      2  0  2019 ?        00:00:00 [kworker/33:1H]
+root       9456      2  0  2019 ?        00:00:00 [kworker/19:1H]
+root      10511      2  0  2019 ?        00:00:00 [kworker/10:1H]
+root      11908      2  0  2019 ?        00:00:00 [kworker/37:1H]
+root      12042      2  0  2019 ?        00:00:00 [kworker/26:1H]
+root      12049      2  0  2019 ?        00:00:00 [kworker/3:1H]
+root      12063      2  0  2019 ?        00:00:00 [kworker/9:1H]
+root      12069      2  0  2019 ?        00:00:00 [kworker/7:1H]
+root      12110      2  0  2019 ?        00:00:00 [kworker/1:1H]
+root      12510      2  0  2019 ?        00:00:00 [kworker/38:1H]
+root      13431      2  0  2019 ?        00:00:00 [kworker/30:1H]
+pete      13695      1  0  2019 ?        00:00:00 svnserve -d --listen-port=3691 -r /home/pete/formal/SVN/EXTERNAL
+root      14599      2  0  2019 ?        00:00:00 [kworker/32:1H]
+root      16683      2  0  2019 ?        00:00:00 [kworker/43:1H]
+root      16712      2  0  2019 ?        00:00:00 [kworker/41:1H]
+root      17920      2  0  2019 ?        00:00:00 [kworker/25:1H]
+root      18090      2  0  2019 ?        00:00:00 [kworker/42:1H]
+root      18789      2  0  2019 ?        00:00:00 [kworker/45:1H]
+root      21440      2  0  2019 ?        00:00:00 [kworker/47:1H]
+root      50090      1  0 Jan09 ?        00:00:00 /usr/sbin/sssd -i --logger=files
+root      50091  50090  0 Jan09 ?        00:44:59 /usr/libexec/sssd/sssd_be --domain default --uid 0 --gid 0 --logger=files
+root      50092  50090  0 Jan09 ?        00:09:52 /usr/libexec/sssd/sssd_nss --uid 0 --gid 0 --logger=files
+root      50093  50090  0 Jan09 ?        00:01:23 /usr/libexec/sssd/sssd_pam --uid 0 --gid 0 --logger=files
+root      50094  50090  0 Jan09 ?        00:00:42 /usr/libexec/sssd/sssd_autofs --uid 0 --gid 0 --logger=files
+root      50095  50090  0 Jan09 ?        00:00:03 /usr/libexec/sssd/sssd_ssh --uid 0 --gid 0 --logger=files
+root      51405      1  0 Jan09 ?        01:01:16 /usr/sbin/automount --systemd-service --dont-check-daemon
+kanei     53135      1  0 Jan11 ?        00:01:30 tmux
+kanei     53136  53135  0 Jan11 pts/12   00:00:00 -bash
+kanei     53386  53136  0 Jan11 pts/12   00:00:00 vim main.c
+lilaliu+  54891      1  0 Jan12 ?        00:01:25 tmux
+lilaliu+  54892  54891  0 Jan12 pts/60   00:00:00 -bash
+ryanl35   55226      1  0 Jan10 ?        00:03:02 tmux
+ryanl35   55227  55226  0 Jan10 pts/38   00:00:00 -bash
+lilaliu+  55537  54891  0 Jan12 pts/43   00:00:00 -bash
+tsengjo+  55696      1  0 Jan13 ?        00:00:00 sh /home/tsengjonathan/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/server.sh --host=127.0.0.1 --enable-remote-auto-shutdown --port=0
+tsengjo+  55704  55696  0 Jan13 ?        00:00:48 /home/tsengjonathan/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/node /home/tsengjonathan/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/out/vs/server/main.js --host=127.0.0.1 --enable-remote-auto-shutdown --port=0
+ryanl35   55797  55226  0 Jan10 pts/44   00:00:00 -bash
+tsengjo+  56043  55704  0 Jan13 ?        00:00:07 /home/tsengjonathan/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/node /home/tsengjonathan/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/out/bootstrap-fork --type=watcherService
+tsengjo+  56056  55704  1 Jan13 ?        00:26:39 /home/tsengjonathan/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/node /home/tsengjonathan/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/out/bootstrap-fork --type=extensionHost --uriTransformerPath=/home/tsengjonathan/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/out/vs/server/uriTransformer.js
+root      56667      2  0  2019 ?        00:00:00 [kworker/44:1H]
+ryanl35   56863  55226  0 Jan10 pts/50   00:00:00 -bash
+ryanl35   57078  55226  0 Jan10 pts/53   00:00:00 -bash
+florisd   58363      1  0 Jan09 ?        00:02:12 tmux
+florisd   58364  58363  0 Jan09 pts/37   00:00:00 -bash
+nrose619  62345 232256  0 Jan08 pts/32   00:00:00 -bash
+kzhangs+  62530 226004  0 00:38 pts/76   00:00:00 -bash
+rheisen   64683      1  0 Jan10 ?        00:00:00 ssh-agent -s
+kzhangs+  70548  62530  0 01:12 pts/76   00:00:00 vim linkedlist.c
+kzhangs+  70581 226004  0 01:12 pts/91   00:00:00 -bash
+root      70734      2  0  2019 ?        00:00:00 [kworker/31:1H]
+kzhangs+  71618  70581  0 01:18 pts/91   00:00:00 vim data.sh
+ryanl35   73752  55226  0 Jan12 pts/96   00:00:00 -bash
+ryanl35   74713  55226  0 Jan12 pts/103  00:00:00 -bash
+gerard    76152      1  0 Jan09 ?        00:00:00 ssh-agent -s
+ariflei+  76155      1  0 Jan09 ?        00:00:00 ssh-agent -s
+zrchencn  76683  92054  0 Jan13 pts/106  00:00:00 bash
+nickbag+  77538      1  0 Jan12 ?        00:01:43 tmux
+nickbag+  77539  77538  0 Jan12 pts/101  00:00:00 -bash
+nickbag+  77745  77538  0 Jan12 pts/102  00:00:00 -bash
+iambucky  79250      1  0 Jan12 ?        00:01:44 tmux
+iambucky  79251  79250  0 Jan12 pts/114  00:00:00 -bash
+iambucky  79393  79250  0 Jan12 pts/110  00:00:00 -bash
+nickbag+  79959  77538  0 Jan12 pts/75   00:00:00 -bash
+root      80415      2  0  2019 ?        00:00:00 [kworker/24:1H]
+iambucky  80491  79250  0 Jan12 pts/49   00:00:00 -bash
+iambucky  80787  79250  0 Jan12 pts/120  00:00:00 -bash
+iambucky  80956  79250  0 Jan12 pts/121  00:00:00 -bash
+iambucky  81186  79250  0 Jan12 pts/122  00:00:00 -bash
+bhatch    81269      1  0 Jan13 ?        00:00:28 tmux
+bhatch    81270  81269  0 Jan13 pts/174  00:00:00 -bash
+nickbag+  82065  77538  0 Jan12 pts/47   00:00:00 -bash
+nickbag+  82135  77538  0 Jan12 pts/73   00:00:00 -bash
+nickbag+  82201  77538  0 Jan12 pts/115  00:00:00 -bash
+nickbag+  82366  82201  0 Jan12 pts/115  00:00:00 vim main.c
+iambucky  82578  79250  0 Jan12 pts/11   00:00:00 -bash
+dandig    83000      1  0 Jan12 ?        00:00:52 tmux
+dandig    83001  83000  0 Jan12 pts/128  00:00:00 -bash
+loganpa+  83568      1  0 Jan12 ?        00:00:59 tmux
+loganpa+  83569  83568  0 Jan12 pts/129  00:00:00 -bash
+loganpa+  83614  83568  0 Jan12 pts/130  00:00:00 -bash
+jaison    85160      1  0 Jan11 ?        00:01:27 tmux
+jaison    85161  85160  0 Jan11 pts/27   00:00:00 -bash
+brianwa+  87385      1  0 Jan12 ?        00:00:57 tmux
+brianwa+  87386  87385  0 Jan12 pts/132  00:00:00 -bash
+brianwa+  87439  87385  0 Jan12 pts/133  00:00:00 -bash
+ryanl35   87608  73752  0 Jan12 pts/96   00:00:00 vim main.c
+brianwa+  87748  87439  0 Jan12 pts/133  00:00:00 vim main.c
+root      90139   2477  0 Jan12 ?        00:00:00 sshd: jpark0 [priv]
+jpark0    90143  90139  0 Jan12 ?        00:00:11 sshd: jpark0
+zrchencn  91997      1  0 Jan12 ?        00:00:01 /home/zrchencn/.local/bin/tmux
+zrchencn  91998  91997  0 Jan12 pts/105  00:00:00 -bash
+zrchencn  92045  91998  0 Jan12 pts/105  00:00:00 bash
+zrchencn  92054  91997  0 Jan12 pts/106  00:00:00 -bash
+cwil290+  93399      1  0 Jan10 ?        00:02:23 tmux
+joedobro  96291      1  0 Jan12 ?        00:01:00 tmux -f main.c
+joedobro  96292  96291  0 Jan12 pts/131  00:00:00 -bash
+seanxin   96863      1  0 Jan12 ?        00:01:22 tmux
+seanxin   96864  96863  0 Jan12 pts/139  00:00:00 -bash
+root      97320      2  0  2019 ?        00:00:00 [kworker/35:1H]
+root      97362      2  0  2019 ?        00:00:00 [kworker/46:1H]
+clarakim  97365      1  0 Jan11 ?        00:02:30 tmux
+clarakim  97366  97365  0 Jan11 pts/30   00:00:00 -bash
+clarakim  97462  97365  0 Jan11 pts/65   00:00:00 -bash
+clarakim  97507  97365  0 Jan11 pts/71   00:00:00 -bash
+seanxin   97698  96863  0 Jan12 pts/138  00:00:00 -bash
+clarakim  98062  97462  0 Jan11 pts/65   00:00:00 vim rectangle2.cpp
+clarakim  98242  97365  0 Jan11 pts/79   00:00:00 -bash
+clarakim  98351  97365  0 Jan11 pts/83   00:00:00 -bash
+seanxin   99106  96863  0 Jan12 pts/4    00:00:00 -bash
+seanxin  100461  96863  0 Jan12 pts/140  00:00:00 -bash
+nrose619 100486 232256  0 Jan08 pts/40   00:00:00 -bash
+seanxin  100522  96863  0 Jan12 pts/93   00:00:00 -bash
+zefwang  100717      1  0 Jan13 ?        00:00:35 tmux -CC
+zefwang  100718 100717  0 Jan13 pts/123  00:00:00 -bash
+zefwang  100965 100717  0 Jan13 pts/150  00:00:00 -bash
+epsteinw 104228      1  0 Jan13 ?        00:00:00 ssh-agent
+spicerk  104842      1  0 Jan12 ?        00:01:09 tmux
+spicerk  104843 104842  0 Jan12 pts/18   00:00:00 -bash
+vanessa+ 105796      1  0 Jan12 ?        00:03:37 tmux
+vanessa+ 105797 105796  0 Jan12 pts/108  00:00:00 -bash
+spicerk  106544 104842  0 Jan12 pts/126  00:00:00 -bash
+vanessa+ 108071 105796  0 Jan12 pts/151  00:00:00 -bash
+vanessa+ 108127 105796  0 Jan12 pts/153  00:00:00 -bash
+vanessa+ 108185 105796  0 Jan12 pts/154  00:00:00 -bash
+vanessa+ 108287 105796  0 Jan12 pts/155  00:00:00 -bash
+vanessa+ 108380 105796  0 Jan12 pts/156  00:00:00 -bash
+iambucky 109358  81186  0 Jan12 pts/122  00:00:00 vim main.c
+vanessa+ 110030 105796  0 Jan12 pts/26   00:00:00 -bash
+vanessa+ 110093 105796  0 Jan12 pts/113  00:00:00 -bash
+vanessa+ 110158 105796  0 Jan12 pts/72   00:00:00 -bash
+vanessa+ 110207 105796  0 Jan12 pts/119  00:00:00 -bash
+vanessa+ 110300 105796  0 Jan12 pts/159  00:00:00 -bash
+vanessa+ 110451 105796  0 Jan12 pts/124  00:00:00 -bash
+nrose619 112457 232256  0 Jan08 pts/57   00:00:00 -bash
+vanessa+ 112801 105796  0 Jan12 pts/161  00:00:00 -bash
+vanessa+ 113100 105796  0 Jan12 pts/162  00:00:00 -bash
+vanessa+ 114278 105796  0 Jan12 pts/145  00:00:00 -bash
+elikir   115483      1  0 Jan09 ?        00:02:14 tmux
+ryanl35  116314  55226  0 Jan10 pts/82   00:00:00 -bash
+elikir   116891 115483  0 Jan09 pts/87   00:00:00 -bash
+edward   117037      1  0 Jan08 ?        00:00:00 sh /home/edward/.vscode-server-oss/bin/8b6e0efc0a98639085fabeb5226a516785424796/server.sh --host=127.0.0.1 --enable-remote-auto-shutdown --disable-telemetry --port=0
+edward   117045 117037  0 Jan08 ?        00:00:13 /home/edward/.vscode-server-oss/bin/8b6e0efc0a98639085fabeb5226a516785424796/node /home/edward/.vscode-server-oss/bin/8b6e0efc0a98639085fabeb5226a516785424796/out/vs/server/main.js --host=127.0.0.1 --enable-remote-auto-shutdown --disable-telemetry --port=0
+elikir   117546 115483  0 Jan09 pts/127  00:00:00 -bash
+kzhangs+ 119020 226004  0 Jan13 pts/208  00:00:00 -bash
+kzhangs+ 119075 226004  0 Jan13 pts/213  00:00:00 -bash
+kzhangs+ 119289 119020  0 Jan13 pts/208  00:00:00 vim main.c
+xhusser  122853      1  0 Jan12 ?        00:00:50 tmux
+xhusser  122854 122853  0 Jan12 pts/157  00:00:00 -bash
+xhusser  123105 122853  0 Jan12 pts/160  00:00:00 -bash
+ture     131884      1  0 Jan10 ?        00:02:41 tmux
+ture     131885 131884  0 Jan10 pts/62   00:00:00 -bash
+ture     134349 131884  0 Jan10 pts/14   00:00:00 -bash
+ycervan+ 136010      1  0 Jan11 ?        00:01:16 tmux
+ycervan+ 136011 136010  0 Jan11 pts/67   00:00:00 -bash
+cwil290+ 136120  93399  0 Jan12 pts/173  00:00:00 -bash
+vanessa+ 136484 114278  0 Jan12 pts/145  00:00:00 vim main.c
+root     137243   2477  0 Jan02 ?        00:00:00 sshd: idasilva [priv]
+idasilva 137248 137243  0 Jan02 ?        00:00:07 sshd: idasilva@pts/1
+idasilva 137249 137248  0 Jan02 pts/1    00:00:00 -bash
+root     137325 137249  0 Jan02 pts/1    00:00:00 /usr/bin/sudo su -
+root     137326 137325  0 Jan02 pts/1    00:00:00 su -
+root     137327 137326  0 Jan02 pts/1    00:00:00 -bash
+cwil290+ 137934  93399  0 Jan12 pts/99   00:00:00 -bash
+takayama 138051      1  0 Jan09 ?        00:00:00 /usr/bin/node /home/takayama/Classes/cs4400/ppl/node_modules/jest-worker/build/workers/processChild.js
+cwil290+ 138079  93399  0 Jan12 pts/137  00:00:00 -bash
+cwil290+ 141520 138079  0 Jan12 pts/137  00:00:00 vim main.c
+root     145394   2477  0 08:29 ?        00:00:00 sshd: rebeccamattie [priv]
+rebecca+ 145439 145394  0 08:29 ?        00:00:06 sshd: rebeccamattie@pts/84
+rebecca+ 145440 145439  0 08:29 pts/84   00:00:00 -bash
+root     145582   2477  0 08:30 ?        00:00:00 sshd: rebeccamattie [priv]
+rebecca+ 145613 145582  0 08:30 ?        00:00:00 sshd: rebeccamattie@pts/85
+rebecca+ 145614 145613  0 08:30 pts/85   00:00:00 -bash
+cwil290+ 146240  93399  0 Jan12 pts/90   00:00:00 -bash
+danielm+ 146353      1  0 Jan10 ?        00:01:45 tmux
+danielm+ 146354 146353  0 Jan10 pts/56   00:00:00 -bash
+danielm+ 146415 146354  0 Jan10 pts/56   00:00:00 vim linkedlist.c
+lilaliu+ 147287  54891  0 Jan13 pts/148  00:00:00 -bash
+danielm+ 147377 146353  0 Jan10 pts/54   00:00:00 -bash
+lilaliu+ 147482  54891  0 Jan13 pts/169  00:00:00 -bash
+zrchencn 152091      1  0 Jan11 ?        00:00:00 SCREEN
+zrchencn 152092 152091  0 Jan11 pts/86   00:00:00 /bin/bash
+zrchencn 152130 152092  0 Jan11 pts/86   00:00:00 /home/zrchencn/.local/bin/vim
+kzhangs+ 156077 226004  0 Jan12 pts/39   00:00:00 -bash
+kzhangs+ 156191 226004  0 Jan12 pts/167  00:00:00 -bash
+jalter   157223      1  0 09:47 ?        00:00:14 tmux
+jalter   157224 157223  0 09:47 pts/104  00:00:00 -bash
+lilaliu+ 161270 147287  0 Jan13 pts/148  00:00:01 vim linkedlist.c
+root     161481   2477  0 Jan02 ?        00:00:00 sshd: eelhami [priv]
+eelhami  161485 161481  0 Jan02 ?        00:00:00 sshd: eelhami@notty
+eelhami  161486 161485  0 Jan02 ?        00:00:00 /usr/libexec/openssh/sftp-server
+brotibi  162002      1  0 Jan07 ?        00:04:54 tmux
+brotibi  162003 162002  0 Jan07 pts/61   00:00:00 -bash
+brotibi  162166 162002  0 Jan07 pts/63   00:00:00 -bash
+raymond+ 162325      1  0 Jan07 ?        00:00:00 ssh-agent -s
+brotibi  162467 162002  0 Jan07 pts/66   00:00:00 -bash
+brotibi  163388 162002  0 Jan07 pts/68   00:00:00 -bash
+vanessa+ 164108 113100  0 Jan12 pts/162  00:00:00 vim main.c
+nickbag+ 164437  77538  0 Jan12 pts/175  00:00:00 -bash
+vanessa+ 164577 105796  0 Jan12 pts/178  00:00:00 -bash
+kzhangs+ 172158 226004  0 Jan12 pts/182  00:00:00 -bash
+kzhangs+ 172214 226004  0 Jan12 pts/183  00:00:00 -bash
+vanessa+ 173381 164577  0 Jan12 pts/178  00:00:00 vim main.c
+root     178992   2477  0 Jan03 ?        00:00:00 sshd: jdenman [priv]
+jdenman  178999 178992  0 Jan03 ?        00:00:04 sshd: jdenman@pts/5
+jdenman  179000 178999  0 Jan03 pts/5    00:00:00 -bash
+root     180149   2477  0 Jan12 ?        00:00:00 sshd: jpark0 [priv]
+jpark0   180153 180149  0 Jan12 ?        00:00:00 sshd: jpark0
+jaison   180578  85160  0 11:22 pts/28   00:00:00 -bash
+jaison   180646 180578  0 11:22 pts/28   00:00:07 vim client.py
+root     184447   2477  0 11:40 ?        00:00:00 sshd: sharonhe98 [priv]
+sharonh+ 184453 184447  0 11:40 ?        00:00:00 sshd: sharonhe98@notty
+sharonh+ 184454 184453  0 11:40 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     184478   2477  0 11:40 ?        00:00:00 sshd: sharonhe98 [priv]
+sharonh+ 184516 184478  0 11:40 ?        00:00:00 sshd: sharonhe98@notty
+sharonh+ 184517 184516  0 11:40 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     186595   2477  0 11:51 ?        00:00:00 sshd: nbacskai [priv]
+nbacskai 186606 186595  0 11:51 ?        00:00:00 sshd: nbacskai@pts/97
+nbacskai 186607 186606  0 11:51 pts/97   00:00:00 -bash
+jalter   186698 157223  0 11:51 pts/98   00:00:00 -bash
+root     188998   2477  0 12:04 ?        00:00:00 sshd: nicholasmullikin [priv]
+nichola+ 189011 188998  0 12:04 ?        00:00:01 sshd: nicholasmullikin@pts/118
+nichola+ 189012 189011  0 12:04 pts/118  00:00:00 -bash
+jalter   189783 157223  0 12:06 pts/149  00:00:00 -bash
+nichola+ 190224 189012  0 12:08 pts/118  00:00:00 man who
+nichola+ 190235 190224  0 12:08 pts/118  00:00:00 less -s
+root     190245   2477  0 12:08 ?        00:00:00 sshd: danielkostecki [priv]
+danielk+ 190261 190245  0 12:08 ?        00:00:00 sshd: danielkostecki@pts/158
+danielk+ 190262 190261  0 12:08 pts/158  00:00:00 -bash
+root     190383   2477  0 12:09 ?        00:00:00 sshd: terryr518 [priv]
+root     190388   2477  0 12:09 ?        00:00:00 sshd: terryr518 [priv]
+terryr5+ 190392 190383  0 12:09 ?        00:00:03 sshd: terryr518@pts/164
+terryr5+ 190393 190392  0 12:09 pts/164  00:00:00 -bash
+terryr5+ 190404 190388  0 12:09 ?        00:00:00 sshd: terryr518@notty
+terryr5+ 190417 190404  0 12:09 ?        00:00:00 /usr/libexec/openssh/sftp-server
+jalter   191192 189783  0 12:13 pts/149  00:00:01 vim myScript.sh
+jalter   191370 157223  0 12:14 pts/165  00:00:00 -bash
+jalter   191436 191370  0 12:14 pts/165  00:00:00 vim Readme.md
+root     194489   2477  0 12:24 ?        00:00:00 sshd: abievans [priv]
+abievans 194501 194489  0 12:24 ?        00:00:00 sshd: abievans@notty
+abievans 194502 194501  0 12:24 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     194562   2477  0 12:24 ?        00:00:00 sshd: pgust [priv]
+pgust    194574 194562  0 12:24 ?        00:00:00 sshd: pgust@notty
+pgust    194576 194574  0 12:24 ?        00:00:00 /usr/libexec/openssh/sftp-server
+cstransk 195033      1  0 12:27 ?        00:00:00 ssh-agent
+nichola+ 197277 189012  0 12:37 pts/118  00:00:00 write gordonng123 pts/116
+nichola+ 197331 189012  0 12:37 pts/118  00:00:00 write gordonng123 pts/134
+root     197593   2477  0 12:39 ?        00:00:00 sshd: lehmer16 [priv]
+lehmer16 197616 197593  0 12:39 ?        00:00:01 sshd: lehmer16@pts/181
+lehmer16 197617 197616  0 12:39 pts/181  00:00:00 -bash
+root     198399   2477  0 Jan13 ?        00:00:00 sshd: cameronbracco [priv]
+cameron+ 198415 198399  0 Jan13 ?        00:00:00 sshd: cameronbracco@pts/190
+cameron+ 198416 198415  0 Jan13 pts/190  00:00:00 -bash
+ariflei+ 199682 221455  0 Jan10 pts/59   00:00:00 -bash
+ariflei+ 199779 221455  0 Jan10 pts/81   00:00:00 -bash
+root     200217   2477  0 12:53 ?        00:00:00 sshd: malcolmbec [priv]
+malcolm+ 200261 200217  0 12:53 ?        00:00:00 sshd: malcolmbec@pts/171
+malcolm+ 200263 200261  0 12:53 pts/171  00:00:00 -bash
+root     200541   2477  0 12:54 ?        00:00:00 sshd: gordonng123 [priv]
+gordonn+ 200551 200541  0 12:54 ?        00:00:03 sshd: gordonng123@pts/172
+gordonn+ 200552 200551  0 12:54 pts/172  00:00:00 -bash
+jalter   200987 157223  0 12:56 pts/176  00:00:00 -bash
+jalter   201044 157223  0 12:56 pts/177  00:00:00 -bash
+jalter   202179 200987  0 13:01 pts/176  00:00:00 vim myScript.sh
+kzhangs+ 202273 226004  0 Jan11 pts/51   00:00:00 -bash
+kzhangs+ 202394 226004  0 Jan11 pts/33   00:00:00 -bash
+kzhangs+ 202764 202394  0 Jan11 pts/33   00:00:00 ./main
+durwasa  202765      1  0 Jan03 ?        00:00:00 sh /home/durwasa/.vscode-server/bin/b37e54c98e1a74ba89e03073e5a3761284e3ffb0/server.sh --host=127.0.0.1 --enable-remote-auto-shutdown --port=0
+durwasa  202773 202765  0 Jan03 ?        00:00:21 /home/durwasa/.vscode-server/bin/b37e54c98e1a74ba89e03073e5a3761284e3ffb0/node /home/durwasa/.vscode-server/bin/b37e54c98e1a74ba89e03073e5a3761284e3ffb0/out/vs/server/main.js --host=127.0.0.1 --enable-remote-auto-shutdown --port=0
+jalter   203808 157223  0 13:07 pts/193  00:00:00 -bash
+root     204876   2477  0 13:11 ?        00:00:00 sshd: sharonhe98 [priv]
+sharonh+ 204895 204876  0 13:11 ?        00:00:01 sshd: sharonhe98@pts/194
+sharonh+ 204896 204895  0 13:11 pts/194  00:00:00 -bash
+kzhangs+ 205362 226004  0 Jan11 pts/0    00:00:00 -bash
+kzhangs+ 205456 226004  0 Jan11 pts/6    00:00:00 -bash
+root     206250   2477  0 Jan13 ?        00:00:00 sshd: evanogra [priv]
+evanogra 206265 206250  0 Jan13 ?        00:00:00 sshd: evanogra@pts/117
+evanogra 206277 206265  0 Jan13 pts/117  00:00:00 -bash
+evanogra 206325 206277  0 Jan13 pts/117  00:00:00 zsh
+root     206565   2477  0 13:18 ?        00:00:00 sshd: mikemyan [priv]
+mikemyan 206587 206565  0 13:18 ?        00:00:00 sshd: mikemyan@pts/8
+mikemyan 206588 206587  0 13:18 pts/8    00:00:00 -bash
+root     206866   2477  0 13:20 ?        00:00:00 sshd: ziam [priv]
+ziam     206941 206866  0 13:20 ?        00:00:00 sshd: ziam@pts/192
+ziam     206942 206941  0 13:20 pts/192  00:00:00 -bash
+root     207498      2  0 13:23 ?        00:00:01 [kworker/18:0]
+root     209066      2  0 13:31 ?        00:00:00 [kworker/44:0]
+root     209241   2477  0 13:31 ?        00:00:00 sshd: masonwu [priv]
+masonwu  209265 209241  0 13:31 ?        00:00:01 sshd: masonwu@pts/195
+masonwu  209266 209265  0 13:31 pts/195  00:00:00 -bash
+bachung+ 209364      1  0 13:32 ?        00:00:08 tmux
+bachung+ 209365 209364  0 13:32 pts/111  00:00:00 -bash
+bachung+ 209841 209364  0 13:34 pts/142  00:00:00 -bash
+bachung+ 209884 209364  0 13:34 pts/143  00:00:00 -bash
+root     209983   2477  0 13:34 ?        00:00:00 sshd: alexperez [priv]
+alexper+ 209998 209983  0 13:34 ?        00:00:00 sshd: alexperez@pts/188
+alexper+ 209999 209998  0 13:34 pts/188  00:00:00 -bash
+root     210519   2477  0 13:36 ?        00:00:00 sshd: tannerlederman [priv]
+tannerl+ 210559 210519  0 13:36 ?        00:00:01 sshd: tannerlederman@pts/199
+tannerl+ 210560 210559  0 13:36 pts/199  00:00:00 -bash
+root     211037   2477  0 13:38 ?        00:00:00 sshd: rheisen [priv]
+rheisen  211051 211037  0 13:38 ?        00:00:00 sshd: rheisen@pts/200
+rheisen  211052 211051  0 13:38 pts/200  00:00:00 -bash
+lehmer16 212752 197617  0 13:44 pts/181  00:00:00 ssh eric@maggie.ccs.neu.edu
+mattcut+ 213922      1  0 Jan11 ?        00:01:53 tmux
+mattcut+ 213923 213922  0 Jan11 pts/16   00:00:00 -bash
+mattcut+ 213998 213922  0 Jan11 pts/23   00:00:00 -bash
+mattcut+ 214097 213922  0 Jan11 pts/52   00:00:00 -bash
+root     214158      2  0 13:48 ?        00:00:00 [kworker/1:0]
+root     214294   2477  0 13:48 ?        00:00:00 sshd: brotibi [priv]
+brotibi  214340 214294  0 13:48 ?        00:00:00 sshd: brotibi@pts/211
+brotibi  214341 214340  0 13:48 pts/211  00:00:00 -bash
+mattcut+ 214741 213922  0 Jan11 pts/69   00:00:00 -bash
+tsengjo+ 214778  56056 99 13:49 pts/216  02:49:58 /bin/zsh
+mattcut+ 215248 213922  0 Jan11 pts/74   00:00:00 -bash
+mattcut+ 215305 213922  0 Jan11 pts/77   00:00:00 -bash
+root     215490   2477  0 13:51 ?        00:00:00 sshd: wheadenj [priv]
+wheadenj 215529 215490  0 13:51 ?        00:00:01 sshd: wheadenj@pts/92
+wheadenj 215530 215529  0 13:51 pts/92   00:00:00 -bash
+tsachle+ 215768      1  0 13:52 ?        00:00:00 SCREEN
+tsachle+ 215769 215768  0 13:52 pts/220  00:00:00 /bin/bash
+mattcut+ 215938 213922  0 Jan11 pts/10   00:00:00 -bash
+mattcut+ 215997 213922  0 Jan11 pts/22   00:00:00 -bash
+root     217300   2477  0 13:57 ?        00:00:00 sshd: teresewang [priv]
+teresew+ 217331 217300  0 13:57 ?        00:00:00 sshd: teresewang@pts/166
+teresew+ 217333 217331  0 13:57 pts/166  00:00:00 -bash
+root     218627      2  0 14:02 ?        00:00:00 [kworker/20:0]
+ryanl35  219153  55226  0 14:03 pts/89   00:00:00 -bash
+nrose619 219167 232256  0 Jan12 pts/146  00:00:00 -bash
+ryanl35  219208  55226  0 14:03 pts/136  00:00:00 -bash
+nrose619 219336 219167  0 Jan12 pts/146  00:00:00 vim linkedlist.c
+nrose619 219574 232256  0 Jan12 pts/78   00:00:00 -bash
+root     219607   2477  0 14:05 ?        00:00:00 sshd: cctheresa [priv]
+ccthere+ 219612 219607  0 14:05 ?        00:00:08 sshd: cctheresa@pts/223
+ccthere+ 219613 219612  0 14:05 pts/223  00:00:02 -bash
+root     220708   2477  0 14:07 ?        00:00:00 sshd: rebeccamattie [priv]
+rebecca+ 220711 220708  0 14:07 ?        00:00:00 sshd: rebeccamattie@notty
+rebecca+ 220712 220711  0 14:07 ?        00:00:00 /usr/libexec/openssh/sftp-server
+ariflei+ 221455      1  0 Jan08 ?        00:05:39 tmux
+ariflei+ 221456 221455  0 Jan08 pts/7    00:00:00 -bash
+ariflei+ 221826 221455  0 Jan08 pts/20   00:00:00 -bash
+ariflei+ 222796 221455  0 Jan08 pts/25   00:00:00 -bash
+ariflei+ 223323 221455  0 Jan08 pts/31   00:00:00 -bash
+root     223391      1  0 Jan04 ?        00:00:16 /usr/libexec/upowerd
+kzhangs+ 224079 226004  0 Jan13 pts/17   00:00:00 -bash
+mattcut+ 224513 215305  0 Jan12 pts/77   00:00:00 vim main.c
+ariflei+ 224927 221455  0 Jan08 pts/46   00:00:00 -bash
+ariflei+ 224981 221455  0 Jan08 pts/55   00:00:00 -bash
+ariflei+ 225759 221455  0 Jan08 pts/58   00:00:00 -bash
+kzhangs+ 226004      1  0 Jan10 ?        00:04:03 tmux
+ariflei+ 226103 221455  0 Jan08 pts/41   00:00:00 -bash
+kzhangs+ 226383 226004  0 Jan10 pts/70   00:00:00 -bash
+tsengjo+ 226522  56056 99 14:25 pts/109  02:14:27 /bin/zsh
+rheisen  228801 211052  0 14:31 pts/200  00:00:00 vim myScript.sh
+root     228865   2477  0 14:31 ?        00:00:00 sshd: jalajsingh [priv]
+jalajsi+ 228989 228865  0 14:31 ?        00:00:00 sshd: jalajsingh@pts/202
+jalajsi+ 228991 228989  0 14:31 pts/202  00:00:00 -bash
+root     229417   2477  0 14:33 ?        00:00:00 sshd: shanness [priv]
+shanness 229427 229417  0 14:33 ?        00:00:00 sshd: shanness@pts/205
+shanness 229428 229427  0 14:33 pts/205  00:00:00 -bash
+jalajsi+ 230415 228991  0 14:36 pts/202  00:00:00 vim myScript.sh
+kzhangs+ 230428 226004  0 Jan10 pts/24   00:00:00 -bash
+root     230574   2477  0 14:36 ?        00:00:00 sshd: gepstein23 [priv]
+gepstei+ 230816 230574  0 14:37 ?        00:00:00 sshd: gepstein23@pts/209
+gepstei+ 230818 230816  0 14:37 pts/209  00:00:00 -bash
+root     231189   2477  0 14:38 ?        00:00:00 sshd: pkpandey12 [priv]
+pkpande+ 231203 231189  0 14:38 ?        00:00:00 sshd: pkpandey12@pts/2
+pkpande+ 231204 231203  0 14:38 pts/2    00:00:00 -bash
+root     231343   2477  0 14:38 ?        00:00:00 sshd: belyakovay [priv]
+belyako+ 231346 231343  0 14:38 ?        00:00:00 sshd: belyakovay@notty
+belyako+ 231347 231346  0 14:38 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     231349   2477  0 14:38 ?        00:00:00 sshd: belyakovay [priv]
+belyako+ 231351 231349  0 14:38 ?        00:00:00 sshd: belyakovay@notty
+belyako+ 231352 231351  0 14:38 ?        00:00:00 /usr/libexec/openssh/sftp-server
+gepstei+ 231495 230818  0 14:39 pts/209  00:00:02 vim main.c
+root     231871   2477  0 14:40 ?        00:00:00 sshd: mthekkethala [priv]
+mthekke+ 231883 231871  0 14:40 ?        00:00:00 sshd: mthekkethala@pts/210
+mthekke+ 231885 231883  0 14:40 pts/210  00:00:00 -bash
+nrose619 232256      1  0 Jan07 ?        00:05:41 tmux
+nrose619 232257 232256  0 Jan07 pts/29   00:00:00 -bash
+root     232513   2477  0 14:42 ?        00:00:00 sshd: zhiyuanluo [priv]
+zhiyuan+ 232626 232513  0 14:42 ?        00:00:00 sshd: zhiyuanluo@pts/224
+zhiyuan+ 232635 232626  0 14:42 pts/224  00:00:00 -bash
+grecupe+ 232833      1  0 14:42 ?        00:00:02 tmux
+grecupe+ 232834 232833  0 14:42 pts/226  00:00:00 -bash
+root     232964   2477  0 14:42 ?        00:00:00 sshd: jdhassan [priv]
+jdhassan 233059 232964  0 14:43 ?        00:00:00 sshd: jdhassan@pts/228
+jdhassan 233060 233059  0 14:43 pts/228  00:00:00 -bash
+root     233341   2477  0 14:43 ?        00:00:00 sshd: gepstein23 [priv]
+gepstei+ 233408 233341  0 14:43 ?        00:00:00 sshd: gepstein23@pts/230
+gepstei+ 233428 233408  0 14:43 pts/230  00:00:00 -bash
+root     233647   2477  0 14:43 ?        00:00:00 sshd: cpsarakis [priv]
+gepstei+ 233663 233428  0 14:44 pts/230  00:00:01 vim mystack.h
+cpsarak+ 233674 233647  0 14:44 ?        00:00:00 sshd: cpsarakis@pts/232
+cpsarak+ 233682 233674  0 14:44 pts/232  00:00:00 -bash
+root     234536      2  0 14:45 ?        00:00:00 [kworker/1:2]
+root     234537      2  0 14:45 ?        00:00:00 [kworker/25:0]
+root     234540      2  0 14:45 ?        00:00:00 [kworker/41:0]
+jeanrug+ 235891      1  0 Jan05 ?        00:00:00 ssh-agent -s
+root     237391   2477  0 14:53 ?        00:00:00 sshd: radivojac [priv]
+radivoj+ 237395 237391  0 14:53 ?        00:00:00 sshd: radivojac@notty
+radivoj+ 237396 237395  0 14:53 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     237848   2477  0 14:54 ?        00:00:00 sshd: maoyueqi [priv]
+maoyueqi 237940 237848  0 14:54 ?        00:00:00 sshd: maoyueqi@pts/239
+maoyueqi 237941 237940  0 14:54 pts/239  00:00:00 -bash
+root     238332   2477  0 14:55 ?        00:00:00 sshd: siddharth2111 [priv]
+siddhar+ 238355 238332  0 14:55 ?        00:00:00 sshd: siddharth2111@pts/242
+siddhar+ 238356 238355  0 14:55 pts/242  00:00:00 -bash
+ryanl35  238428  55226  0 14:55 pts/187  00:00:00 -bash
+vanessa+ 239531 105796  0 Jan13 pts/45   00:00:00 -bash
+root     241268   2477  0 15:01 ?        00:00:00 sshd: jingxi [priv]
+jingxi   241280 241268  0 15:02 ?        00:00:00 sshd: jingxi@pts/152
+jingxi   241281 241280  0 15:02 pts/152  00:00:00 -bash
+root     241478   2477  0 15:02 ?        00:00:00 sshd: dandig [priv]
+dandig   241496 241478  0 15:02 ?        00:00:00 sshd: dandig@pts/180
+dandig   241499 241496  0 15:02 pts/180  00:00:00 -bash
+tsachle+ 241876 215769  0 15:03 pts/220  00:00:00 zsh
+root     242229   2477  0 15:04 ?        00:00:00 sshd: mariaclarabez [priv]
+root     242279   2477  0 15:04 ?        00:00:00 sshd: gepstein23 [priv]
+gepstei+ 242305 242279  0 15:04 ?        00:00:00 sshd: gepstein23@pts/170
+gepstei+ 242306 242305  0 15:04 pts/170  00:00:00 -bash
+mariacl+ 242357 242229  0 15:04 ?        00:00:00 sshd: mariaclarabez@pts/217
+mariacl+ 242359 242357  0 15:04 pts/217  00:00:00 -bash
+root     242821   2477  0 15:06 ?        00:00:00 sshd: noners [priv]
+root     242939   2477  0 15:06 ?        00:00:00 sshd: danijj89 [priv]
+danijj89 242954 242939  0 15:06 ?        00:00:00 sshd: danijj89@pts/218
+danijj89 242955 242954  0 15:06 pts/218  00:00:00 -bash
+noners   243009 242821  0 15:06 ?        00:00:00 sshd: noners@pts/233
+noners   243019 243009  0 15:06 pts/233  00:00:00 -bash
+root     243183   2477  0 15:06 ?        00:00:00 sshd: krupar [priv]
+krupar   243196 243183  0 15:06 ?        00:00:02 sshd: krupar@pts/234
+krupar   243197 243196  0 15:06 pts/234  00:00:00 -bash
+root     243383      2  0 15:07 ?        00:00:00 [kworker/17:2]
+root     243387      2  0 15:07 ?        00:00:00 [kworker/13:0]
+root     243392      2  0 15:07 ?        00:00:00 [kworker/24:2]
+root     243785   2477  0 15:09 ?        00:00:00 sshd: nikitapjethani [priv]
+nikitap+ 243823 243785  0 15:09 ?        00:00:00 sshd: nikitapjethani@pts/186
+nikitap+ 243824 243823  0 15:09 pts/186  00:00:00 -bash
+root     243902      2  0 15:09 ?        00:00:00 [kworker/2:2]
+siddhar+ 245132 238356  0 15:14 pts/242  00:00:00 vim linkedlist.c
+root     245210   2477  0 15:14 ?        00:00:00 sshd: kevinyu [priv]
+kevinyu  245231 245210  0 15:14 ?        00:00:00 sshd: kevinyu@pts/3
+kevinyu  245232 245231  0 15:14 pts/3    00:00:00 -bash
+root     246300      2  0 15:17 ?        00:00:00 [kworker/33:2]
+root     246361   2477  0 15:17 ?        00:00:00 sshd: mariaclarabez [priv]
+mariacl+ 246378 246361  0 15:17 ?        00:00:00 sshd: mariaclarabez@pts/42
+mariacl+ 246379 246378  0 15:17 pts/42   00:00:00 -bash
+root     246776   2477  0 15:18 ?        00:00:00 sshd: baptist [priv]
+baptist  246783 246776  0 15:18 ?        00:00:00 sshd: baptist@pts/235
+baptist  246784 246783  0 15:18 pts/235  00:00:00 -tcsh
+masonwu  247801 209266  0 15:22 pts/195  00:00:02 vim mystack.h
+noners   248418 243019  0 15:24 pts/233  00:00:01 vim main.c
+root     248912      2  0 15:26 ?        00:00:00 [kworker/22:1]
+root     248929      2  0 15:26 ?        00:00:00 [kworker/39:1]
+root     248933      2  0 15:26 ?        00:00:00 [kworker/35:0]
+root     248938      2  0 15:26 ?        00:00:00 [kworker/45:1]
+root     248942      2  0 15:26 ?        00:00:00 [kworker/31:1]
+root     249031   2477  0 15:26 ?        00:00:00 sshd: jvandeven05 [priv]
+jvandev+ 249091 249031  0 15:26 ?        00:00:00 sshd: jvandeven05@pts/80
+jvandev+ 249092 249091  0 15:26 pts/80   00:00:00 -bash
+root     249163   2477  0 15:27 ?        00:00:00 sshd: rheisen [priv]
+rheisen  249204 249163  0 15:27 ?        00:00:01 sshd: rheisen@pts/135
+rheisen  249206 249204  0 15:27 pts/135  00:00:00 -bash
+root     249399   2477  0 15:28 ?        00:00:00 sshd: zhiyuanluo [priv]
+zhiyuan+ 249409 249399  0 15:28 ?        00:00:00 sshd: zhiyuanluo@pts/163
+zhiyuan+ 249411 249409  0 15:28 pts/163  00:00:00 -bash
+root     249467   2477  0 15:28 ?        00:00:00 sshd: tcampion [priv]
+tcampion 249570 249467  0 15:28 ?        00:00:00 sshd: tcampion@pts/189
+tcampion 249571 249570  0 15:28 pts/189  00:00:00 -bash
+root     249840   2477  0 15:29 ?        00:00:00 sshd: mmcmurray [priv]
+mmcmurr+ 249876 249840  0 15:29 ?        00:00:00 sshd: mmcmurray@pts/88
+mmcmurr+ 249877 249876  0 15:29 pts/88   00:00:00 -bash
+root     250760   2477  0 15:32 ?        00:00:00 sshd: bradegan [priv]
+bradegan 250789 250760  0 15:32 ?        00:00:00 sshd: bradegan@pts/204
+bradegan 250790 250789  0 15:32 pts/204  00:00:00 -bash
+ziam     250935 206942  0 15:32 pts/192  00:00:00 vim main.c
+root     251191   2477  0 15:33 ?        00:00:00 sshd: judyzhang [priv]
+judyzha+ 251203 251191  0 15:33 ?        00:00:00 sshd: judyzhang@pts/191
+judyzha+ 251204 251203  0 15:33 pts/191  00:00:00 -bash
+root     251268   2477  0 15:33 ?        00:00:00 sshd: isaacreed [priv]
+isaacre+ 251279 251268  0 15:33 ?        00:00:00 sshd: isaacreed@pts/215
+isaacre+ 251281 251279  0 15:33 pts/215  00:00:00 -bash
+alexiton 251489      1  0 Jan10 ?        00:01:37 tmux
+alexiton 251490 251489  0 Jan10 pts/36   00:00:00 -bash
+root     251648   2477  0 15:34 ?        00:00:00 sshd: ffeghali [priv]
+ffeghali 251688 251648  0 15:34 ?        00:00:00 sshd: ffeghali@pts/225
+ffeghali 251689 251688  0 15:34 pts/225  00:00:00 -bash
+root     251832      2  0 15:35 ?        00:00:00 [kworker/32:0]
+favmuta+ 251885      1  0 15:35 ?        00:00:01 /usr/bin/google-chrome file:///proj/racket/plt-released/recent/doc/search/search-context.html?q=string%3D%3F&hq=O%3A%7B%20L%3Alang%2Fhtdp-intermediate%20T%3Ateachpack%20T%3Apicturing-programs%20%20%7D&label=Intermediate%20Student
+favmuta+ 251890 251885  0 15:35 ?        00:00:00 cat
+favmuta+ 251891 251885  0 15:35 ?        00:00:00 cat
+favmuta+ 251895      1  0 15:35 ?        00:00:00 /opt/google/chrome/chrome --type=zygote
+favmuta+ 251898 251895  0 15:35 ?        00:00:00 /opt/google/chrome/nacl_helper
+favmuta+ 251900 251895  0 15:35 ?        00:00:00 /opt/google/chrome/chrome --type=zygote
+favmuta+ 251926 251885  0 15:35 ?        00:00:00 /opt/google/chrome/chrome --type=utility --field-trial-handle=17309207684573256987,1947503580483676884,131072 --lang=en-US --service-sandbox-type=network --disable-webrtc-apm-in-audio-service --service-request-channel-token=6134438486706927287 --shared-files=v8_context_snapshot_data:100,v8_natives_data:101
+favmuta+ 252003 251900 95 15:35 ?        01:02:27 /opt/google/chrome/chrome --type=renderer --disable-webrtc-apm-in-audio-service --field-trial-handle=17309207684573256987,1947503580483676884,131072 --lang=en-US --disable-oor-cors --enable-auto-reload --num-raster-threads=4 --enable-main-frame-before-activation --service-request-channel-token=5785179336887935087 --renderer-client-id=5 --no-v8-untrusted-code-mitigations --shared-files=v8_context_snapshot_data:100,v8_natives_data:101
+favmuta+ 252044 251885  0 15:35 ?        00:00:00 /opt/google/chrome/chrome --type=gpu-process --field-trial-handle=17309207684573256987,1947503580483676884,131072 --gpu-preferences=KAAAAAAAAAAgAAAgAAAAAAAAYAAAAAAAEAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA --use-gl=disabled --service-request-channel-token=15409533335815511027
+root     252080   2477  0 15:35 ?        00:00:00 sshd: mariaclarabez [priv]
+mariacl+ 252095 252080  0 15:35 ?        00:00:00 sshd: mariaclarabez@pts/227
+mariacl+ 252096 252095  0 15:35 pts/227  00:00:00 -bash
+kzhangs+ 252532 226004  0 Jan10 pts/48   00:00:00 -bash
+root     252550   2477  0 15:37 ?        00:00:00 sshd: rmcbrayer [priv]
+rmcbray+ 252569 252550  0 15:37 ?        00:00:01 sshd: rmcbrayer@pts/197
+rmcbray+ 252570 252569  0 15:37 pts/197  00:00:00 -bash
+kzhangs+ 252640 226004  0 Jan10 pts/64   00:00:00 -bash
+root     253013   2477  0 15:38 ?        00:00:00 sshd: judyzhang [priv]
+root     253033   2477  0 15:38 ?        00:00:00 sshd: kchandwani [priv]
+root     253039      2  0 15:38 ?        00:00:00 [kworker/21:1]
+judyzha+ 253040 253013  0 15:38 ?        00:00:00 sshd: judyzhang@pts/229
+judyzha+ 253041 253040  0 15:38 pts/229  00:00:00 -bash
+kchandw+ 253178 253033  0 15:38 ?        00:00:00 sshd: kchandwani@pts/236
+kchandw+ 253186 253178  0 15:38 pts/236  00:00:00 -bash
+nikitap+ 253710 243824  0 15:40 pts/186  00:00:01 vim myScript.sh
+judyzha+ 253726 251204  0 15:40 pts/191  00:00:00 vim myScript.sh
+root     254501   2477  0 15:45 ?        00:00:00 sshd: sydneylam [priv]
+sydneyl+ 254528 254501  0 15:45 ?        00:00:00 sshd: sydneylam@pts/35
+sydneyl+ 254530 254528  0 15:45 pts/35   00:00:00 -bash
+root     254669   2477  0 15:45 ?        00:00:00 sshd: favmutation [priv]
+favmuta+ 254678 254669  0 15:45 ?        00:00:03 sshd: favmutation@pts/141
+favmuta+ 254679 254678  0 15:45 pts/141  00:00:00 -bash
+favmuta+ 254987 254679  2 15:47 pts/141  00:01:35 /proj/racket/plt-released/recent/bin/../lib/gracket -N /usr/bin/drracket -J DrRacket -l- drracket/drracket.rkt
+favmuta+ 255003      1  0 15:47 pts/141  00:00:00 dbus-launch --autolaunch=89a7fe9f5cd84276bc89e64208116f2b --binary-syntax --close-stderr
+favmuta+ 255004      1  0 15:47 ?        00:00:00 /usr/bin/dbus-daemon --fork --print-pid 6 --print-address 8 --session
+root     255016   2477  0 15:47 ?        00:00:00 sshd: shebna [priv]
+shebna   255057 255016  0 15:47 ?        00:00:00 sshd: shebna@pts/198
+shebna   255058 255057  0 15:47 pts/198  00:00:00 -bash
+postfix  255158   2958  0 15:47 ?        00:00:00 pickup -l -t unix -u
+root     255172      2  0 15:47 ?        00:00:00 [kworker/40:0]
+ryanl35  255395  55226  0 Jan13 pts/95   00:00:00 -bash
+root     255398   2477  0 15:49 ?        00:00:00 sshd: sophiaw789 [priv]
+sophiaw+ 255409 255398  0 15:49 ?        00:00:00 sshd: sophiaw789@pts/231
+sophiaw+ 255411 255409  0 15:49 pts/231  00:00:00 -bash
+ffeghali 255555 251689  0 15:49 pts/225  00:00:01 vim exercises.md
+root     256207      2  0 15:53 ?        00:00:00 [kworker/36:2]
+root     256366   2477  0 15:53 ?        00:00:00 sshd: awhitehead [priv]
+awhiteh+ 256421 256366  0 15:54 ?        00:00:00 sshd: awhitehead@pts/125
+awhiteh+ 256425 256421  0 15:54 pts/125  00:00:00 -bash
+root     256778   2477  0 15:55 ?        00:00:00 sshd: mmcmurray [priv]
+mmcmurr+ 256797 256778  0 15:55 ?        00:00:00 sshd: mmcmurray@pts/100
+mmcmurr+ 256798 256797  0 15:55 pts/100  00:00:00 -bash
+root     256948   2477  0 15:55 ?        00:00:00 sshd: jvandeven05 [priv]
+root     256951   2477  0 15:56 ?        00:00:00 sshd: jvandeven05 [priv]
+jvandev+ 256954 256948  0 15:56 ?        00:00:00 sshd: jvandeven05@pts/185
+jvandev+ 256958 256954  0 15:56 pts/185  00:00:00 -bash
+jvandev+ 257005 256951  0 15:56 ?        00:00:00 sshd: jvandeven05@notty
+jvandev+ 257006 257005  0 15:56 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     257892   2477  0 15:59 ?        00:00:00 sshd: magurman [priv]
+root     257905   2477  0 15:59 ?        00:00:00 sshd: kimbos [priv]
+magurman 257915 257892  0 15:59 ?        00:00:00 sshd: magurman@pts/201
+magurman 257916 257915  0 15:59 pts/201  00:00:00 -bash
+kimbos   257980 257905  0 15:59 ?        00:00:00 sshd: kimbos@pts/9
+kimbos   257981 257980  0 15:59 pts/9    00:00:00 -bash
+root     258271   2477  0 16:00 ?        00:00:00 sshd: zhiyuanluo [priv]
+zhiyuan+ 258377 258271  0 16:00 ?        00:00:00 sshd: zhiyuanluo@pts/237
+zhiyuan+ 258379 258377  0 16:00 pts/237  00:00:00 -bash
+root     258547      2  0 16:00 ?        00:00:00 [kworker/u545:2]
+root     258764   2477  0 16:01 ?        00:00:00 sshd: noners [priv]
+noners   258778 258764  0 16:01 ?        00:00:01 sshd: noners@pts/219
+noners   258781 258778  0 16:01 pts/219  00:00:00 -bash
+root     258904      2  0 16:01 ?        00:00:00 [kworker/9:0]
+root     259145      2  0 16:02 ?        00:00:00 [kworker/29:0]
+root     259288      2  0 16:02 ?        00:00:00 [kworker/10:0]
+root     259300   2477  0 16:02 ?        00:00:00 sshd: cory [priv]
+cory     259324 259300  0 16:02 ?        00:00:00 sshd: cory@pts/212
+cory     259325 259324  0 16:02 pts/212  00:00:00 -bash
+root     259482   2477  0 16:03 ?        00:00:00 sshd: danirowe [priv]
+danirowe 259611 259482  0 16:03 ?        00:00:00 sshd: danirowe@pts/240
+danirowe 259612 259611  0 16:03 pts/240  00:00:00 -bash
+danirowe 259754 259612  0 16:04 pts/240  00:00:00 vim main.c
+root     259777      2  0 16:04 ?        00:00:00 [kworker/12:0]
+root     260194   2477  0 16:05 ?        00:00:00 sshd: nkaffine [priv]
+nkaffine 260197 260194  0 16:05 ?        00:00:00 sshd: nkaffine@notty
+root     260327   2477  0 16:05 ?        00:00:00 sshd: laney [priv]
+laney    260397 260327  0 16:05 ?        00:00:00 sshd: laney@pts/179
+laney    260398 260397  0 16:05 pts/179  00:00:00 -bash
+laney    260467 260398  0 16:06 pts/179  00:00:00 emacs schedule.html
+root     260615      2  0 16:06 ?        00:00:00 [kworker/30:1]
+root     261065      2  0 16:09 ?        00:00:00 [kworker/25:1]
+calvinc+ 261107      1  0 16:09 ?        00:00:01 tmux
+calvinc+ 261185 261107  0 16:09 pts/243  00:00:00 -bash
+root     261259   2477  0 16:09 ?        00:00:00 sshd: bradegan [priv]
+bradegan 261278 261259  0 16:09 ?        00:00:00 sshd: bradegan@notty
+bradegan 261280 261278  0 16:09 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     261525      2  0 16:10 ?        00:00:00 [kworker/u546:1]
+root     261547      2  0 16:11 ?        00:00:00 [kworker/26:1]
+root     261616   2477  0 16:11 ?        00:00:00 sshd: rheisen [priv]
+rheisen  261641 261616  0 16:11 ?        00:00:00 sshd: rheisen@pts/221
+rheisen  261643 261641  0 16:11 pts/221  00:00:00 -bash
+root     261766   2477  0 16:11 ?        00:00:00 sshd: aebrahimian [priv]
+aebrahi+ 261781 261766  0 16:11 ?        00:00:00 sshd: aebrahimian@pts/244
+aebrahi+ 261782 261781  0 16:11 pts/244  00:00:00 -bash
+root     262466   2477  0 16:13 ?        00:00:00 sshd: nburniske [priv]
+nburnis+ 262482 262466  0 16:13 ?        00:00:00 sshd: nburniske@pts/247
+nburnis+ 262483 262482  0 16:13 pts/247  00:00:00 -bash
+root     262583      2  0 16:13 ?        00:00:00 [kworker/3:1]
+calvinc+ 262735 261185  0 16:14 pts/243  00:00:00 vim linkedlist.c
+root     262738      2  0 16:14 ?        00:00:00 [kworker/14:2]
+root     262740      2  0 16:14 ?        00:00:00 [kworker/46:2]
+root     262744      2  0 16:14 ?        00:00:00 [kworker/20:1]
+root     262746      2  0 16:14 ?        00:00:00 [kworker/44:2]
+root     262751      2  0 16:14 ?        00:00:00 [kworker/19:1]
+root     262752      2  0 16:14 ?        00:00:00 [kworker/7:1]
+root     262755      2  0 16:14 ?        00:00:00 [kworker/5:0]
+root     262757      2  0 16:14 ?        00:00:00 [kworker/47:1]
+root     262760      2  0 16:14 ?        00:00:00 [kworker/43:2]
+root     262761      2  0 16:14 ?        00:00:00 [kworker/0:1]
+root     262764      2  0 16:14 ?        00:00:00 [kworker/38:2]
+root     262766      2  0 16:14 ?        00:00:00 [kworker/42:1]
+root     262767      2  0 16:14 ?        00:00:00 [kworker/8:2]
+root     262770      2  0 16:14 ?        00:00:00 [kworker/27:1]
+root     262772      2  0 16:14 ?        00:00:00 [kworker/16:2]
+cory     263023 259325  0 16:15 pts/212  00:00:00 vim prelab1.cpp
+bradegan 263487 250790  0 16:17 pts/204  00:00:00 vim list.cpp
+root     263840   2477  0 16:18 ?        00:00:00 sshd: mballantyne [priv]
+mballan+ 263845 263840  0 16:18 ?        00:00:00 sshd: mballantyne@pts/245
+mballan+ 263848 263845  0 16:18 pts/245  00:00:00 -bash
+awhiteh+ 263923 256425  0 16:18 pts/125  00:00:01 vim linkedlist.c
+root     264180      2  0 16:19 ?        00:00:00 [kworker/15:1]
+root     264216      2  0 16:19 ?        00:00:00 [kworker/6:1]
+root     264227      2  0 16:19 ?        00:00:00 [kworker/11:0]
+calvinc+ 264284 261185  0 16:19 pts/243  00:00:00 vim linkedlist.c
+root     264594      2  0 16:21 ?        00:00:00 [kworker/37:2]
+root     264622   2477  0 16:21 ?        00:00:00 sshd: mariaclarabez [priv]
+calvinc+ 264678 261185  0 16:21 pts/243  00:00:00 vim linkedlist.c
+mariacl+ 264689 264622  0 16:21 ?        00:00:00 sshd: mariaclarabez@pts/112
+mariacl+ 264690 264689  0 16:21 pts/112  00:00:00 -bash
+root     264946      2  0 16:21 ?        00:00:00 [kworker/4:0]
+root     265758   2477  0 16:24 ?        00:00:00 sshd: mariaclarabez [priv]
+mariacl+ 265778 265758  0 16:24 ?        00:00:00 sshd: mariaclarabez@pts/94
+mariacl+ 265779 265778  0 16:24 pts/94   00:00:00 -bash
+rheisen  265831 249206  0 16:24 pts/135  00:00:01 vim myScript.sh
+root     265878      2  0 16:24 ?        00:00:00 [kworker/28:2]
+mariacl+ 265918 265779  0 16:24 pts/94   00:00:00 vim main.c
+root     266043      2  0 16:25 ?        00:00:00 [kworker/34:1]
+root     266125   2477  0 16:25 ?        00:00:00 sshd: nicholasmullikin [priv]
+nichola+ 266141 266125  0 16:25 ?        00:00:00 sshd: nicholasmullikin@pts/203
+nichola+ 266142 266141  0 16:25 pts/203  00:00:00 -bash
+root     266207   2477  0 16:26 ?        00:00:00 sshd: sharonhe98 [priv]
+root     266208   2477  0 16:26 ?        00:00:00 sshd: sharonhe98 [priv]
+sharonh+ 266217 266208  0 16:26 ?        00:00:00 sshd: sharonhe98@notty
+sharonh+ 266218 266207  0 16:26 ?        00:00:00 sshd: sharonhe98@notty
+sharonh+ 266220 266217  0 16:26 ?        00:00:00 /usr/libexec/openssh/sftp-server
+sharonh+ 266221 266218  0 16:26 ?        00:00:00 /usr/libexec/openssh/sftp-server
+root     266301      2  0 16:26 ?        00:00:00 [kworker/23:0]
+root     266436   2477  0 16:26 ?        00:00:00 sshd: mattdean64 [priv]
+mattdea+ 266455 266436  0 16:26 ?        00:00:00 sshd: mattdean64@pts/184
+mattdea+ 266456 266455  0 16:26 pts/184  00:00:00 -bash
+root     266609      2  0 16:27 ?        00:00:00 [kworker/17:0]
+gordonn+ 266705 200552  0 16:27 pts/172  00:00:00 vim myScript.sh
+root     266768      2  0 16:27 ?        00:00:00 [kworker/32:1]
+root     266901      2  0 16:28 ?        00:00:00 [kworker/37:0]
+root     267070   2477  0 16:28 ?        00:00:00 sshd: hdworak [priv]
+root     267123      2  0 16:29 ?        00:00:00 [kworker/18:1]
+root     267134   2477  0 16:29 ?        00:00:00 sshd: hurk [priv]
+root     267137   2477  0 16:29 ?        00:00:00 sshd: hurk [priv]
+hurk     267141 267134  0 16:29 ?        00:00:00 sshd: hurk@pts/147
+hurk     267142 267137  0 16:29 ?        00:00:00 sshd: hurk@notty
+hurk     267143 267141  0 16:29 pts/147  00:00:00 -bash
+hurk     267153 267142  0 16:29 ?        00:00:00 /usr/libexec/openssh/sftp-server
+hdworak  267192 267070  0 16:29 ?        00:00:00 sshd: hdworak@pts/207
+hdworak  267193 267192  0 16:29 pts/207  00:00:00 -bash
+root     267362      2  0 16:30 ?        00:00:00 [kworker/8:0]
+root     267424      2  0 16:30 ?        00:00:00 [kworker/15:2]
+root     267441   2477  0 16:30 ?        00:00:00 sshd: vmsavona [priv]
+vmsavona 267457 267441  0 16:30 ?        00:00:00 sshd: vmsavona@pts/206
+vmsavona 267459 267457  0 16:30 pts/206  00:00:00 -bash
+root     267510   2477  0 16:30 ?        00:00:00 sshd: jiachengpang [priv]
+jiachen+ 267565 267510  0 16:30 ?        00:00:00 sshd: jiachengpang@pts/214
+jiachen+ 267566 267565  0 16:30 pts/214  00:00:00 -bash
+root     267631      2  0 16:30 ?        00:00:00 [kworker/u545:1]
+root     267655      2  0 16:30 ?        00:00:00 [kworker/29:2]
+root     267656      2  0 16:30 ?        00:00:00 [kworker/5:2]
+mattdea+ 267753 266456  0 16:30 pts/184  00:00:02 vim myScript.sh
+vmsavona 267802 267459  0 16:31 pts/206  00:00:00 vim main.c
+root     267895      2  0 16:31 ?        00:00:00 [kworker/26:0]
+root     267897      2  0 16:31 ?        00:00:00 [kworker/2:0]
+root     267900      2  0 16:31 ?        00:00:00 [kworker/16:1]
+root     267901      2  0 16:31 ?        00:00:00 [kworker/30:0]
+root     267902      2  0 16:31 ?        00:00:00 [kworker/3:2]
+root     267903      2  0 16:31 ?        00:00:00 [kworker/27:0]
+root     267904      2  0 16:31 ?        00:00:00 [kworker/9:1]
+root     267905      2  0 16:31 ?        00:00:00 [kworker/33:0]
+root     267906      2  0 16:31 ?        00:00:00 [kworker/7:0]
+root     267907      2  0 16:31 ?        00:00:00 [kworker/31:0]
+root     267908      2  0 16:31 ?        00:00:00 [kworker/35:2]
+root     267909      2  0 16:31 ?        00:00:00 [kworker/11:1]
+root     267910      2  0 16:31 ?        00:00:00 [kworker/41:2]
+root     267912   2477  0 16:31 ?        00:00:00 sshd: bochola [priv]
+root     267913      2  0 16:31 ?        00:00:00 [kworker/13:2]
+root     267915      2  0 16:31 ?        00:00:00 [kworker/39:0]
+root     267916      2  0 16:31 ?        00:00:00 [kworker/45:2]
+root     267917      2  0 16:31 ?        00:00:00 [kworker/21:0]
+root     267919      2  0 16:31 ?        00:00:00 [kworker/23:2]
+root     267920      2  0 16:31 ?        00:00:00 [kworker/47:2]
+root     267921      2  0 16:31 ?        00:00:00 [kworker/24:1]
+root     267922      2  0 16:31 ?        00:00:00 [kworker/4:2]
+root     267924      2  0 16:31 ?        00:00:00 [kworker/0:0]
+root     267929      2  0 16:31 ?        00:00:00 [kworker/10:2]
+root     267930      2  0 16:31 ?        00:00:00 [kworker/12:1]
+root     267931      2  0 16:31 ?        00:00:00 [kworker/42:0]
+root     267932      2  0 16:31 ?        00:00:00 [kworker/6:0]
+root     267934      2  0 16:31 ?        00:00:00 [kworker/22:2]
+root     267936      2  0 16:31 ?        00:00:00 [kworker/46:1]
+root     267948      2  0 16:31 ?        00:00:00 [kworker/40:2]
+root     267949      2  0 16:31 ?        00:00:00 [kworker/14:1]
+root     267951      2  0 16:31 ?        00:00:00 [kworker/34:0]
+root     267954      2  0 16:31 ?        00:00:00 [kworker/36:1]
+root     267963      2  0 16:31 ?        00:00:00 [kworker/38:0]
+root     268013      2  0 16:31 ?        00:00:00 [kworker/19:2]
+root     268089   2477  0 16:32 ?        00:00:00 sshd: jacob [priv]
+jacob    268135 268089  0 16:32 ?        00:00:00 sshd: jacob@pts/222
+jacob    268136 268135  0 16:32 pts/222  00:00:00 -bash
+root     268190   2477  0 16:32 ?        00:00:00 sshd: csy10530 [priv]
+csy10530 268290 268190  0 16:32 ?        00:00:00 sshd: csy10530@pts/238
+csy10530 268291 268290  0 16:32 pts/238  00:00:00 -bash
+root     268401      2  0 16:32 ?        00:00:00 [kworker/43:1]
+bochola  268404 267912  0 16:32 ?        00:00:00 sshd: bochola@pts/34
+bochola  268405 268404  0 16:32 pts/34   00:00:00 -bash
+csy10530 268500 268291  0 16:32 pts/238  00:00:00 vim exercises.txt
+hdworak  268628 267193  0 16:33 pts/207  00:00:00 /usr/lib64/ghc-7.6.3/ghc -B/usr/lib64/ghc-7.6.3 --interactive
+zhiyuan+ 268643 258379  0 16:33 pts/237  00:00:00 vim main.c
+root     268693      2  0 16:33 ?        00:00:00 [kworker/u546:0]
+root     268751   2477  0 16:33 ?        00:00:00 sshd: sharonhe98 [priv]
+root     268769   2477  0 16:33 ?        00:00:00 sshd: khatana [priv]
+sharonh+ 268820 268751  0 16:33 ?        00:00:00 sshd: sharonhe98@pts/248
+sharonh+ 268827 268820  0 16:33 pts/248  00:00:00 -bash
+khatana  268879 268769  0 16:33 ?        00:00:00 sshd: khatana@pts/249
+khatana  268880 268879  0 16:33 pts/249  00:00:00 -bash
+root     269051   2477  0 16:34 ?        00:00:00 sshd: saifshaikh48 [priv]
+saifsha+ 269116 269051  0 16:34 ?        00:00:00 sshd: saifshaikh48@pts/251
+saifsha+ 269117 269116  0 16:34 pts/251  00:00:00 -bash
+rebecca+ 269284 145440  0 16:34 pts/84   00:00:00 nano list.h
+saifsha+ 269286 269117  0 16:34 pts/251  00:00:00 vim string.h
+root     269391      2  0 16:34 ?        00:00:00 [kworker/u546:2]
+root     269457      2  0 16:35 ?        00:00:00 [kworker/28:0]
+kimbos   269568 257981  0 16:35 pts/9    00:00:00 vim myScript.sh
+root     269586   2477  0 16:35 ?        00:00:00 sshd: mariaclarabez [priv]
+root     269593      2  0 16:35 ?        00:00:00 [kworker/15:0]
+mariacl+ 269611 269586  0 16:35 ?        00:00:00 sshd: mariaclarabez@pts/252
+mariacl+ 269612 269611  0 16:35 pts/252  00:00:00 -bash
+root     269740      2  0 16:36 ?        00:00:00 [kworker/29:1]
+root     269751      2  0 16:36 ?        00:00:00 [kworker/u545:0]
+mariacl+ 269980 269612  0 16:37 pts/252  00:00:00 vim main.c
+root     270001      2  0 16:37 ?        00:00:00 [kworker/7:2]
+sharonh+ 270089 268827  0 16:37 pts/248  00:00:00 vim list.h
+rmcbray+ 270333 252570  0 16:37 pts/197  00:00:01 emacs list.h
+root     270351      2  0 16:37 ?        00:00:00 [kworker/11:2]
+shanness 270406 229428  0 16:38 pts/205  00:00:00 vim client.py
+root     270427      2  0 16:38 ?        00:00:00 [kworker/35:1]
+root     270490   2477  0 16:38 ?        00:00:00 sshd: jingxi [priv]
+jvandev+ 270513 256958  0 16:38 pts/185  00:00:00 nano prelab01.c
+jingxi   270524 270490  0 16:38 ?        00:00:00 sshd: jingxi@pts/19
+jingxi   270525 270524  0 16:38 pts/19   00:00:00 -bash
+root     270584      2  0 16:38 ?        00:00:00 [kworker/37:1]
+root     270659      2  0 16:38 ?        00:00:00 [kworker/u545:3]
+root     270696      2  0 16:38 ?        00:00:00 [kworker/32:2]
+root     270717      2  0 16:39 ?        00:00:00 [kworker/u545:4]
+nichola+ 270746 266142  1 16:39 pts/203  00:00:01 /home/nicholasmullikin/micro myScript.sh
+ccthere+ 270914 219613  0 16:39 pts/223  00:00:00 vim list.h
+root     270984      2  0 16:40 ?        00:00:00 [kworker/13:1]
+noners   271001 258781  1 16:40 pts/219  00:00:00 vim main.c
+khatana  271011 268880  3 16:40 pts/249  00:00:00 vim output.txt
+bochola  271015 268405  0 16:40 pts/34   00:00:00 ps -ef
+root     276237   2477  0 Jan06 ?        00:00:00 sshd: root@pts/13
+root     276240 276237  0 Jan06 pts/13   00:00:00 -bash
+node-ex+ 277515      1  6 Jan06 ?        13:45:22 /usr/local/bin/node_exporter --collector.filesystem.ignored-fs-types=^(nfs|tmpfs)$ --collector.processes
+root     277821      1 10 Jan06 ?        20:45:31 /usr/share/metricbeat/bin/metricbeat -c /etc/metricbeat/metricbeat.yml -path.home /usr/share/metricbeat -path.config /etc/metricbeat -path.data /var/lib/metricbeat -path.logs /var/log/metricbeat
