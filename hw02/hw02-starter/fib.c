@@ -1,8 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-int cfib(int);
+#include "cfib.c"
 
 int
 main(int argc, char* argv[])
@@ -12,11 +11,15 @@ main(int argc, char* argv[])
         return 0;
     }
     
-    if (argv[1] < 0) {
+    int value = atol(argv[1]);
+
+    if (value < 0) {
         printf("Usage: ./fib N, where N >= 0\n");
         return 0;
     }
+    
+    int ans = cfib(value);
 
-    printf("fib(%ld) = %ld\n", atol(argv[1]), atol(argv[1]));
+    printf("fib(%ld) = %ld\n", atol(argv[1]), ans);
     return 0;
 }
