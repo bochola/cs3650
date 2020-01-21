@@ -1,10 +1,8 @@
 //afib.S
-.global main
-
-.data
+.global afib
 
 .text
-main:
+afib:
     push %rbx         // Pushes off the base pointer location
 
     enter $0, $0      // Essentially just brackets
@@ -26,12 +24,12 @@ fib:
 
     dec %r12          // Subtract 1 from x
     mov %r12, %rdi    // Moves x-1 into rdi for next afib call
-    call main
+    call afib
     mov %rax, %r13    // Saves the result of fib(x-1)
 
     dec %r12          // Subtract 1 from x (effectively x-2 now)
     mov %r12, %rdi    // Moves x-2 into rdi for next afib call
-    call main
+    call afib
     mov %rax, %r14    // Saves the result of fib(x-2)
 
     add %r13, %r14    // fib(x-1) + fib(x-2) = r13
