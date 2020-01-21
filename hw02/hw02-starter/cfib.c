@@ -4,13 +4,10 @@ int cfib(int x) {
     
     if (x > 1) {
         
-        ans = cfib(x-1) + cfib(x-2);
+        ans = cfib(x - 1) + cfib(x - 2);
     }
-    else if (x == 1) {
+    else if ((x == 1) || (x == 0)) {
         ans = x;
-    }
-    else {
-        ans = 0;
     }
 
     return ans;
