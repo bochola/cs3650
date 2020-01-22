@@ -9,10 +9,11 @@ main(int argc, char* argv[])
         return 0;
     }
     
-    string op = argv[2];
+    printf("Operator length?: % "
+    char op = "h";// *argv[2];
     // argv[2] might be a string, or a pointer to a string
     // if it is a pointer, idk what to do tbh
-    if ((op !=) ||(op !=) ||(op !=) ||(op !=)) {
+    if ((op != "+") ||(op != "-") ||(op != "/") ||(op != "*")) {
         printf("Usage:\n %s N op N, where op must be one of: +, -, *, /\n", argv[0]);
         return 0;
     }
@@ -26,7 +27,7 @@ main(int argc, char* argv[])
     return 0;
 }
 
-int compute(int x, int y, string op) {
+int compute(int x, int y, char op) {
     
     long ans;
 
