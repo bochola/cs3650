@@ -26,7 +26,7 @@ main:
     
     //if (value < 0) {printf(Usage msg)}
     cmp $0, %r13
-    jle invalid_arg
+    jl invalid_arg
     
     mov %r13, %rdi     // Moves x into rdi for the fib sequencing
     jmp fib
@@ -36,12 +36,12 @@ fib:
 
     mov %rdi, %r14     // Copy the provided number into r14
     
+    cmp $0, %r14
+    je zero            // If x = 0, jump to ZERO
+        
     cmp $1, %r14       // Compares x to 1 and flags the result
     je one             // If x = 1, jump to ONE
     jg fib_loop        // If x > 1, jump to FIB
-
-    cmp $0, %r14
-    je zero            // If x = 0, jump to ZERO    
 
 fib_loop:
 
@@ -51,7 +51,7 @@ fib_loop:
     mov %rax, %r15     // Saves the result of fib(x-1)
     
     dec %r14           // Subtract 1 from x (effectively x - 2 now)
-    mov %r14 %rdi      // Moves x-2 into rdi for next afib call
+    mov %r14, %rdi     // Moves x-2 into rdi for next afib call
     call fib
     mov %rax, %r14     // Saves the result of fib(x-2)
 
@@ -61,24 +61,21 @@ fib_loop:
 
 one:
     mov $1, %rax       // Place the result into rax 
-    jmp done
+    ret
 
 zero:
     mov $0, %rax       // Place the result in rax
-    jmp done
+    ret
 
 invalid_arg:
     
     mov Usage1, %rdi
-    //mov $0, %al
+    mov $0, %al
     call printf
     
     leave
-    pop %rbx
-
 
 done:
-    
     
     mov Output, %rdi
     mov %r12, %rsi
@@ -87,6 +84,7 @@ done:
     call printf
     
     leave
-    pop %rbx
+    pop %r13
+    pop %r12
 
 
