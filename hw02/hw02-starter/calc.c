@@ -7,17 +7,15 @@ int main(int argc, char* argv[])
 {
     if (argc != 4) {
         printf("Usage:\n %s N op N\n", argv[0]);
-        return 0;
+        return 1;
     }
     
     char op = argv[2][0]; // *argv[2];
-    printf("Operator number: %ld\n", op);
-    // argv[2] might be a string, or a pointer to a string
-    // if it is a pointer, idk what to do tbh
+    //printf("Operator number: %ld\n", op);
     
     if (!((op == '+') || (op == '-') || (op == '/') || (op == '*'))) {
         printf("Usage:\n %s N op N, where op must be one of: +, -, *, /\n", argv[0]);
-        return 0;
+        return 1;
     }
     
     long x = atol(argv[1]);
