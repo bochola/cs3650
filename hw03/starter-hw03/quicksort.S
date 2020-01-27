@@ -8,26 +8,26 @@ main:
     
     // long nn;
     // read_int(&nn);
-
+    
     // long* xs = malloc(nn * sizeof(long));
-
+    
     //for (long ii = 0; ii < nn; ++ii) {
     //    read_int(&(xs[ii]));
     //}
-
+    
     //quicksort(xs, 0, nn);
-
+    
     //printf("%ld\n", nn);
     //for (long ii = 0; ii < nn; ++ii) {
     //    printf("%ld ", xs[ii]);
     //}
     //printf("\n");
-
+    
     //free(xs);
     //return 0;
-
-  
-
+    
+    
+    
     leave
     ret
  
