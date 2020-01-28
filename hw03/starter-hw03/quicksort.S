@@ -11,7 +11,7 @@ main:
     push %r13         // %r13 is xs
     enter $0, $0
     
-    lea %r12(%rsp), %rdi
+    // lea %r12(%rsp), %rdi  the comiler told me to junk this line?
     jmp read_int
     
     // long nn;
@@ -93,7 +93,7 @@ read_int:
     mov %rdi, %r8
     
     lea ld_string(%rsp), %rdi    // Loads the address of ld_string from the stack pointer into rdi
-    lea %r8(%rsp), %rsi
+    //lea %r8(%rsp), %rsi compiler told me to junk this line?
     call scanf  
 // ??????? When calling scanf, what are the output registers? How to copy the != 1 from the c code?
 // Is the %rax the true or false result? How do I access the 
