@@ -1,13 +1,25 @@
 .global main
+
 .data
 bad_input: .string "bad input"
+ld_string: .string "%ld"
+
 
 .text
 main:
+    push %r12         // %r12 is nn
+    push %r13         // %r13 is xs
     enter $0, $0
+    
+    lea %r12(%rsp), %rdi
+    jmp read_int
     
     // long nn;
     // read_int(&nn);
+    
+    // How do I get the function to come back to here after going to read_int??
+    // Considering that read_int is supposed to be called an infinite number of times
+    // we cant hardcode it to jump back to a theoretical "main_part2" function
     
     // long* xs = malloc(nn * sizeof(long));
     
@@ -76,20 +88,25 @@ quicksort:
     //}
 
 
-
-
 read_int:
-    //read_int(long* ptr)
-    //{
-    //    if (scanf("%ld", ptr) != 1) {
-    //        puts("bad input");
-    //        exit(1);
-    //    }
-    //}
-
+    // ptr is %r8
+    mov %rdi, %r8
     
+    lea ld_string(%rsp), %rdi    // Loads the address of ld_string from the stack pointer into rdi
+    lea %r8(%rsp), %rsi
+    call scanf  
+// ??????? When calling scanf, what are the output registers? How to copy the != 1 from the c code?
+// Is the %rax the true or false result? How do I access the 
+    cmp $1, %rax                 // Compare 1 with the result of scanf
+    jne invalid_input            // If the result is not equal, go to invalid_input
+    
+    // the last lines  should place the input number into %rax
+    // how do I send it back to where it was called from?
+    
+invalid_input:
+    //  puts("bad input");
+    //  exit(1);
     mov $bad_input, %rdi
     call puts
-
-
+    call abort
 
