@@ -6,8 +6,9 @@
 
 typedef struct svec {
     int size;
+    int spaces;
     char** data;
-    // TODO: complete struct
+    // TO-DONE: complete struct
 } svec;
 
 svec* make_svec();
