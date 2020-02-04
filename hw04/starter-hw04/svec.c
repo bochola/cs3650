@@ -23,18 +23,20 @@ void free_svec(svec* sv)
 {
     // TO-DONE: free all allocated data
     // Will need to free each item inside sv->data, then free sv
-    
-    printf("Freeing svec data...\n");
-    
-    int ii;
-    for (ii = 0; ii < sv->size; ii++)
+    if (sv)
     {
-        free(sv->data[ii]);
+        printf("Freeing svec data...\n");
+        
+        int ii;
+        for (ii = 0; ii < sv->size; ii++)
+        {
+            free(sv->data[ii]);
+        }
+        
+        printf("Freeing svec...\n");    
+        free(sv);
+        printf("Freed\n");
     }
-    
-    printf("Freeing svec...\n");    
-    free(sv);
-    printf("Freed\n");
     
 }
 
