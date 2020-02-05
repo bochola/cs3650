@@ -49,6 +49,7 @@ char* svec_get(svec* sv, int ii)
 
 void svec_put(svec* sv, int ii, char* item)
 {
+    printf("Entering svec_put");
     // TO-DONE: insert the given item into svec
     // Consider ownership of string in collection.
     
@@ -58,6 +59,7 @@ void svec_put(svec* sv, int ii, char* item)
     
     if (strcmp(sv->data[ii], "\0") == 0) {  // If there is nothing there
         printf("Placing data at location  %ld\n", ii);
+        free(sv->data[ii]);
         sv->data[ii] = copy;
         sv->spaces++;
     }
@@ -71,9 +73,8 @@ void svec_put(svec* sv, int ii, char* item)
 void svec_push_back(svec* sv, char* item)
 {
     // TO-DONE: expand vector if backing array is not big enough
-    
+    printf("Entering svec_push_back"); 
     int ii = sv->size;
-    
     
     if (strcmp(sv->data[ii - 1], "\0") == 0)
     {

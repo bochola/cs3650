@@ -1,3 +1,5 @@
+// hashmap.h
+
 #ifndef HASHMAP_H
 #define HASHMAP_H
 
@@ -11,8 +13,11 @@ typedef struct hashmap_pair {
 } hashmap_pair;
 
 typedef struct hashmap {
-    long useless_field;
     // TODO: Define working hashmap struct.
+    int mapCap;   // Total capacity of the hashmap
+    int mapSize;  // Amount of slots currently filled in the map
+    hashmap_pair* data;  // List of pairs in the table(??)
+
 } hashmap;
 
 hashmap* make_hashmap();
