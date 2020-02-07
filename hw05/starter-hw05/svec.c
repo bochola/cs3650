@@ -44,7 +44,7 @@ void free_svec(svec* sv)
 char* svec_get(svec* sv, int ii)
 {
     assert((ii >= 0) && (ii < sv->spaces));
-    printf("Retrived data at location  %ld\n", ii);
+    printf("Retrived data at location  %d\n", ii);
     return sv->data[ii];
 }
 
@@ -64,11 +64,11 @@ void svec_put(svec* sv, int ii, char* item)
     }
 
     if (sv->data[ii] == 0) {  // If there is nothing there
-        printf("Placing data at location  %ld\n", ii);
+        printf("Placing data at location  %d\n", ii);
     }
     else {
         free(sv->data[ii]);
-        printf("Replacing data at location %ld\n", ii);
+        printf("Replacing data at location %d\n", ii);
     }
     
     sv->data[ii] = copy;
@@ -112,6 +112,13 @@ void svec_swap(svec* sv, int ii, int jj)
     sv->data[ii] = slot2;
     sv->data[jj] = slot1;
     
-    printf("Swapping location %ld with %ld\n", ii, jj);
+    printf("Swapping location %d with %d\n", ii, jj);
     
+}
+
+void svec_reverse(svec* sv) {
+    for (int ii = 0; ii < (sv->spaces / 2); ii++) {
+        int jj = sv->spaces - ii - 1;
+        svec_swap(sv, ii, jj);
+    }
 }
