@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "svec.h"
 
@@ -10,24 +12,71 @@ int main(int argc, char* argv[]) {
     
     svec* sv = make_svec();
     
-    svec_push_back(sv, "hi");
 
-    printf("%s\n", svec_get(sv, 0));
+    svec_push_back(sv, "there");
+    svec_push_back(sv, "hi");
+    svec_push_back(sv, "good");
+    svec_push_back(sv, "fuckin");
+    svec_push_back(sv, "buddy");
+    
+    svec_put(sv, 3, "friendly");
+    svec_swap(sv, 0, 1);
+    
+    for (int ii = 0; ii < sv->spaces; ii++) {
+        printf("%s\n", svec_get(sv, ii));
+    }
+
+    printf("\nReverse! Reverse!\n");
+
+    svec_reverse(sv);
+
+    for (int ii = 0; ii < sv->spaces; ii++) {
+        printf("%s\n", svec_get(sv, ii));
+    }
+
+    free_svec(sv);
 
 }
 
+int isAlphNum(char x) {
+
+    return ((x >= 65) && (x <= 90)) || ((x >= 97) && (x <= 122)) || ((x >= 48) && (x <= 57));
+    //         HANDLES CAPITALS             handles lowercase          hand3l5 numb3r5
+}
+
+int add_token(svec* sv, const char* line, int ii) {
+
+    if (isAlphNum(line[ii])) {
+
+        
+    }
+}
+
+svec* tokenize(const char* line) {
 /*
- * tokenize(const char* line) {
- *
  *     walk through line
  *     store non-space/non-operator characters in a char[]
  *     (write is-operator helper function)
  *     when reaching a space or op, move the items in th char[] to an svec as one string
  *     (look into memset for clearing the accumulator)
- *     
- *
- *
  */
+
+    svec* sv make_svec();
+
+    for (int ii = 0; ii < strlen(line); ii++) {
+
+        if (isspace(line[ii])) {
+            continue;
+        }
+        else {
+            ii = ii + add_token(sv, line, ii);
+        }
+    }
+
+    svec_reverse(sv);
+
+    return sv;
+}
 
 
 
