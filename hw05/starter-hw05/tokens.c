@@ -44,12 +44,18 @@ int isAlphNum(char x) {
     //         HANDLES CAPITALS             handles lowercase          hand3l5 numb3r5
 }
 
-int add_token(svec* sv, const char* line, int ii) {
+int add_token(svec* sv, const char* line, int start) {
 
-    if (isAlphNum(line[ii])) {
+    int numChars = 0;
 
-        
+    while (isAlphNum(line[numChars + start])) {
+        numChars++; // Counts how many characters after the start point are letters or numbers
     }
+    
+    
+    
+    
+    
 }
 
 svec* tokenize(const char* line) {
