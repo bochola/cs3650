@@ -38,23 +38,19 @@ int main(int argc, char* argv[]) {
 
 }
 
-int isAlphNum(char x) {
+int isOp(char x) {
 
-    return ((x >= 65) && (x <= 90)) || ((x >= 97) && (x <= 122)) || ((x >= 48) && (x <= 57));
-    //         HANDLES CAPITALS             handles lowercase          hand3l5 numb3r5
+    return ((x == '&') || (x == '<') || (x == '>') || (x == '|') || (x == ';'));
+
 }
 
 int add_token(svec* sv, const char* line, int start) {
 
     int numChars = 0;
 
-    while (isAlphNum(line[numChars + start])) {
-        numChars++; // Counts how many characters after the start point are letters or numbers
+    while (isOp(line[numChars + start])) {
+        
     }
-    
-    
-    
-    
     
 }
 
