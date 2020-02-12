@@ -15,7 +15,7 @@ svec* make_svec()
     sv->size = 2;     // total size of the array
     sv->spaces = 0;   // number of filled spaces in the array
     // TO-DONE(?): correctly allocate and initialize data structure
-    printf("Created svec sucessfully\n");
+    //printf("Created svec sucessfully\n");
     return sv;
 }
 
@@ -25,7 +25,7 @@ void free_svec(svec* sv)
     // Will need to free each item inside sv->data, then free sv
     if (sv)
     {
-        printf("Freeing svec data...\n");
+       // printf("Freeing svec data...\n");
         
         int ii;
         for (ii = 0; ii < sv->spaces; ii++)
@@ -33,10 +33,10 @@ void free_svec(svec* sv)
             free(sv->data[ii]);
         }
         
-        printf("Freeing svec...\n");    
+        //printf("Freeing svec...\n");    
         free(sv->data);
         free(sv);
-        printf("Freed\n");
+        //printf("Freed\n");
     }
     
 }
@@ -44,13 +44,13 @@ void free_svec(svec* sv)
 char* svec_get(svec* sv, int ii)
 {
     assert((ii >= 0) && (ii < sv->spaces));
-    printf("Retrived data at location  %d\n", ii);
+    //printf("Retrived data at location  %d\n", ii);
     return sv->data[ii];
 }
 
 void svec_put(svec* sv, int ii, char* item)
 {
-    printf("Entering svec_put");
+    //printf("Entering svec_put");
     // TO-DONE: insert the given item into svec
     // Consider ownership of string in collection.
 
@@ -63,12 +63,12 @@ void svec_put(svec* sv, int ii, char* item)
         copy = item;
     }
 
-    if (sv->data[ii] == 0) {  // If there is nothing there
-        printf("Placing data at location  %d\n", ii);
+    if (sv->data[ii] == 0) {  // If there is something there
+        free(sv->data[ii]);
+        //printf("Replacing data at location  %d\n", ii);
     }
     else {
-        free(sv->data[ii]);
-        printf("Replacing data at location %d\n", ii);
+        //printf("Placing data at location %d\n", ii);
     }
     
     sv->data[ii] = copy;
@@ -77,7 +77,7 @@ void svec_put(svec* sv, int ii, char* item)
 void svec_push_back(svec* sv, char* item)
 {
     // TO-DONE: expand vector if backing array is not big enough
-    printf("Entering svec_push_back"); 
+    //printf("Entering svec_push_back"); 
     int ii = sv->spaces;
     
     if (sv->spaces >= sv->size) {
@@ -99,7 +99,7 @@ void svec_push_back(svec* sv, char* item)
     
     sv->spaces++;
     svec_put(sv, ii, item);
-    printf("Added.\n");
+    //printf("Added.\n");
 }
 
 void svec_swap(svec* sv, int ii, int jj)
@@ -112,7 +112,7 @@ void svec_swap(svec* sv, int ii, int jj)
     sv->data[ii] = slot2;
     sv->data[jj] = slot1;
     
-    printf("Swapping location %d with %d\n", ii, jj);
+    //printf("Swapping location %d with %d\n", ii, jj);
     
 }
 
@@ -122,3 +122,10 @@ void svec_reverse(svec* sv) {
         svec_swap(sv, ii, jj);
     }
 }
+
+void svec_print(svec* sv) {
+    for (int ii = 0; ii < sv->spaces; ii++) {
+        printf("%s\n", svec_get(sv, ii));
+    }
+}
+

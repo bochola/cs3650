@@ -7,51 +7,76 @@
 
 #include "svec.h"
 
-
-int main(int argc, char* argv[]) {
-    
-    svec* sv = make_svec();
-    
-
-    svec_push_back(sv, "there");
-    svec_push_back(sv, "hi");
-    svec_push_back(sv, "good");
-    svec_push_back(sv, "fuckin");
-    svec_push_back(sv, "buddy");
-    
-    svec_put(sv, 3, "friendly");
-    svec_swap(sv, 0, 1);
-    
-    for (int ii = 0; ii < sv->spaces; ii++) {
-        printf("%s\n", svec_get(sv, ii));
-    }
-
-    printf("\nReverse! Reverse!\n");
-
-    svec_reverse(sv);
-
-    for (int ii = 0; ii < sv->spaces; ii++) {
-        printf("%s\n", svec_get(sv, ii));
-    }
-
-    free_svec(sv);
-
-}
-
 int isOp(char x) {
 
     return ((x == '&') || (x == '<') || (x == '>') || (x == '|') || (x == ';'));
 
 }
 
-int add_token(svec* sv, const char* line, int start) {
+int add_Op(svec* sv, const char* line, int start) {
+
+    int numChars = 0;
+    
+    while ((numChars + start) < strlen(line)) {
+        
+        if (isOp(line[numChars + start])) {
+            numChars++;
+        }
+        else {
+            break;
+        }
+    }
+    
+    // The following three lines are adapted from Nat Tuck's tokenize.c "read_number" function
+    // I couldn't figure out a different way to copy over a string section from an existing
+    // string.
+    
+    // Allocates enough memory to hold the string of valid operators
+    char* opList = malloc(numChars + 1);
+    // Copies over the characters from line into opList
+    memcpy(opList, line + start, numChars);
+    // Addds the null character to the end of the string
+    opList[numChars] = 0;
+    
+    svec_push_back(sv, opList);
+    free(opList);
+    
+    return numChars;
+
+}
+
+int add_Token(svec* sv, const char* line, int start) {
 
     int numChars = 0;
 
-    while (isOp(line[numChars + start])) {
+    while ((numChars + start) < strlen(line)) {
         
+        char tokenIndex = line[numChars + start];
+        
+        if (!(isOp(tokenIndex) || (isspace(tokenIndex)))) {
+            numChars++;
+        }
+        else {
+            break;
+        }
     }
-    
+
+    // The following three lines are adapted from Nat Tuck's tokenize.c "read_number" function
+    // I couldn't figure out a different way to copy over a string section from an existing
+    // string.
+
+    // Allocates enough memory to hold the token string
+    char* token = malloc(numChars + 1);
+    // Copies over the characters from line into token
+    memcpy(token, line + start, numChars);
+    // Addds the null character to the end of the string
+    token[numChars] = 0;
+
+    svec_push_back(sv, token);
+    free(token);
+
+    return numChars;
+
 }
 
 svec* tokenize(const char* line) {
@@ -63,41 +88,43 @@ svec* tokenize(const char* line) {
  *     (look into memset for clearing the accumulator)
  */
 
-    svec* sv make_svec();
+    svec* sv = make_svec();
 
-    for (int ii = 0; ii < strlen(line); ii++) {
+    for (int ii = 0; ii < strlen(line);) {
 
         if (isspace(line[ii])) {
-            continue;
+            ii++; 
+        }
+        else if (isOp(line[ii])) {
+            ii = ii + add_Op(sv, line, ii);
         }
         else {
-            ii = ii + add_token(sv, line, ii);
+            ii = ii + add_Token(sv, line, ii);
+
         }
     }
-
-    svec_reverse(sv);
 
     return sv;
 }
 
+int main(int _argc, char* _argv[]) {
 
-
-/* TODO:
-
-   while (1) {
-     printf("tokens$ ");
-     fflush(stdout);
-     line = read_line()
-     if (that was EOF) {
-        exit(0);
-     }
-     tokens = tokenize(line);
-     foreach token in reverse(tokens):
-       puts(token)
+    char line[256];
+    while (1) {
+         
+        printf("tokens$ ");
+        fflush(stdout);
+        char* read_in = fgets(line, 256, stdin);
+        if (!read_in) {
+            exit(0);
+        }
+        svec* tokens = tokenize(line);
+        svec_reverse(tokens);
+        svec_print(tokens);
+        free_svec(tokens);
    }
 
-*/
-
+}
 
 
 
