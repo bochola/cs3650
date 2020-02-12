@@ -5,18 +5,16 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-void
-execute(char* cmd)
-{
+void execute(char* cmd) {
     int cpid;
-
+    
     if ((cpid = fork())) {
         // parent process
         printf("Parent pid: %d\n", getpid());
         printf("Parent knows child pid: %d\n", cpid);
-
+    
         // Child may still be running until we wait.
-
+    
         int status;
         waitpid(cpid, &status, 0);
 
@@ -50,9 +48,7 @@ execute(char* cmd)
     }
 }
 
-int
-main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     char cmd[256];
 
     if (argc == 1) {

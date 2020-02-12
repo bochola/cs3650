@@ -129,7 +129,7 @@ svec* sub_svec(svec* sv, int start_index, int end_index) {
         
         for (int ii = start_index; ii < end_index; ii++) {
             
-            svec_push_back(new_sv, svec_get(sv, ii);
+            svec_push_back(new_sv, svec_get(sv, ii));
         
         }
     }
