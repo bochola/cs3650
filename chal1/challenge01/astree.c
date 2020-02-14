@@ -8,19 +8,13 @@
 #include "astree.h"
 
 
-astree* make_cmd(char* cmd) {
+astree* make_cmd(svec* cmd) {
     
     astree* ast = malloc(sizeof(astree));
     ast->op = 0;
     ast->arg1 = 0;
     ast->arg2 = 0;
-    
-    if (cmd) {
-        ast->cmd = cmd;
-    }
-    else {
-        //Maybe exit(0); or something?
-    }
+    ast->cmd = cmd;
     
 }
 
@@ -30,29 +24,38 @@ astree* make_op(char* op, astree* arg1, astree* arg2) {
     ast->op = op;
     ast->arg1 = 0;
     ast->arg2 = 0;
+    ast->op = op;
+    ast->arg1 = arg1;
+    ast->arg2 = arg2;
     
-    // Check to see if cmd is not null
-    if (cmd) {
-        ast->cmd = cmd;
+}
+
+astree* parse(svec* tokens) {
+    // An operator is one of (in order of operations): ;, &, ||, &&, |, >, <
+    // Search through tokens svec and look for operators in order of importance
+    // If an operator is found, make a new astree of that operator, a sub svec on
+    // the items to the left and right and parse on those two
+    //      
+    //      int index = svec_index_of(char* op);
+    //      svec* arg1 = sub_svec(tokens, 0, index);
+    //      svec* arg2 = sub_svec(tokens, index + 1, svec_length(tokens));
+    //      make_op(char* op, parse(arg1), parse(arg2)
+    // 
+    // If that operator is not found, then move to the next most important 
+    // operator. Repeat until reaching the end of the svec
+   
+    int index = svec_index_of(tokens, ";"); 
+
+    if (index >= 0) {
+        svec* arg1 = sub_svec(tokens, 0, index);
+        svec* arg2 = sub_svec(tokens, index + 1, svec_length(tokens) - 1);
+        make_op(";", parse(arg1), parse(arg2));
     }
-    else {
-        //Maybe exit(0); or something?
-    }
+
+}
+
+void print_astree(astree* ast, int acc) {
     
-    // Check if arg1 is not null
-    if (arg1) {
-        ast->arg1 = arg1;
-    }
-    else {
-        //Maybe exit(0); or something?
-    }
     
-    // Check if arg2 is not null
-    if (arg2) {
-        ast->arg2 = arg2;
-    }
-    else {
-        //Maybe exit(0); or something?
-    }
     
 }

@@ -6,9 +6,9 @@
 #define ASTREE_H
 
 #include <stdlib.h>
+#include "svec.h"
 
-
-typedef struct astree* {
+typedef struct astree {
     
     //An astree is one of:
     //      char* op
@@ -31,5 +31,6 @@ void free_astree(astree* ast);
 astree* make_cmd(char* cmd);
 astree* make_op(char* op, astree* arg1, astree* arg2);
 
+astree* parse(svec* token_list);
 
 #endif

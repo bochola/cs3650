@@ -39,7 +39,7 @@ void free_svec(svec* sv) {
     
 }
 
-// Returns the number of items in the vector
+// Returns the number of items in the vector (1 index, not 0 index)
 int svec_length(svec* sv) {
     
     return sv->spaces;
@@ -53,6 +53,18 @@ char* svec_get(svec* sv, int ii) {
     return sv->data[ii];
 }
 
+// Returns the index of a given string
+int svec_index_of(svec* sv, char* item) {
+    
+    for (int ii = 0; ii < sv->spaces; ii++) {
+        
+        if ((strcmp(sv->data[ii], item)) == 0) {
+            return ii;
+        }
+    }
+    
+    return -1;
+}
 // Places a string at the given address
 void svec_put(svec* sv, int ii, char* item) {
 
@@ -124,15 +136,15 @@ void svec_print(svec* sv) {
 // Creates a new vector comprised of a section of items from sv
 svec* sub_svec(svec* sv, int start_index, int end_index) {
     
+    assert((end_index <= sv->spaces) &&  (start_index >= 0));
+        
     svec* new_sv = make_svec();
-    if ((end_index < sv->spaces) &&  (start_index >= 0)) {
-        
-        for (int ii = start_index; ii < end_index; ii++) {
+    for (int ii = start_index; ii < end_index; ii++) {
             
-            svec_push_back(new_sv, svec_get(sv, ii));
+        svec_push_back(new_sv, svec_get(sv, ii));
         
-        }
     }
     
+    return new_sv;
 }
 
