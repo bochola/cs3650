@@ -8,6 +8,10 @@
 
 typedef struct astree {
     
+    //An astree is one of:
+    //      char* op
+    //      char* cmd
+
     // An operator is one of (in order of operations): ;, &, ||, &&, |, <, >
     char* op;
     
