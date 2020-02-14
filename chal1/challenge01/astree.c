@@ -30,7 +30,8 @@ astree* make_op(char* op, astree* arg1, astree* arg2) {
     ast->op = op;
     ast->arg1 = 0;
     ast->arg2 = 0;
-
+    
+    // Check to see if cmd is not null
     if (cmd) {
         ast->cmd = cmd;
     }
@@ -38,6 +39,7 @@ astree* make_op(char* op, astree* arg1, astree* arg2) {
         //Maybe exit(0); or something?
     }
     
+    // Check if arg1 is not null
     if (arg1) {
         ast->arg1 = arg1;
     }
@@ -45,6 +47,7 @@ astree* make_op(char* op, astree* arg1, astree* arg2) {
         //Maybe exit(0); or something?
     }
     
+    // Check if arg2 is not null
     if (arg2) {
         ast->arg2 = arg2;
     }
