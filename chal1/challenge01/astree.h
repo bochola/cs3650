@@ -17,8 +17,8 @@ typedef struct astree {
     // An operator is one of (in order of operations): ;, &, ||, &&, |, <, >
     char* op;
     
-    // A command is anything else that is not an op and not a space
-    char* cmd; 
+    // A command is anything else that is not an op
+    svec* cmd; 
     
     // The other branches of the tree
     struct astree* branch1;
@@ -28,8 +28,8 @@ typedef struct astree {
 } astree;
 
 void free_astree(astree* ast);
-astree* make_cmd(char* cmd);
-astree* make_op(char* op, astree* arg1, astree* arg2);
+astree* make_cmd(svec* cmd);
+astree* make_op(svec* op, astree* branch1, astree* branch2);
 
 astree* parse(svec* token_list);
 
