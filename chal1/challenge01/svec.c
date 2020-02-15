@@ -127,9 +127,10 @@ void svec_reverse(svec* sv) {
 }
 
 // Prints out the contents of sv->data
-void svec_print(svec* sv) {
+void svec_print(svec* sv, char* separator) {
     for (int ii = 0; ii < sv->spaces; ii++) {
-        printf("%s\n", svec_get(sv, ii));
+        printf("%s%s", svec_get(sv, ii), separator);
+        fflush(stdout);
     }
 }
 

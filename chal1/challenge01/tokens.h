@@ -3,12 +3,10 @@
 #ifndef TOKENS_H
 #define TOKENS_H
 
+#include "svec.h"
 
 //token functions
 
-
-int is_op(char x);
-
-svec* tokenize(char* line);
+svec* tokenize(const char* line);
 
 #endif

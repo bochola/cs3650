@@ -5,6 +5,10 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include "svec.h"
+#include "tokens.h"
+#include "astree.h"
+
 void execute(char* cmd) {
     int cpid;
     
@@ -52,9 +56,21 @@ int main(int argc, char* argv[]) {
     char cmd[256];
 
     if (argc == 1) {
-        printf("nush$ ");
-        fflush(stdout);
-        fgets(cmd, 256, stdin);
+        while (1) {
+             
+            printf("nush$ ");
+            fflush(stdout);
+            char* read_in = fgets(cmd, 256, stdin);
+            if (!read_in) {
+                exit(0);
+            }
+            svec* tokens = tokenize(cmd);
+            astree* parsed = parse(tokens);
+            print_astree(parsed, 0);
+            
+            free_svec(tokens);
+            
+        }
     }
     else {
         memcpy(cmd, "echo", 5);

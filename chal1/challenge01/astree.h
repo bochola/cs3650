@@ -29,8 +29,10 @@ typedef struct astree {
 
 void free_astree(astree* ast);
 astree* make_cmd(svec* cmd);
-astree* make_op(svec* op, astree* branch1, astree* branch2);
+astree* make_op(char* op, astree* branch1, astree* branch2);
 
 astree* parse(svec* token_list);
+
+void print_astree(astree* ast, int acc);
 
 #endif

@@ -22,8 +22,12 @@ void svec_reverse(svec* sv);
 void svec_push_back(svec* sv, char* item);
 void svec_swap(svec* sv, int ii, int jj);
 
-void svec_print(svec* sv);
+void svec_print(svec* sv, char* separator);
 
 svec* sub_svec(svec* sv, int start_index, int end_index);
+
+int svec_index_of(svec* sv, char* item);
+int svec_length(svec* sv);
+
 
 #endif

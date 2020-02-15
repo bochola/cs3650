@@ -8,7 +8,7 @@
 #include "tokens.h"
 #include "svec.h"
 
-int is_op(char x) {
+static int is_op(char x) {
 
     return ((x == '&') || (x == '<') || (x == '>') || (x == '|') || (x == ';'));
 
@@ -96,7 +96,7 @@ svec* tokenize(const char* line) {
         if (isspace(line[ii])) {
             ii++; 
         }
-        else if (isOp(line[ii])) {
+        else if (is_op(line[ii])) {
             ii = ii + add_op(sv, line, ii);
         }
         else {
@@ -107,25 +107,3 @@ svec* tokenize(const char* line) {
 
     return sv;
 }
-
-int main(int _argc, char* _argv[]) {
-
-    char line[256];
-    while (1) {
-         
-        printf("tokens$ ");
-        fflush(stdout);
-        char* read_in = fgets(line, 256, stdin);
-        if (!read_in) {
-            exit(0);
-        }
-        svec* tokens = tokenize(line);
-        svec_reverse(tokens);
-        svec_print(tokens);
-        free_svec(tokens);
-   }
-
-}
-
-
-

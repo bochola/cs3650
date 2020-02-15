@@ -1,7 +1,7 @@
 // astree.c
 
 
-#include <stdio>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -53,7 +53,7 @@ astree* parse(svec* tokens) {
         if (index >= 0) {
             svec* branch1 = sub_svec(tokens, 0, index);
             svec* branch2 = sub_svec(tokens, index + 1, svec_length(tokens));
-            svec* tree = make_op(op, parse(branch1), parse(branch2));
+            astree* tree = make_op(op, parse(branch1), parse(branch2));
             free_svec(branch1);
             free_svec(branch2);
 
@@ -67,7 +67,21 @@ astree* parse(svec* tokens) {
 void print_astree(astree* ast, int acc) {
    // acc is the accumulator to count how many layers deep a tree is
 
+    for (int ii = 0; ii <= acc; ii++) {
+        printf("    ");
+    }
+
+    if (ast->op) {
+        printf("%s\n", ast->op);
+        print_astree(ast->branch1, acc + 1);
+        print_astree(ast->branch2, acc + 1);
+    }
+
+    if (ast->cmd) {
+        svec_print(ast->cmd, " ");
+        printf("\n");
+    }
+}
 
     
-    
-}
+
