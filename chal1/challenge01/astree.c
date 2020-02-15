@@ -14,18 +14,36 @@ astree* make_cmd(svec* cmd) {
     ast->op = 0;
     ast->branch1 = 0;
     ast->branch2 = 0;
-    ast->cmd = cmd;
+    ast->cmd = svec_clone(cmd);
     
 }
 
 astree* make_op(char* op, astree* branch1, astree* branch2) {
     
     astree* ast = malloc(sizeof(astree));
-    ast->op = op;
+    ast->op = strdup(op);
     ast->branch1 = branch1;
     ast->branch2 = branch2;
     ast->cmd = 0;
     
+}
+
+void free_astree(astree* ast) {
+    
+    if (ast->op) {
+        free(ast->op);
+    }
+    if (ast->cmd) {
+        free_svec(ast->cmd);
+    }
+    if (ast->branch1) {
+        free_astree(ast->branch1);
+    }
+    if (ast->branch2) {
+        free_astree(ast->branch2);
+    }
+
+    free(ast);
 }
 
 astree* parse(svec* tokens) {

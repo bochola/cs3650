@@ -11,7 +11,7 @@
 // Creates an svec
 svec* make_svec() {
     svec* sv = malloc(sizeof(svec));      // sv is a pointer to an svec
-    sv->data = malloc(2 * sizeof(char*)); // sv->data is a pointer to 2 slots of char* (strings)
+    sv->data = calloc(2, sizeof(char*)); // sv->data is a pointer to 2 slots of char* (strings)
     sv->size = 2;     // total size of the array
     sv->spaces = 0;   // number of filled spaces in the array
     // TO-DONE(?): correctly allocate and initialize data structure
@@ -70,19 +70,15 @@ void svec_put(svec* sv, int ii, char* item) {
 
     assert(ii >= 0 && ii < sv->spaces);
     char* copy;
-    if (item != 0) {
+    if (item) {
         copy = strdup(item);  // since strdup uses malloc, you need to free i think
     }
     else {
         copy = item;
     }
 
-    if (sv->data[ii] == 0) {  // If there is something there
+    if (sv->data[ii]) {  // If there is something there
         free(sv->data[ii]);
-        //printf("Replacing data at location  %d\n", ii);
-    }
-    else {
-        //printf("Placing data at location %d\n", ii);
     }
     
     sv->data[ii] = copy;
@@ -91,18 +87,17 @@ void svec_put(svec* sv, int ii, char* item) {
 // Adds the given item to the end of the vector, expanding if necessary
 void svec_push_back(svec* sv, char* item) {
     // TO-DONE: expand vector if backing array is not big enough
-    //printf("Entering svec_push_back"); 
     int ii = sv->spaces;
     
     if (sv->spaces >= sv->size) {
         int newSize = sv->size * 2;
         sv->data  = realloc(sv->data, newSize * sizeof(char*));
+        memset(sv->data + sv->size, 0, sv->size * sizeof(char*));
         sv->size = newSize;
     }
     
     sv->spaces++;
     svec_put(sv, ii, item);
-    //printf("Added.\n");
 }
 
 // Switches the items in the requested slots
@@ -149,3 +144,6 @@ svec* sub_svec(svec* sv, int start_index, int end_index) {
     return new_sv;
 }
 
+svec* svec_clone(svec* sv) {
+    return sub_svec(sv, 0, sv->spaces);
+}

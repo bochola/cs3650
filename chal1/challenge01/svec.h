@@ -29,5 +29,6 @@ svec* sub_svec(svec* sv, int start_index, int end_index);
 int svec_index_of(svec* sv, char* item);
 int svec_length(svec* sv);
 
+svec* svec_clone(svec* sv);
 
 #endif

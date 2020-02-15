@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
             print_astree(parsed, 0);
             
             free_svec(tokens);
-            
+            free_astree(parsed);
         }
     }
     else {
