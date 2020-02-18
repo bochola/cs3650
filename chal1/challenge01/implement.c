@@ -72,7 +72,7 @@ int execute_ast(astree* ast) {
 
         printf("== executed program's output: ==\n");
 
-        //execvp(svec_get(ast->cmd), cmd);
+        execvp(svec_get(ast->cmd, 0), cmd);
         printf("Can't get here, exec only returns on error.");
     }
 }
