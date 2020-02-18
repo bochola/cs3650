@@ -1,12 +1,10 @@
 // astree.c
 
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 #include "astree.h"
-
 
 astree* make_cmd(svec* cmd) {
     
@@ -51,15 +49,15 @@ astree* parse(svec* tokens) {
     // Search through tokens svec and look for operators in order of importance
     // If an operator is found, make a new astree of that operator, a sub svec on
     // the items to the left and right and parse on those two
-    //      
-    //      int index = svec_index_of(char* op);
-    //      svec* branch1 = sub_svec(tokens, 0, index);
-    //      svec* branch2 = sub_svec(tokens, index + 1, svec_length(tokens));
-    //      make_op(char* op, parse(branch1), parse(branch2)
-    // 
     // If that operator is not found, then move to the next most important 
     // operator. Repeat until reaching the end of the svec
     
+    if (svec_length(tokens) < 1) {
+        free_svec(tokens);
+        return 0;
+    }
+    
+        
     char* op_list[] = {";", "&", "||", "&&", "|", ">", "<"};
     
     for (int ii = 0; ii < 7; ii++) {

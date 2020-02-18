@@ -31,7 +31,7 @@ int execute_ast(astree* ast) {
         }
 
         if (strcmp(input, "exit") == 0) {
-            // TODO: free astree
+            free_astree(ast);
             exit(0);
         }
     }
@@ -40,40 +40,44 @@ int execute_ast(astree* ast) {
 
     if ((cpid = fork())) {
         // parent process
-        printf("Parent pid: %d\n", getpid());
-        printf("Parent knows child pid: %d\n", cpid);
+        //printf("Parent pid: %d\n", getpid());
+        //printf("Parent knows child pid: %d\n", cpid);
 
         int status;
         waitpid(cpid, &status, 0);
 
-        printf("== executed program complete ==\n");
+        //printf("== executed program complete ==\n");
 
-        printf("child returned with wait code %d\n", status);
+        //printf("child returned with wait code %d\n", status);
         if (WIFEXITED(status)) {
-            printf("child exited with exit code (or main returned) %d\n", WEXITSTATUS(status));
+            //printf("child exited with exit code (or main returned) %d\n", WEXITSTATUS(status));
         }
     }
     else {
         // child process
-        printf("Child pid: %d\n", getpid());
-        printf("Child knows parent pid: %d\n", getppid());
+        //printf("Child pid: %d\n", getpid());
+        //printf("Child knows parent pid: %d\n", getppid());
         
         int cmd_length = svec_length(ast->cmd);
+        char** cmd = malloc(cmd_length * sizeof(char*));
 
-        char** cmd = malloc(cmd_length * sizeof(char*) + 1);
-
-        for (int ii = 0; ii < svec_length(ast->cmd); ++ii) {
+        printf("%i\n", cmd_length);
+        svec_print(ast->cmd, " ");
+        printf("\n");
+        
+        for (int ii = 0; ii < cmd_length; ++ii) {
             cmd[ii] = svec_get(ast->cmd, ii);
         }
 
         // The argv array for the child.
         // Terminated by a null pointer.
-        cmd[svec_length(ast->cmd)] = 0;
+        cmd[cmd_length] = 0;
 
-        printf("== executed program's output: ==\n");
+        //printf("== executed program's output: ==\n");
 
         execvp(svec_get(ast->cmd, 0), cmd);
         printf("Can't get here, exec only returns on error.");
+        free(cmd);
     }
 }
 
