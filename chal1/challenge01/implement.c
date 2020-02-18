@@ -59,7 +59,7 @@ int execute_ast(astree* ast) {
         //printf("Child knows parent pid: %d\n", getppid());
         
         int cmd_length = svec_length(ast->cmd);
-        char** cmd = malloc((cmd_length - 1) * sizeof(char*) + 1);
+        char** cmd = malloc(cmd_length * sizeof(char*) + 1);
 
         printf("%i\n", cmd_length);
         svec_print(ast->cmd, " ");
@@ -109,6 +109,7 @@ int run(astree* ast, int op) {
         
         default:
             // what to do in default case?
+            printf("Should never get here, default case in run() in implement.c");
             return 1; // ??? Maybe??
     }
 }
@@ -154,6 +155,7 @@ int semicolon_cmd(astree* ast) {
     int first_cmd = execute(ast->branch1);
 
     if (ast->branch2) {
+        printf("entering semicolon_cmd if case\n");
         return execute(ast->branch2);
     }
     else {

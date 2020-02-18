@@ -47,7 +47,8 @@ int svec_length(svec* sv) {
 
 // Returns the item at the given address
 char* svec_get(svec* sv, int ii) {
-    
+    //printf("Svec length: %d\n", svec_length(sv));
+    //printf("Getting location %d\n", ii);    
     assert((ii >= 0) && (ii < sv->spaces));
     //printf("Retrived data at location  %d\n", ii);
     return sv->data[ii];
