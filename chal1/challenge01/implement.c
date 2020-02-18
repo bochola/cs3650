@@ -59,7 +59,7 @@ int execute_ast(astree* ast) {
         //printf("Child knows parent pid: %d\n", getppid());
         
         int cmd_length = svec_length(ast->cmd);
-        char** cmd = malloc(cmd_length * sizeof(char*));
+        char** cmd = malloc((cmd_length - 1) * sizeof(char*) + 1);
 
         printf("%i\n", cmd_length);
         svec_print(ast->cmd, " ");
