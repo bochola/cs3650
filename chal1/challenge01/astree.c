@@ -69,15 +69,6 @@ astree* parse(svec* tokens) {
             svec* branch1 = sub_svec(tokens, 0, index);
             svec* branch2 = sub_svec(tokens, index + 1, svec_length(tokens));
             
-            astree* tree_branch2 = parse(branch2);
-            if (tree_branch2) {
-                printf("Printing astree...\n");
-                print_astree(tree_branch2, 0);
-            }
-            else {
-                printf("Branch 2 was null\n");
-            }
-
             astree* tree = make_op(op, parse(branch1), parse(branch2));
             free_svec(branch1);
             free_svec(branch2);

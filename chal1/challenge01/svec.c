@@ -15,7 +15,6 @@ svec* make_svec() {
     sv->size = 2;     // total size of the array
     sv->spaces = 0;   // number of filled spaces in the array
     // TO-DONE(?): correctly allocate and initialize data structure
-    //printf("Created svec sucessfully\n");
     return sv;
 }
 
@@ -24,17 +23,14 @@ void free_svec(svec* sv) {
     
     if (sv)
     {
-       // printf("Freeing svec data...\n");
         
         for (int ii = 0; ii < sv->spaces; ii++)
         {
             free(sv->data[ii]);
         }
         
-        //printf("Freeing svec...\n");    
         free(sv->data);
         free(sv);
-        //printf("Freed\n");
     }
     
 }
@@ -47,10 +43,7 @@ int svec_length(svec* sv) {
 
 // Returns the item at the given address
 char* svec_get(svec* sv, int ii) {
-    //printf("Svec length: %d\n", svec_length(sv));
-    //printf("Getting location %d\n", ii);    
     assert((ii >= 0) && (ii < sv->spaces));
-    //printf("Retrived data at location  %d\n", ii);
     return sv->data[ii];
 }
 
@@ -110,7 +103,6 @@ void svec_swap(svec* sv, int ii, int jj) {
     sv->data[ii] = slot2;
     sv->data[jj] = slot1;
     
-    //printf("Swapping location %d with %d\n", ii, jj);
     
 }
 

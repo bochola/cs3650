@@ -27,7 +27,14 @@ int execute_ast(astree* ast) {
         char* input = svec_get(ast->cmd, 0);
 
         if (strcmp(input, "cd") == 0) {
-            // TODO: Figure out how to change directories from within a C program
+            int change = chdir(svec_get(ast->cmd, 1));
+            
+            if (change == -1) {
+                printf("Invalid directory\n");
+            }
+            
+            return change;
+            
         }
 
         if (strcmp(input, "exit") == 0) {
@@ -45,26 +52,14 @@ int execute_ast(astree* ast) {
 
         int status;
         waitpid(cpid, &status, 0);
-
-        //printf("== executed program complete ==\n");
-
-        //printf("child returned with wait code %d\n", status);
-        if (WIFEXITED(status)) {
-            //printf("child exited with exit code (or main returned) %d\n", WEXITSTATUS(status));
-        }
+        return WEXITSTATUS(status); 
     }
     else {
         // child process
-        //printf("Child pid: %d\n", getpid());
-        //printf("Child knows parent pid: %d\n", getppid());
         
         int cmd_length = svec_length(ast->cmd);
-        char** cmd = malloc(cmd_length * sizeof(char*) + 1);
+        char** cmd = malloc((1 + cmd_length) * sizeof(char*));
 
-        printf("%i\n", cmd_length);
-        svec_print(ast->cmd, " ");
-        printf("\n");
-        
         for (int ii = 0; ii < cmd_length; ++ii) {
             cmd[ii] = svec_get(ast->cmd, ii);
         }
@@ -73,10 +68,8 @@ int execute_ast(astree* ast) {
         // Terminated by a null pointer.
         cmd[cmd_length] = 0;
 
-        //printf("== executed program's output: ==\n");
-
         execvp(svec_get(ast->cmd, 0), cmd);
-        printf("Can't get here, exec only returns on error.");
+        printf("Can't get here, exec only returns on error.\n");
         free(cmd);
     }
 }
@@ -145,7 +138,7 @@ int execute(astree* ast) {
         return run(ast, op);
     }
     else {
-        execute_ast(ast);
+        return execute_ast(ast);
     }
 }
 
