@@ -45,6 +45,7 @@ int execute_cmd(astree* ast) {
     }
 
     int cpid;
+    //printf("Execute fork...\n");
 
     if ((cpid = fork())) {
         // parent process
@@ -160,17 +161,23 @@ int background_cmd(astree* ast) {
     // Do whatever happens in the next command in the background (??)
     //print_astree(ast, 0);
     int cpid;
+    printf("BG fork...\n");
 
     if ((cpid = fork())) {
+        printf("Inside parent...\n");
         
         if (ast->branch2) {
+            printf("Branch2 executing...\n");
             return execute(ast->branch2);
         }
+        printf("Branch2 was null, leaving.\n");
 
         return 0;
     }
     else {
-        int child = execute(ast->branch1);
+        printf("Inside child\n");
+        execute(ast->branch1);
+        printf("Child finished.\n");
         exit(0);
     }
     assert(0);
@@ -205,6 +212,47 @@ int and_cmd(astree* ast) {
 
 int pipe_cmd(astree* ast) {
     // Take the output from branch1 and use it as the input for branch2
+    int cpid1;
+
+    if ((cpid1 = fork())) {
+        //parent 1
+        int status_child1;
+        waitpid(cpid1, &status_child1, 0);
+        return WEXITSTATUS(status_child1);
+    }
+    else {
+        int pipe_fd[2]; //branch2 input, branch1 output
+        pipe(pipe_fd);
+        int writing_fd = pipe_fd[1]; 
+        int reading_fd = pipe_fd[0]; 
+        //child 1
+        int cpid2;
+
+        if ((cpid2 = fork())) {
+            // parent 2 = child 1
+            // Get branch2 input file descriptor
+            close(writing_fd); 
+            close(0);
+            dup(reading_fd);
+            close(reading_fd);
+
+            int exit_branch2 = execute(ast->branch2);
+            int status_child2;
+            waitpid(cpid2, &status_child2, 0);
+            exit(exit_branch2);
+        }
+        else {
+            // Child 2
+            // Get branch1 output file descriptor
+            close(reading_fd);
+            close(1);
+            dup(writing_fd);
+            close(writing_fd);
+
+            int exit_branch1 = execute(ast->branch1);
+            exit(exit_branch1);
+        }
+    }
     return 0;
 }
 

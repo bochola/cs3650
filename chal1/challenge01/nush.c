@@ -46,9 +46,9 @@ int main_helper(FILE* input) {
     //svec_print(tokens, " ");
     astree* parsed = parse(tokens);
     //print_astree(parsed, 0);
-    printf("Executing: ");
-    svec_print(tokens, " ");
-    printf("\n");
+    //printf("Executing: ");
+    //svec_print(tokens, " ");
+    //printf("\n");
     execute(parsed);
 
     free_svec(tokens);
