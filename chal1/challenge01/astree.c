@@ -27,7 +27,10 @@ astree* make_op(char* op, astree* branch1, astree* branch2) {
 }
 
 void free_astree(astree* ast) {
-    
+    if(!ast) {
+       return;
+    }
+
     if (ast->op) {
         free(ast->op);
     }

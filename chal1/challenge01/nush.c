@@ -27,7 +27,9 @@ int main(int argc, char* argv[]) {
     else {
         
         FILE* file = fopen(argv[1], "r");
+        int i = 0;
         while (1) {
+            //printf("%d\n", i++);
             main_helper(file); 
         }
     }
@@ -50,6 +52,7 @@ int main_helper(FILE* input) {
     //svec_print(tokens, " ");
     //printf("\n");
     execute(parsed);
+    //printf("after execute\n");
 
     free_svec(tokens);
     free_astree(parsed);

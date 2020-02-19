@@ -71,8 +71,8 @@ int execute_cmd(astree* ast) {
         cmd[cmd_length] = 0;
 
         execvp(svec_get(ast->cmd, 0), cmd);
-        printf("Can't get here, exec only returns on error.\n");
         free(cmd);
+        exit(1);
     }
 }
 
@@ -112,6 +112,10 @@ int run(astree* ast, int op) {
 
 int execute(astree* ast) {
     
+    if (!ast) {
+        return 0;
+    }
+
     int op = 0;
     
     if (ast->op) {
@@ -161,24 +165,20 @@ int background_cmd(astree* ast) {
     // Do whatever happens in the next command in the background (??)
     //print_astree(ast, 0);
     int cpid;
-    printf("BG fork...\n");
 
     if ((cpid = fork())) {
-        printf("Inside parent...\n");
         
-        if (ast->branch2) {
-            printf("Branch2 executing...\n");
-            return execute(ast->branch2);
-        }
-        printf("Branch2 was null, leaving.\n");
+       if (ast->branch2) {
+           //printf("Branch2 executing...\n");
+           return execute(ast->branch2);
+       }
 
-        return 0;
+       return 0;
     }
     else {
-        printf("Inside child\n");
         execute(ast->branch1);
-        printf("Child finished.\n");
-        exit(0);
+        //printf("Exited\n");
+        _exit(0);
     }
     assert(0);
 }
