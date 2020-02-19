@@ -43,8 +43,12 @@ int main_helper(FILE* input) {
         exit(0);
     }
     svec* tokens = tokenize(cmd);
+    //svec_print(tokens, " ");
     astree* parsed = parse(tokens);
     //print_astree(parsed, 0);
+    printf("Executing: ");
+    svec_print(tokens, " ");
+    printf("\n");
     execute(parsed);
 
     free_svec(tokens);

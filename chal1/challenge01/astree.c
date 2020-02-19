@@ -82,11 +82,14 @@ astree* parse(svec* tokens) {
 
 void print_astree(astree* ast, int acc) {
    // acc is the accumulator to count how many layers deep a tree is
-
+    
     for (int ii = 0; ii <= acc; ii++) {
         printf("    ");
     }
-
+    if (!ast) {
+        printf("Null\n");
+        return;
+    }
     if (ast->op) {
         printf("%s\n", ast->op);
         print_astree(ast->branch1, acc + 1);
