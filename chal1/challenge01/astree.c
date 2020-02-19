@@ -13,6 +13,8 @@ astree* make_cmd(svec* cmd) {
     ast->branch1 = 0;
     ast->branch2 = 0;
     ast->cmd = svec_clone(cmd);
+
+    return ast;
     
 }
 
@@ -23,6 +25,8 @@ astree* make_op(char* op, astree* branch1, astree* branch2) {
     ast->branch1 = branch1;
     ast->branch2 = branch2;
     ast->cmd = 0;
+
+    return ast;
     
 }
 
