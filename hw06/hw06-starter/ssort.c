@@ -16,7 +16,9 @@
 
 void qsort_floats(floats* fs) {
     // TO-DONE: call qsort to sort the array
-    qsort(fs->data[0], fs->size, sizeof(float), float_cmp);
+    int (*comparison)(float, float);
+    comparison = &float_cmp;
+    qsort(fs->data, fs->size, sizeof(float), comparison);
 }
 
 floats* sample(float* data, long size, int P) {
@@ -29,7 +31,7 @@ void sort_worker(int pnum, float* data, long size, int P, floats* samps, long* s
     floats* xs = floats_make(10);
     // TODO: select the floats to be sorted by this worker
 
-    printf("%d: start %.04f, count %ld\n", pnum, samps->data[pnum], xs->size);
+    printf("%d: start %.04f, count %d\n", pnum, samps->data[pnum], xs->size);
 
     // TODO: some other stuff
 
@@ -55,7 +57,7 @@ void run_sort_workers(float* data, long size, int P, floats* samps, long* sizes,
 void sample_sort(float* data, long size, int P, long* sizes, barrier* bb) {
     floats* samps = sample(data, size, P);
     run_sort_workers(data, size, P, samps, sizes, bb);
-    free_floats(samps);
+    floats_free(samps);
 }
 
 int main(int argc, char* argv[]) {

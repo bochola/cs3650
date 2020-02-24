@@ -9,13 +9,13 @@
 
 int float_cmp(float x, float y) {
     
-    if (abs(x, y) <= 0.0001) {
+    if (abs(x - y) <= 0.0001) {
         return 0;
     }
     else if (x < y) {
         return -1;
     }
-    else if (x > y) {
+    else {
         return 1;
     }
     

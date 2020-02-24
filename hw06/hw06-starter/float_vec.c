@@ -1,6 +1,8 @@
 // float_vec.c
 
 #include <stdlib.h>
+#include <string.h>
+#include <assert.h>
 
 #include "float_vec.h"
 
@@ -26,11 +28,13 @@ void floats_free(floats* fs) {
 
     if (fs)
     {
-
-        for (int ii = 0; ii < fs->size; ii++)
-        {
-            free(fs->data[ii]);
-        }
+        // I shouldnt need to free the data entries caus theyre just numbers, right?
+       // for (int ii = 0; ii < fs->size; ii++)
+       // {
+       //     if (fs->data[ii]) {
+       //         free(fs->data[ii]);
+       //     }
+       // }
 
         free(fs->data);
         free(fs);
@@ -65,12 +69,16 @@ void floats_push(floats* fs, float num) {
 
     if (fs->size >= fs->cap) {
         int new_cap = fs->cap * 2;
-        fs->data  = realloc(fs->data, new_cap * sizeof(float));
-        memset(fs->data + fs->cap, 0, fs->cap * sizeof(float));
+        int pls_cpy = fs->cap * sizeof(float);
+        // TODO: Figure out how to copy over the values
+        void* data_ptr = realloc(fs->data, new_cap * sizeof(float));
+        memcpy(data_ptr, fs->data, pls_cpy);
+        fs->data = data_ptr;
         fs->cap = new_cap;
+        // Can I free data_ptr here? Or would that mess with fs->data
     }
 
-    fs->spaces++;
+    fs->size++;
     floats_put(fs, ii, num);
 }
 
