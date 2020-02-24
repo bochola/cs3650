@@ -14,15 +14,27 @@
 #include "barrier.h"
 #include "utils.h"
 
+
+int float_cmp(const void * x, const void * y) {
+    
+    if (abs(x - y) <= 0.0001) {
+        return 0;
+    }
+    else if (x < y) {
+        return -1;
+    }
+    else {
+        return 1;
+    }
+}
+
 void qsort_floats(floats* fs) {
     // TO-DONE: call qsort to sort the array
-    int (*comparison)(float, float);
-    comparison = &float_cmp;
-    qsort(fs->data, fs->size, sizeof(float), comparison);
+    qsort(fs->data, fs->size, sizeof(float), float_cmp);
 }
 
 floats* sample(float* data, long size, int P) {
-    // TODO: sample the input data, per the algorithm decription
+    // TODO: sample the input data, per the algorithm description
     return floats_make(10);
 }
 
@@ -69,7 +81,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    const int P = atoi(argv[1]);
+    const int num_proc = atoi(argv[1]);
     const char* fname = argv[2];
 
     seed_rng();
@@ -95,7 +107,9 @@ int main(int argc, char* argv[]) {
     long count = 100;
     float* data = malloc(1024);
 
-    long sizes_bytes = P * sizeof(long);
+    // Once the file is read in, push all the data to a floats struct
+
+    long sizes_bytes = num_proc * sizeof(long);
     long* sizes = malloc(sizes_bytes); // TODO: This should be shared
 
     barrier* bb = make_barrier(P);
