@@ -5,6 +5,21 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <stdio.h>
+#include <math.h>
+
+int float_cmp(float x, float y) {
+    
+    if (abs(x, y) <= 0.0001) {
+        return 0;
+    }
+    else if (x < y) {
+        return -1;
+    }
+    else if (x > y) {
+        return 1;
+    }
+    
+}
 
 void
 seed_rng()

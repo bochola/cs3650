@@ -1,3 +1,5 @@
+// ssort.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/mman.h>
@@ -12,24 +14,19 @@
 #include "barrier.h"
 #include "utils.h"
 
-void
-qsort_floats(floats* xs)
-{
-    // TODO: call qsort to sort the array
-    // see "man 3 qsort" for details
+void qsort_floats(floats* fs) {
+    // TO-DONE: call qsort to sort the array
+    qsort(fs->data[0], fs->size, sizeof(float), float_cmp);
 }
 
-floats*
-sample(float* data, long size, int P)
-{
+floats* sample(float* data, long size, int P) {
     // TODO: sample the input data, per the algorithm decription
-    return make_floats(10);
+    return floats_make(10);
 }
 
-void
-sort_worker(int pnum, float* data, long size, int P, floats* samps, long* sizes, barrier* bb)
+void sort_worker(int pnum, float* data, long size, int P, floats* samps, long* sizes, barrier* bb) 
 {
-    floats* xs = make_floats(10);
+    floats* xs = floats_make(10);
     // TODO: select the floats to be sorted by this worker
 
     printf("%d: start %.04f, count %ld\n", pnum, samps->data[pnum], xs->size);
@@ -40,12 +37,10 @@ sort_worker(int pnum, float* data, long size, int P, floats* samps, long* sizes,
 
     // TODO: probably more stuff
 
-    free_floats(xs);
+    floats_free(xs);
 }
 
-void
-run_sort_workers(float* data, long size, int P, floats* samps, long* sizes, barrier* bb)
-{
+void run_sort_workers(float* data, long size, int P, floats* samps, long* sizes, barrier* bb) {
     pid_t kids[P];
     (void) kids; // suppress unused warning
 
@@ -57,17 +52,13 @@ run_sort_workers(float* data, long size, int P, floats* samps, long* sizes, barr
     }
 }
 
-void
-sample_sort(float* data, long size, int P, long* sizes, barrier* bb)
-{
+void sample_sort(float* data, long size, int P, long* sizes, barrier* bb) {
     floats* samps = sample(data, size, P);
     run_sort_workers(data, size, P, samps, sizes, bb);
     free_floats(samps);
 }
 
-int
-main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     alarm(120);
 
     if (argc != 3) {
