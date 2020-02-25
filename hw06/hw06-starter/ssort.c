@@ -46,7 +46,6 @@ void sort_worker(int pnum, float* data, long size, int P, floats* samps, long* s
 
     printf("%d: start %.04f, count %d\n", pnum, samps->data[pnum], xs->size);
 
-    // TODO: some other stuff
 
     qsort_floats(xs);
 
@@ -55,7 +54,8 @@ void sort_worker(int pnum, float* data, long size, int P, floats* samps, long* s
     floats_free(xs);
 }
 
-void run_sort_workers(int P, floats* fs, long* sizes, barrier* bb) {
+void sample_sort(floats* fs, int P, long* sizes, barrier* bb) {
+   
     pid_t kids[P];
     (void) kids; // suppress unused warning
 
@@ -65,10 +65,6 @@ void run_sort_workers(int P, floats* fs, long* sizes, barrier* bb) {
         //int rv = waitpid(kids[ii], 0, 0);
         //check_rv(rv);
     }
-}
-
-void sample_sort(floats* fs, int P, long* sizes, barrier* bb) {
-    run_sort_workers(P, fs, sizes, bb);
 }
 
 long in_range(floats* fs, long start, long end) {
@@ -136,20 +132,22 @@ int main(int argc, char* argv[]) {
     // The numerical range for each bucket shouldnt be less than or equal to 0
     assert(bucket_chunks > 0);
 
-    //Now we initialize the assignment array to signify how many floats will be in each bucket
+    // Now we initialize the sizes array to signify how many floats will be in each bucket
     for (int i = 0; i < num_proc; i++) {
         
-        sizes[i] = in_range(fs, i * bucket_chunks, (i + 1) * bucket_chunks);
-    } 
+        long start = smallest + (i * bucket_chunks);
+        long end = smallest + ((i + 1) * bucket_chunks);
 
+        sizes[i] = in_range(fs, start, end);
+    }
+    
     barrier* bb = make_barrier(num_proc);
-
+    
     sample_sort(fs, num_proc, sizes, bb);
-
+    
     free_barrier(bb);
-
-    // TODO: munmap your mmaps
+    
+    munmap(address, fsize);
 
     return 0;
 }
-
