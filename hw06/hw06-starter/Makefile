@@ -1,5 +1,5 @@
 
-CFLAGS := -g -Wall -Werror
+CFLAGS := -g -std=c99 -Wall -Werror
 SRCS   := $(wildcard *.c)
 
 all: tools ssort

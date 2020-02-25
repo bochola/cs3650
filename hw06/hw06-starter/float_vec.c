@@ -7,18 +7,11 @@
 #include "float_vec.h"
 
 // Creates a floats struct
-floats* floats_make(int cap) {
+floats* floats_make() {
 
     floats* fs = malloc(sizeof(floats));  // fs is a pointer to a floats
-
-    if (cap >= 2) {
-        fs->cap = cap;
-    }
-    else {
-        fs->cap = 2;
-    }
-
-    fs->data = calloc(cap, sizeof(float)); // fs->data is a pointer to [capacity] slots of float
+    fs->cap = 1;
+    fs->data = calloc(fs->cap, sizeof(float)); // fs->data is a pointer to [capacity] slots of float
     fs->size = 0;   // number of filled spaces in the array
     return fs;
 }
@@ -47,6 +40,36 @@ int floats_size(floats* fs) {
 
     return fs->size;
 }
+
+float floats_largest(floats* fs) {
+    
+    float largest = fs->data[0];
+
+    for (int i = 0; i < fs->size; i++) {
+        
+        if (fs->data[i] > largest) {
+            largest = fs->data[i];
+        }
+    }
+
+    return largest;
+    
+}
+
+float floats_smallest(floats* fs) {
+
+    float smallest = fs->data[0];
+
+        for (int i = 0; i < fs->size; i++) {
+
+            if (fs->data[i] < smallest) {
+                smallest = fs->data[i];
+            }
+        }
+
+    return smallest;
+}
+
 
 // Returns the item at the given address
 float floats_get(floats* fs, int ii) {

@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <math.h>
+#include <assert.h>
 
 #include "float_vec.h"
 #include "barrier.h"
@@ -17,14 +18,14 @@
 
 int float_cmp(const void * x, const void * y) {
     
-    if (abs(x - y) <= 0.0001) {
-        return 0;
+    if (x > y) {
+        return 1;
     }
     else if (x < y) {
         return -1;
     }
     else {
-        return 1;
+        return 0;
     }
 }
 
@@ -33,7 +34,7 @@ void qsort_floats(floats* fs) {
     qsort(fs->data, fs->size, sizeof(float), float_cmp);
 }
 
-floats* sample(float* data, long size, int P) {
+floats* sample(float* data, int num_proc) {
     // TODO: sample the input data, per the algorithm description
     return floats_make(10);
 }
@@ -54,7 +55,7 @@ void sort_worker(int pnum, float* data, long size, int P, floats* samps, long* s
     floats_free(xs);
 }
 
-void run_sort_workers(float* data, long size, int P, floats* samps, long* sizes, barrier* bb) {
+void run_sort_workers(int P, floats* fs, long* sizes, barrier* bb) {
     pid_t kids[P];
     (void) kids; // suppress unused warning
 
@@ -66,10 +67,25 @@ void run_sort_workers(float* data, long size, int P, floats* samps, long* sizes,
     }
 }
 
-void sample_sort(float* data, long size, int P, long* sizes, barrier* bb) {
-    floats* samps = sample(data, size, P);
-    run_sort_workers(data, size, P, samps, sizes, bb);
-    floats_free(samps);
+void sample_sort(floats* fs, int P, long* sizes, barrier* bb) {
+    run_sort_workers(P, fs, sizes, bb);
+}
+
+long in_range(floats* fs, long start, long end) {
+    
+    long count = 0;
+    int size = floats_size(fs);
+
+    for (int i = 0; i < size; i++) {
+        
+        float test = floats_get(fs, i);
+
+        if ((test >= start) && (test < end)) {
+            count++;
+        }
+    }
+
+    return count;
 }
 
 int main(int argc, char* argv[]) {
@@ -100,21 +116,35 @@ int main(int argc, char* argv[]) {
     int fd = open(fname, O_RDWR);
     check_rv(fd);
 
-    void* file = malloc(1024); // TODO: load the file with mmap.
-    (void) file; // suppress unused warning.
+    void* address = mmap(0, fsize, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    
+    floats* fs = floats_make();
 
-    // TODO: These should probably be from the input file.
-    long count = 100;
-    float* data = malloc(1024);
+    for (int i = 0; i < fsize; i+= sizeof(float)) {
+        float* x = address + i;
+        floats_push(fs, *x);
+    }
+    
+    // Make an array of longs to tell how many floats are in each bucket
+    long sizes[num_proc];     
+    
+    float smallest = floats_smallest(fs);
+    float largest = floats_largest(fs);
 
-    // Once the file is read in, push all the data to a floats struct
+    long bucket_chunks = abs(largest - smallest) / num_proc;
+     
+    // The numerical range for each bucket shouldnt be less than or equal to 0
+    assert(bucket_chunks > 0);
 
-    long sizes_bytes = num_proc * sizeof(long);
-    long* sizes = malloc(sizes_bytes); // TODO: This should be shared
+    //Now we initialize the assignment array to signify how many floats will be in each bucket
+    for (int i = 0; i < num_proc; i++) {
+        
+        sizes[i] = in_range(fs, i * bucket_chunks, (i + 1) * bucket_chunks);
+    } 
 
-    barrier* bb = make_barrier(P);
+    barrier* bb = make_barrier(num_proc);
 
-    sample_sort(data, count, P, sizes, bb);
+    sample_sort(fs, num_proc, sizes, bb);
 
     free_barrier(bb);
 
