@@ -88,14 +88,14 @@ void floats_put(floats* fs, int ii, float num) {
 
 // Adds the given item to the end of the vector, expanding if necessary
 void floats_push(floats* fs, float num) {
-    printf("Entered floats_push\n");
+    //printf("Entered floats_push\n");
     // expand vector if backing array is not big enough
     int ii = fs->size;
 
     if (fs->size >= fs->cap) {
         int new_cap = fs->cap * 2;
         int pls_cpy = fs->cap * sizeof(float);
-        // TODO: Figure out how to copy over the values
+        
         void* data_ptr = realloc(fs->data, new_cap * sizeof(float));
         memcpy(data_ptr, fs->data, pls_cpy);
         fs->data = data_ptr;

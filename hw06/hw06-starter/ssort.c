@@ -105,7 +105,7 @@ void sample_sort(floats* fs, int num_proc, long* sizes, long bucket, void* addr,
         
     for (int ii = 0; ii < num_proc; ++ii) {
         int rv = waitpid(kids[ii], 0, 0);
-        assert(rv >= 0);
+        check_rv(rv);
     }
 }
 
@@ -138,23 +138,34 @@ int main(int argc, char* argv[]) {
     check_rv(fd);
     
     printf("fsize: %i\n", fsize);
-
-    void* address = mmap(0, fsize, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_SHARED, fd, 8);
+    
+    void* add = NULL;
+    size_t length = fsize * sizeof(float);
+    //off_t offset = sizeof(long);
+    off_t offset = sysconf(_SC_PAGE_SIZE);
+    void* address = mmap(add, length, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_SHARED, fd, offset);
     printf("Made it passed mmapping\n");
     
     floats* fs = floats_make();
-    float* x = address;
-
+    printf("Address: %p\n", address);
+   
     for (int i = 0; i < fsize; i++) {
-        //float* x = address + i;
-        //floats_push(fs, *x);
-        printf("Entered loop\n");        
-        printf("%f\n", x[i]);
-        floats_push(fs, x[i]);
+        //printf("%f\n", x[i]);
+        //floats_push(fs, x[i]);
 
+        float *x = address + (i * sizeof(float));
+        printf("i is: %i\n", i);
+        printf("x is: %f\n", *x);
+        floats_push(fs, *x);
+        
+        printf("Floats size: %d\n", fs->size);
+
+        if (i >= 302) {
+            //break;
+        }
     }
     
-    printf("Passed pushing to a floats, maybe successful?");
+    printf("Passed pushing to a floats, maybe successful?\n");
 
     // Make an array of longs to tell how many floats are in each bucket
     long sizes[num_proc];     
