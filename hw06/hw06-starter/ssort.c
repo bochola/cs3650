@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <math.h>
 #include <assert.h>
+#include <string.h>
 
 #include "float_vec.h"
 #include "barrier.h"
@@ -29,43 +30,6 @@ int float_cmp(const void * x, const void * y) {
     }
 }
 
-void qsort_floats(floats* fs) {
-    // TO-DONE: call qsort to sort the array
-    qsort(fs->data, fs->size, sizeof(float), float_cmp);
-}
-
-floats* sample(float* data, int num_proc) {
-    // TODO: sample the input data, per the algorithm description
-    return floats_make(10);
-}
-
-void sort_worker(int pnum, float* data, long size, int P, floats* samps, long* sizes, barrier* bb) 
-{
-    floats* xs = floats_make(10);
-    // TODO: select the floats to be sorted by this worker
-
-    printf("%d: start %.04f, count %d\n", pnum, samps->data[pnum], xs->size);
-
-
-    qsort_floats(xs);
-
-    // TODO: probably more stuff
-
-    floats_free(xs);
-}
-
-void sample_sort(floats* fs, int P, long* sizes, barrier* bb) {
-   
-    pid_t kids[P];
-    (void) kids; // suppress unused warning
-
-    // TODO: spawn P processes, each running sort_worker
-
-    for (int ii = 0; ii < P; ++ii) {
-        //int rv = waitpid(kids[ii], 0, 0);
-        //check_rv(rv);
-    }
-}
 
 long in_range(floats* fs, long start, long end) {
     
@@ -82,6 +46,67 @@ long in_range(floats* fs, long start, long end) {
     }
 
     return count;
+}
+
+void qsort_floats(floats* fs) {
+    // TO-DONE: call qsort to sort the array
+    qsort(fs->data, fs->size, sizeof(float), float_cmp);
+}
+
+void sort_worker(floats* fs, long* sizes, long bucket_size, int P, void* address) 
+{
+    if (sizes[P] > 0) {
+    
+        floats* samps = floats_make();
+        
+        long start = P * bucket_size;
+        long end = (P + 1) * bucket_size;
+
+        for (int i = 0; i < fs->size; i++) {
+            
+            float fl = floats_get(fs, i);
+
+            if ((fl >= start) && (fl < end)) {
+                floats_push(samps, fl);
+            }
+        }
+
+        // There is a chance that samps.size != sizes[P]
+        // If so, figure out why and fix iti
+        
+        qsort_floats(samps);
+        
+        // Here I need to write to memory in the correct location
+        
+        for (int j = 0; j < P; j++) {
+            address = address + (sizeof(float) * sizes[j]);
+        }
+        
+        memcpy(address, samps->data, samps->size);
+    }
+}
+
+void sample_sort(floats* fs, int num_proc, long* sizes, long bucket, void* addr, barrier* bb) {
+   
+    // TO-DONE: spawn P processes, each running sort_worker
+
+    int kids[num_proc];
+    
+    for (int i = 0; i < num_proc; i++) {
+           
+        if ((kids[i] = fork())) {
+            // What should the "parents" be doing?
+        }
+        else {
+            sort_worker(fs, sizes, bucket, i, addr);
+            break;
+        }
+    }
+        
+    for (int ii = 0; ii < num_proc; ++ii) {
+        int rv = waitpid(kids[ii], 0, 0);
+        assert(rv >= 0);
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -111,39 +136,49 @@ int main(int argc, char* argv[]) {
 
     int fd = open(fname, O_RDWR);
     check_rv(fd);
+    
+    printf("fsize: %i\n", fsize);
 
-    void* address = mmap(0, fsize, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    void* address = mmap(0, fsize, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_SHARED, fd, 8);
+    printf("Made it passed mmapping\n");
     
     floats* fs = floats_make();
+    float* x = address;
 
-    for (int i = 0; i < fsize; i+= sizeof(float)) {
-        float* x = address + i;
-        floats_push(fs, *x);
+    for (int i = 0; i < fsize; i++) {
+        //float* x = address + i;
+        //floats_push(fs, *x);
+        printf("Entered loop\n");        
+        printf("%f\n", x[i]);
+        floats_push(fs, x[i]);
+
     }
     
+    printf("Passed pushing to a floats, maybe successful?");
+
     // Make an array of longs to tell how many floats are in each bucket
     long sizes[num_proc];     
     
     float smallest = floats_smallest(fs);
     float largest = floats_largest(fs);
 
-    long bucket_chunks = abs(largest - smallest) / num_proc;
+    long bucket_size = abs(largest - smallest) / num_proc;
      
     // The numerical range for each bucket shouldnt be less than or equal to 0
-    assert(bucket_chunks > 0);
+    assert(bucket_size > 0);
 
     // Now we initialize the sizes array to signify how many floats will be in each bucket
     for (int i = 0; i < num_proc; i++) {
         
-        long start = smallest + (i * bucket_chunks);
-        long end = smallest + ((i + 1) * bucket_chunks);
+        long start = smallest + (i * bucket_size);
+        long end = smallest + ((i + 1) * bucket_size);
 
         sizes[i] = in_range(fs, start, end);
     }
     
     barrier* bb = make_barrier(num_proc);
     
-    sample_sort(fs, num_proc, sizes, bb);
+    sample_sort(fs, num_proc, sizes, bucket_size, address, bb);
     
     free_barrier(bb);
     

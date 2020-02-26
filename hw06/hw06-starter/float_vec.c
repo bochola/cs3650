@@ -1,5 +1,6 @@
 // float_vec.c
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -87,6 +88,7 @@ void floats_put(floats* fs, int ii, float num) {
 
 // Adds the given item to the end of the vector, expanding if necessary
 void floats_push(floats* fs, float num) {
+    printf("Entered floats_push\n");
     // expand vector if backing array is not big enough
     int ii = fs->size;
 
@@ -116,3 +118,10 @@ void floats_swap(floats* fs, int ii, int jj) {
 
 }
 
+// Prints the given floats
+void floats_print(floats* fs, char* separator) {
+    for (int ii = 0; ii < fs->size; ii++) {
+        printf("%f%s", floats_get(fs, ii), separator);
+        fflush(stdout);
+    }
+}
