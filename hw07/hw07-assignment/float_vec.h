@@ -10,9 +10,17 @@ typedef struct floats {
     float* data;
 } floats;
 
-floats* make_floats(long nn);
+floats* floats_make();
 void floats_push(floats* xs, float xx);
-void free_floats(floats* xs);
-void floats_print(floats* xs);
+void floats_free(floats* xs);
+
+int   floats_size(floats* fs);
+float floats_largest(floats* fs);
+float floats_smallest(floats* fs);
+float floats_get(floats* fs, int ii);
+void  floats_puts(floats* fs, int ii, float num);
+void  floats_swap(floats* fs, int ii, int jj);
+void  floats_print(floats* xs, char* separator);
+
 
 #endif
