@@ -144,27 +144,41 @@ int main(int argc, char* argv[]) {
     //off_t offset = sizeof(long);
     off_t offset = sysconf(_SC_PAGE_SIZE);
     void* address = mmap(add, length, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_SHARED, fd, offset);
-    printf("Made it passed mmapping\n");
     
+    if (address == MAP_FAILED) {
+        perror("mmap");
+        exit(1);
+    }
+    else {
+        printf("Made it passed mmapping\n");
+    }
+
     floats* fs = floats_make();
     printf("Address: %p\n", address);
+
+    float *f = address;
+    printf("First float: %.04f/n", f[0]);
    
-    for (int i = 0; i < fsize; i++) {
-        //printf("%f\n", x[i]);
-        //floats_push(fs, x[i]);
+    //for (int i = 0; i < fsize; i++) {
+    //    //printf("%f\n", x[i]);
+    //    //floats_push(fs, x[i]);
 
-        float *x = address + (i * sizeof(float));
-        printf("i is: %i\n", i);
-        printf("x is: %f\n", *x);
-        floats_push(fs, *x);
-        
-        printf("Floats size: %d\n", fs->size);
+    //    float *x = address + (i * sizeof(float));
+    //    printf("i is: %i\n", i);
+    //    printf("x is: %f\n", *x);
+    //    floats_push(fs, *x);
+    //    
+    //    printf("Floats size: %d\n", fs->size);
 
-        if (i >= 302) {
-            //break;
-        }
-    }
+    //    if (i >= 302) {
+    //        //break;
+    //    }
+    //}
     
+    fs->size = fsize;
+    fs->cap = fsize;
+    fs->data = address;
+
     printf("Passed pushing to a floats, maybe successful?\n");
 
     // Make an array of longs to tell how many floats are in each bucket
@@ -172,7 +186,7 @@ int main(int argc, char* argv[]) {
     
     float smallest = floats_smallest(fs);
     float largest = floats_largest(fs);
-
+    printf("Smallest found: %.04f/n Largest found: %.04f/n", smallest, largest);
     long bucket_size = abs(largest - smallest) / num_proc;
      
     // The numerical range for each bucket shouldnt be less than or equal to 0

@@ -1,0 +1,1 @@
+After hours upon hours of debugging, I still cannot figure out why I keep getting a bus error. My mmap seems to be working but every time I try to access it, something freaks out.
