@@ -55,7 +55,7 @@ void qsort_floats(floats* fs) {
     qsort(fs->data, fs->size, sizeof(float), float_cmp);
 }
 
-void sort_worker(floats* fs, long* sizes, long bucket_size, int P, void* address) 
+void sort_worker(floats* fs, long* sizes, long bucket_size, int P, FILE* fstream) 
 {
     if (sizes[P] > 0) {
     
@@ -81,33 +81,25 @@ void sort_worker(floats* fs, long* sizes, long bucket_size, int P, void* address
         // Here I need to write to memory in the correct location
         
         for (int j = 0; j < P; j++) {
-            address = address + (sizeof(float) * sizes[j]);
+            // address = address + (sizeof(float) * sizes[j]);
         }
         
-        memcpy(address, samps->data, samps->size);
+        // memcpy(address, samps->data, samps->size);
     }
 }
 
-void sample_sort(floats* fs, int num_proc, long* sizes, long bucket, void* addr, barrier* bb) {
+void sample_sort(floats* fs, int num_proc, long* sizes, long bucket, FILE* fstream, barrier* bb) {
    
     // TO-DONE: spawn P processes, each running sort_worker
 
-    int kids[num_proc];
-    
     for (int i = 0; i < num_proc; i++) {
            
-        if ((kids[i] = fork())) {
-            // What should the "parents" be doing?
-        }
-        else {
-            sort_worker(fs, sizes, bucket, i, addr);
-            break;
-        }
+        //sort_worker(fs, sizes, bucket, i, fstream);
     }
         
     for (int ii = 0; ii < num_proc; ++ii) {
-        int rv = waitpid(kids[ii], 0, 0);
-        check_rv(rv);
+        // int rv = waitpid(kids[ii], 0, 0);
+        // check_rv(rv);
     }
 }
 
@@ -138,39 +130,53 @@ int main(int argc, char* argv[]) {
 
     int fd = open(fname, O_RDWR);
     check_rv(fd);
-    
+
     printf("fsize: %i\n", fsize);
-    
-    void* add = NULL;
-    size_t length = fsize * sizeof(float);
-    //off_t offset = sizeof(long);
-    off_t offset = sysconf(_SC_PAGE_SIZE);
-    void* address = mmap(add, length, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_SHARED, fd, offset);
-    printf("Made it passed mmapping\n");
-    
+
+    FILE* fstream = fopen(fname, "w+");
+
     floats* fs = floats_make();
-    printf("Address: %p\n", address);
+    void* read_addr = malloc(fsize * 4);
+    
+    fseek(fstream, 8, SEEK_SET); // Sets the first 8 bytes of fd to be ignored
+    fread(read_addr, fsize, 4, fstream); // Reads in fsize bytes
+
+    fs->size = fsize;
+    fs->cap = fsize;
+    fs->data = (float*) read_addr;
+    
+    //void* add = NULL;
+    //size_t length = fsize * sizeof(float);
+    ////off_t offset = sizeof(long);
+    //off_t offset = sysconf(_SC_PAGE_SIZE);
+    //void* address = mmap(add, length, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_SHARED, fd, offset);
+    //printf("Made it passed mmapping\n");
+    //
+    //floats* fs = floats_make();
+    //printf("Address: %p\n", address);
    
-    for (int i = 0; i < fsize; i++) {
-        //printf("%f\n", x[i]);
-        //floats_push(fs, x[i]);
+    //for (int i = 0; i < fsize; i++) {
+    //    //printf("%f\n", x[i]);
+    //    //floats_push(fs, x[i]);
 
-        float *x = address + (i * sizeof(float));
-        printf("i is: %i\n", i);
-        printf("x is: %f\n", *x);
-        floats_push(fs, *x);
-        
-        printf("Floats size: %ld\n", fs->size);
+    //    float *x = address + (i * sizeof(float));
+    //    printf("i is: %i\n", i);
+    //    printf("x is: %f\n", *x);
+    //    floats_push(fs, *x);
+    //    
+    //    printf("Floats size: %ld\n", fs->size);
 
-        if (i >= 302) {
-            //break;
-        }
-    }
+    //    if (i >= 302) {
+    //        //break;
+    //    }
+    //}
     
     printf("Passed pushing to a floats, maybe successful?\n");
 
     // Make an array of longs to tell how many floats are in each bucket
     long sizes[num_proc];     
+
+    floats_print(fs, "\n");
     
     float smallest = floats_smallest(fs);
     float largest = floats_largest(fs);
@@ -178,7 +184,11 @@ int main(int argc, char* argv[]) {
     long bucket_size = abs(largest - smallest) / num_proc;
      
     // The numerical range for each bucket shouldnt be less than or equal to 0
-    assert(bucket_size > 0);
+    if (bucket_size > 0) {
+        printf("All values the same, file sorted\n");
+        fclose(fstream);
+        return 0;
+    }
 
     // Now we initialize the sizes array to signify how many floats will be in each bucket
     for (int i = 0; i < num_proc; i++) {
@@ -191,11 +201,10 @@ int main(int argc, char* argv[]) {
     
     barrier* bb = make_barrier(num_proc);
     
-    sample_sort(fs, num_proc, sizes, bucket_size, address, bb);
+    sample_sort(fs, num_proc, sizes, bucket_size, fstream, bb);
     
     free_barrier(bb);
-    
-    munmap(address, fsize);
+    fclose(fstream);
 
     return 0;
 }

@@ -1,0 +1,36 @@
+For the past week I have been working on fixing my process sort and getting that to work, as I have been advised that it is the best way to make sure that my threads sort works. However, I have not made much progress with assignment 6, so assignment 7 has been held a bit stagnant.
+
+
+Specs:
+    - Physical
+        - OS: Windows 10 Pro
+        - Ram: 16 GB
+        - Processor: Intel Core i7-8700K
+        - Cores: 6
+        - Logical Processors: 12
+    - Virtual
+        - OS: Debian 64
+        - Ram: 2 GB
+        - Processor: ??
+        - Cores: ?
+        - Processors: 2
+    - CCIS
+        - OS: Linux (? I'm not sure how to check this)
+        - Ram: 196.29 GB
+        - Processor: Intel Xeon Gold 5118
+        - Cores: 22
+        - Processors: 47
+
+
+Results of testing:
+
+
+Sample Sort as a parallel sorting algorithm:
+
+    I am not well versed in the processing speeds and runtime terminology that this answer would deem, but based off my limited understanding of both Amdahl and Gustafson's Laws, sample sort is an adequate algorithm for parallel sorting. The only part in the process that can not be optimized by adding more process/threads is the initial sampling of the list. After that first step, everything can be optimized by adding more parallelism, although I would imagine there is a max ceiling for that.
+
+
+ 
+In comparison to the Process/mmap version:
+
+    My mmap version of sample sort does not work, so I can't compare the two.
