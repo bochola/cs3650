@@ -1,4 +1,8 @@
-For the past week I have been working on fixing my process sort and getting that to work, as I have been advised that it is the best way to make sure that my threads sort works. However, I have not made much progress with assignment 6, so assignment 7 has been held a bit stagnant.
+For the past week I have been working on fixing my process sort and 
+getting that to work, as I have been advised that it is the best 
+way to make sure that my threads sort works. However, I have not 
+made much progress with assignment 6, so assignment 7 has been held 
+a bit stagnant.
 
 
 Specs:
@@ -24,13 +28,24 @@ Specs:
 
 Results of testing:
 
+    Using a .dat file that was generated with 50,000,000 floats,
+I tested the execution time using 1, 2, 4, 6, and 8 processes.
+As shown in graph.png, 
 
 Sample Sort as a parallel sorting algorithm:
 
-    I am not well versed in the processing speeds and runtime terminology that this answer would deem, but based off my limited understanding of both Amdahl and Gustafson's Laws, sample sort is an adequate algorithm for parallel sorting. The only part in the process that can not be optimized by adding more process/threads is the initial sampling of the list. After that first step, everything can be optimized by adding more parallelism, although I would imagine there is a max ceiling for that.
+    I am not well versed in the processing speeds and runtime 
+terminology that this answer would deem, but based off my limited 
+understanding of both Amdahl and Gustafson's Laws, sample sort is an 
+adequate algorithm for parallel sorting. The only part in the process
+ that can not be optimized by adding more process/threads is the 
+initial sampling of the list. After that first step, everything can 
+be optimized by adding more parallelism, although I would imagine 
+there is a max ceiling for that.
 
 
  
 In comparison to the Process/mmap version:
 
-    My mmap version of sample sort does not work, so I can't compare the two.
+    My mmap version of sample sort does not work, so in light of that
+information, I would say that my threads version is much faster.

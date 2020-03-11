@@ -88,6 +88,7 @@ void* sort_worker(void *arg) {
     memcpy(&job->fs->data[count], range->data, range-> size * sizeof(float));
 
     floats_free(range); 
+    free(job);
 
     return 0;
 }
@@ -137,6 +138,8 @@ void sample_sort(floats* fs, int num_threads, long* sizes, barrier* bb) {
          int rv = pthread_join(threads[i], 0);
          check_rv(rv);
     }
+    
+    floats_free(medians);
 
 }
 
@@ -179,6 +182,7 @@ int main(int argc, char* argv[]) {
     
     fs->size = num_floats;
     fs->cap = num_floats;
+    free(fs->data);
     fs->data = (float*) read_addr;
     
     long sizes[num_threads];     
@@ -194,6 +198,7 @@ int main(int argc, char* argv[]) {
     write(out_fd, &num_floats, sizeof(long));
     write(out_fd, fs->data, num_floats * sizeof(float)); 
     
+    floats_free(fs);
     close(out_fd);
 
     return 0;
