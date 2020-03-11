@@ -7,9 +7,12 @@
 #include <pthread.h>
 
 typedef struct barrier {
-    // TODO: Need some synchronization stuff.
-    int   count;
-    int   seen;
+
+    pthread_mutex_t wall;
+    pthread_mutex_t seen_lock;
+    pthread_cond_t condvar;
+    int count;
+    int seen;
 } barrier;
 
 barrier* make_barrier(int nn);

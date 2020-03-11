@@ -12,7 +12,6 @@
 #include <assert.h>
 #include <string.h>
 #include <pthread.h>
-#include <semaphore.h>
 
 #include "float_vec.h"
 #include "barrier.h"
@@ -63,12 +62,12 @@ floats* in_range(floats* fs, float start, float end) {
 }
 
 void qsort_floats(floats* fs) {
-    // TO-DONE: call qsort to sort the array
     qsort(fs->data, fs->size, sizeof(float), float_cmp);
 }
 
 void* sort_worker(void *arg) {
     
+    //  {p}: start {start}, count {length of local array}      
     sort_job* job = (sort_job*)arg;
 
     float start = floats_get(job->medians, job->thread_num);
@@ -79,13 +78,13 @@ void* sort_worker(void *arg) {
     
     qsort_floats(range);
 
-    // Wait on barrier here
+    barrier_wait(job->bb);
 
     int count = 0;
     for (int i = 0; i < job->thread_num; i++) {
         count += job->sizes[i];
     }
-
+    printf("%d: start %.04f, count %ld\n", job->thread_num, start, range->size);
     memcpy(&job->fs->data[count], range->data, range-> size * sizeof(float));
 
     floats_free(range); 
@@ -109,7 +108,7 @@ void sample_sort(floats* fs, int num_threads, long* sizes, barrier* bb) {
     qsort_floats(sampled);
     
     floats* medians = floats_make();
-    floats_push(medians, -INFINITY);
+    floats_push(medians, 0.0);
 
     for (int i = 1; i < num_samples; i += 3) {
         floats_push(medians, floats_get(sampled, i));
@@ -122,7 +121,7 @@ void sample_sort(floats* fs, int num_threads, long* sizes, barrier* bb) {
 
     for (int i = 0; i < num_threads; i++) {
         
-        sort_job* job = malloc(sizeof(job));
+        sort_job* job = malloc(sizeof(sort_job));
         job->fs = fs;
         job->medians = medians;
         job->sizes = sizes;
@@ -184,13 +183,11 @@ int main(int argc, char* argv[]) {
     
     long sizes[num_threads];     
 
-   // barrier* bb = make_barrier(num_threads);
+    barrier* bb = make_barrier(num_threads);
       
-    sample_sort(fs, 1, sizes, 0);
-   // 
-   // free_barrier(bb);
-   //
+    sample_sort(fs, num_threads, sizes, bb);
     
+    free_barrier(bb);
     
     int out_fd = open(out_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
