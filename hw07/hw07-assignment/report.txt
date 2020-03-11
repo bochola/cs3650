@@ -1,9 +1,4 @@
-For the past week I have been working on fixing my process sort and 
-getting that to work, as I have been advised that it is the best 
-way to make sure that my threads sort works. However, I have not 
-made much progress with assignment 6, so assignment 7 has been held 
-a bit stagnant.
-
+Report.txt
 
 Specs:
     - Physical
@@ -25,12 +20,23 @@ Specs:
         - Cores: 22
         - Processors: 47
 
+Speedup:
+Num_threads   My CPU     CCIS
+    1            1         1 
+    2         1.1922    1.3551
+    4         1.8790    2.0232
+    6         1.9837    2.4588
+    8         1.9974    2.9776
 
 Results of testing:
 
-    Using a .dat file that was generated with 50,000,000 floats,
-I tested the execution time using 1, 2, 4, 6, and 8 processes.
-As shown in graph.png, 
+    Using a .dat file that was generated with 50,000,000 floats, I
+tested the execution time using 1, 2, 4, 6, and 8 processes. As shown
+ in graph.png, I was able to take the execution time on my CPU down 
+from 23 to 11 seconds. On the CCIS server, I brought it from 16 to 5 
+seconds. Considering how many more resources the CCIS server has in 
+comparison with my computer, this performance discrepancy is 
+expected.  
 
 Sample Sort as a parallel sorting algorithm:
 
