@@ -18,13 +18,25 @@
 #include "barrier.h"
 #include "utils.h"
 
+typedef struct sort_job {
+
+    floats* fs;
+    floats* medians;
+    long* sizes;
+    int thread_num;
+    barrier* bb;
+
+} sort_job;
 
 int float_cmp(const void * x, const void * y) {
     
-    if (x > y) {
+    const float* a = x;
+    const float* b = y;
+
+    if (*a > *b) {
         return 1;
     }
-    else if (x < y) {
+    else if (*a < *b) {
         return -1;
     }
     else {
@@ -33,9 +45,9 @@ int float_cmp(const void * x, const void * y) {
 }
 
 
-long in_range(floats* fs, long start, long end) {
+floats* in_range(floats* fs, float start, float end) {
     
-    long count = 0;
+    floats* range = floats_make();
     int size = floats_size(fs);
 
     for (int i = 0; i < size; i++) {
@@ -43,11 +55,11 @@ long in_range(floats* fs, long start, long end) {
         float test = floats_get(fs, i);
 
         if ((test >= start) && (test < end)) {
-            count++;
+            floats_push(range, test);
         }
     }
 
-    return count;
+    return range;
 }
 
 void qsort_floats(floats* fs) {
@@ -55,66 +67,92 @@ void qsort_floats(floats* fs) {
     qsort(fs->data, fs->size, sizeof(float), float_cmp);
 }
 
-void sort_worker(floats* fs, long* sizes, long bucket_size, int P, FILE* fstream) 
-{
-    if (sizes[P] > 0) {
+void* sort_worker(void *arg) {
     
-        floats* samps = floats_make();
-        
-        long start = P * bucket_size;
-        long end = (P + 1) * bucket_size;
+    sort_job* job = (sort_job*)arg;
 
-        for (int i = 0; i < fs->size; i++) {
-            
-            float fl = floats_get(fs, i);
+    float start = floats_get(job->medians, job->thread_num);
+    float end = floats_get(job->medians, job->thread_num + 1);
 
-            if ((fl >= start) && (fl < end)) {
-                floats_push(samps, fl);
-            }
-        }
+    floats* range = in_range(job->fs, start, end); 
+    job->sizes[job->thread_num] = range->size;
+    
+    qsort_floats(range);
 
-        // There is a chance that samps.size != sizes[P]
-        // If so, figure out why and fix iti
-        
-        qsort_floats(samps);
-        
-        // Here I need to write to memory in the correct location
-        
-        for (int j = 0; j < P; j++) {
-            // address = address + (sizeof(float) * sizes[j]);
-        }
-        
-        // memcpy(address, samps->data, samps->size);
+    // Wait on barrier here
+
+    int count = 0;
+    for (int i = 0; i < job->thread_num; i++) {
+        count += job->sizes[i];
     }
+
+    memcpy(&job->fs->data[count], range->data, range-> size * sizeof(float));
+
+    floats_free(range); 
+
+    return 0;
 }
 
-void sample_sort(floats* fs, int num_proc, long* sizes, long bucket, FILE* fstream, barrier* bb) {
-   
-    // TO-DONE: spawn P processes, each running sort_worker
+void sample_sort(floats* fs, int num_threads, long* sizes, barrier* bb) {
+    
+    int num_samples = 3 * (num_threads - 1);
+    
+    floats* sampled = floats_make();
+    
+    for (int i = 0; i < num_samples; i++) {
 
-    for (int i = 0; i < num_proc; i++) {
-           
-        //sort_worker(fs, sizes, bucket, i, fstream);
+        int loc = random() % fs->size;
+        
+        floats_push(sampled, floats_get(fs, loc));
+    }
+
+    qsort_floats(sampled);
+    
+    floats* medians = floats_make();
+    floats_push(medians, -INFINITY);
+
+    for (int i = 1; i < num_samples; i += 3) {
+        floats_push(medians, floats_get(sampled, i));
+    }
+
+    floats_push(medians, INFINITY);
+    floats_free(sampled);
+
+    pthread_t threads[num_threads];
+
+    for (int i = 0; i < num_threads; i++) {
+        
+        sort_job* job = malloc(sizeof(job));
+        job->fs = fs;
+        job->medians = medians;
+        job->sizes = sizes;
+        job->thread_num = i;
+        job->bb = bb;
+
+        int rv = pthread_create(&threads[i], 0, sort_worker, job); 
+        check_rv(rv);
+        
     }
         
-    for (int ii = 0; ii < num_proc; ++ii) {
-        // int rv = waitpid(kids[ii], 0, 0);
-        // check_rv(rv);
+    for (int i = 0; i < num_threads; ++i) {
+         int rv = pthread_join(threads[i], 0);
+         check_rv(rv);
     }
+
 }
 
 int main(int argc, char* argv[]) {
     alarm(120);
 
-    if (argc != 3) {
+    if (argc != 4) {
         printf("Usage:\n");
-        printf("\t%s P data.dat\n", argv[0]);
+        printf("\t%s T data.dat output.dat\n", argv[0]);
         return 1;
     }
 
-    const int num_proc = atoi(argv[1]);
+    const int num_threads = atoi(argv[1]);
     const char* fname = argv[2];
-
+    const char* out_name = argv[3];
     seed_rng();
 
     int rv;
@@ -128,57 +166,38 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    int fd = open(fname, O_RDWR);
-    check_rv(fd);
+    int in_fd = open(fname, O_RDONLY);
+    check_rv(in_fd);
 
-    printf("fsize: %i\n", fsize);
-
-    FILE* fstream = fopen(fname, "w+");
+    long num_floats;
+    read(in_fd, &num_floats, sizeof(long));
 
     floats* fs = floats_make();
-    void* read_addr = malloc(fsize * 4);
+    void* read_addr = malloc(num_floats * sizeof(float));
     
-    fseek(fstream, 8, SEEK_SET); // Sets the first 8 bytes of fd to be ignored
-    fread(read_addr, fsize, 4, fstream); // Reads in fsize bytes
-
-    fs->size = fsize;
-    fs->cap = fsize;
+    read(in_fd, read_addr, num_floats * sizeof(float)); // Reads in fsize bytes
+    close(in_fd);
+    
+    fs->size = num_floats;
+    fs->cap = num_floats;
     fs->data = (float*) read_addr;
     
-    printf("Passed pushing to a floats, maybe successful?\n");
+    long sizes[num_threads];     
 
-    // Make an array of longs to tell how many floats are in each bucket
-    long sizes[num_proc];     
-
-    floats_print(fs, "\n");
+   // barrier* bb = make_barrier(num_threads);
+      
+    sample_sort(fs, 1, sizes, 0);
+   // 
+   // free_barrier(bb);
+   //
     
-    float smallest = floats_smallest(fs);
-    float largest = floats_largest(fs);
-
-    long bucket_size = abs(largest - smallest) / num_proc;
-     
-    // The numerical range for each bucket shouldnt be less than or equal to 0
-    if (bucket_size < 0.0001) {
-        printf("All values the same, file sorted\n");
-        fclose(fstream);
-        return 0;
-    }
-
-    // Now we initialize the sizes array to signify how many floats will be in each bucket
-    for (int i = 0; i < num_proc; i++) {
-        
-        long start = smallest + (i * bucket_size);
-        long end = smallest + ((i + 1) * bucket_size);
-
-        sizes[i] = in_range(fs, start, end);
-    }
     
-    barrier* bb = make_barrier(num_proc);
+    int out_fd = open(out_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+    write(out_fd, &num_floats, sizeof(long));
+    write(out_fd, fs->data, num_floats * sizeof(float)); 
     
-    sample_sort(fs, num_proc, sizes, bucket_size, fstream, bb);
-    
-    free_barrier(bb);
-    fclose(fstream);
+    close(out_fd);
 
     return 0;
 }

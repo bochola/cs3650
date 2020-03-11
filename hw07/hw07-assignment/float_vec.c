@@ -109,7 +109,7 @@ void floats_swap(floats* fs, int ii, int jj) {
 // Prints the given floats
 void floats_print(floats* fs, char* separator) {
     for (int ii = 0; ii < fs->size; ii++) {
-        printf("%.0f%s", floats_get(fs, ii), separator);
+        printf("%.04f%s", floats_get(fs, ii), separator);
         fflush(stdout);
     }
 }
