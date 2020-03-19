@@ -13,7 +13,6 @@ typedef struct hm_stats {
 } hm_stats;
 
 typedef struct fl_cell {
-    void* addr; //Address of this cell
     size_t size;
     void* next;
     void* last;

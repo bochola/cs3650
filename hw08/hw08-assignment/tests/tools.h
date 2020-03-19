@@ -45,6 +45,7 @@ static
 void
 free_scell(scell* xs)
 {
+    printf("Freeing scell\n");
     if (xs != 0) {
         free_scell(xs->next);
         hfree(xs);
@@ -56,6 +57,7 @@ char*
 hstrdup(const char* text)
 {
     size_t len = strlen(text);
+    printf("Entered hstrdup\n");
     char*  ss  = hmalloc(len + 1);
     strcpy(ss, text);
     return ss;
