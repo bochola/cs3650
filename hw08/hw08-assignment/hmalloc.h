@@ -15,7 +15,7 @@ typedef struct hm_stats {
 typedef struct fl_cell {
     void* addr; //Address of this cell
     size_t size;
-    fl_cell* next;
+    void* next;
 } fl_cell;
 
 hm_stats* hgetstats();

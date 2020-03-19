@@ -27,7 +27,17 @@
 
 const size_t PAGE_SIZE = 4096;
 static hm_stats stats; // This initializes the stats to 0.
-static fl_cell head;
+static fl_cell head; // I dont want to have to initialize head every single time...
+                     // but how do i make sure that the entire free list is after it?
+
+fl_cell* make_fl_cell(void* addr, size_t size) {
+    fl_cell* flc = addr;
+    flc->addr = addr;
+    flc->size = size;
+    flc->next = NULL;
+
+    return flc;    
+}
 
 long list_chunks(fl_cell* start, long count) {
     
@@ -45,7 +55,7 @@ long free_list_length() {
     long pages = stats.pages_mapped * PAGE_SIZE;
     long chunks = list_chunks(&head, 0);
     
-    return pages + chunks;
+    return chunks - pages;
 }
 
 hm_stats* hgetstats() {
@@ -76,6 +86,32 @@ static size_t div_up(size_t xx, size_t yy) {
     }
 }
 
+void* find_last(fl_cell* cell) {
+    
+    if (cell->next) {
+        return find_last(cell->next);
+    }
+    else {
+        return cell->addr;
+    }
+
+}
+
+fl_cell* search_size(fl_cell* cell, size_t size) {
+
+    if (cell->size >= size) {
+        return cell->addr;
+    }
+    else {
+        if (cell->next) {
+            return search_size(cell->next, size);
+        }
+        else {
+            return NULL;
+        }
+    }
+}
+
 void* hmalloc(size_t size) {
     stats.chunks_allocated += 1;
     size += sizeof(size_t);
@@ -87,7 +123,46 @@ void* hmalloc(size_t size) {
     //       the extra to the free list
     //       Use the start of the block to store its size
     //       return a pointer to the block that is *after* the size field
+    
+    fl_cell* any_free = search_size(&head, size);
 
+    if (any_free) {
+        size_t difference = any_free->size - size;
+        
+        if (difference > sizeof(fl_cell)) {
+            // Divvy them up first
+
+        }
+        else {
+          // Give them the whole block
+          
+          // The clause basically ends here
+          // return void* addr;
+          // but how do i make sure im not giving them the addr of the cell
+          // they should only be getting the size
+          // So do i do do this?: 
+          // return &any_free->size + sizeof(size_t);
+
+        }
+    }
+    else {
+        
+        // If there aren't any chunks large enough
+
+        int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
+        int flags = MAP_PRIVATE | MAP_ANONYMOUS;
+
+        void* new_page = mmap(NULL, 4096, prot, flags, -1, 0);
+
+        fl_cell* last_cell = (fl_cell*) find_last(&head);
+        
+        fl_cell* new_cell = make_fl_cell(new_page, 4096);
+        
+        last_cell->next = new_cell;
+
+        return hmalloc(size);
+    }
+        
     return (void*) 0xDEADBEEF;
 }
 
