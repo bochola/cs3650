@@ -30,11 +30,12 @@ static hm_stats stats; // This initializes the stats to 0.
 static fl_cell head; // I dont want to have to initialize head every single time...
                      // but how do i make sure that the entire free list is after it?
 
-fl_cell* make_fl_cell(void* addr, size_t size) {
+fl_cell* make_fl_cell(void* addr, size_t size, fl_cell* last) {
     fl_cell* flc = addr;
     flc->addr = addr;
     flc->size = size;
     flc->next = NULL;
+    flc->last = last;
 
     return flc;    
 }
@@ -73,12 +74,12 @@ void hprintstats() {
     fprintf(stderr, "Freelen:  %ld\n", stats.free_length);
 }
 
-static size_t div_up(size_t xx, size_t yy) {
+static size_t div_up(size_t xx) {
     // This is useful to calculate # of pages
     // for large allocations.
-    size_t zz = xx / yy;
+    size_t zz = xx / 4096;
 
-    if (zz * yy == xx) {
+    if (zz * 4096 == xx) {
         return zz;
     }
     else {
@@ -118,7 +119,7 @@ void divvy_up(fl_cell* cell, size_t size) {
     fl_cell* og_next = cell->next;
 
     fl_cell second_half;
-    fl_cell* new_cell = make_fl_cell(&second_half, leftover);
+    fl_cell* new_cell = make_fl_cell(&second_half, leftover, cell);
 
     new_cell->next = og_next;
 
@@ -140,6 +141,21 @@ void* hmalloc(size_t size) {
     //       Use the start of the block to store its size
     //       return a pointer to the block that is *after* the size field
     
+    if (size > 4096) {
+        size_t num_mmap = div_up(size);
+        
+        int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
+        int flags = MAP_PRIVATE | MAP_ANONYMOUS;
+
+        void* new_page = mmap(NULL, num_mmap * 4096, prot, flags, -1, 0);
+
+        size_t* add_size = new_page;
+        *add_size = num_mmap * 4096;
+
+        return add_size + 1;
+    }
+    
+    
     fl_cell* any_free = search_size(&head, size);
 
     if (any_free) {
@@ -147,19 +163,18 @@ void* hmalloc(size_t size) {
         
         if (difference > sizeof(fl_cell)) {
             divvy_up(any_free, size);
-            // return &any_free->size + sizeof(size_t);??
         }
-        else {
-          // Give them the whole block
           
-          // The clause basically ends here
-          // return void* addr;
-          // but how do i make sure im not giving them the addr of the cell
-          // they should only be getting the size
-          // So do i do do this?:
-          // return &any_free->size + sizeof(size_t);
+        size_t* address = (size_t*) any_free;
+        address += 1;
+          
+        fl_cell* last = any_free->last;
+        fl_cell* next = any_free->next;
 
-        }
+        last->next = next;
+        next->last = last;
+          
+        return address;
     }
     else {
         
@@ -172,34 +187,37 @@ void* hmalloc(size_t size) {
 
         fl_cell* last_cell = find_last(&head);
         
-        fl_cell* new_cell = make_fl_cell(new_page, 4096);
+        fl_cell* new_cell = make_fl_cell(new_page, 4096, last_cell);
         
         last_cell->next = new_cell;
 
         return hmalloc(size);
     }
-        
-    return (void*) 0xDEADBEEF;
 }
 
 void consolidate(fl_cell* cell) {
     
     // Go through the free list and figure out if any pointers are close?
-    // Requires pointer arithmetic to count up the bytes of size, right?
-    // How does my fl_cell struct fit in with the actual usable memory?
+    // Cast to char*, add size, check if equal to next cell address
 
 }
 
 void hfree(void* item) {
 
-    // Find the info about the given chunk (size, anything else?)
-    // Maybe initialize all that to 0?
-    // Place cell into the free list
-    
+    size_t* size = (size_t*)item - 1;
 
-    
-    // What is this stats thing for??
-    stats.chunks_freed += 1;
+    if (*size > 4096) {
+        munmap(item, *size);
+        stats.pages_unmapped += *size / 4096;
+    }
+    else {
+        fl_cell* last_cell = find_last(&head);
+        fl_cell* returned = make_fl_cell((void*) size, *size, last_cell);
+        
+        last_cell->next = returned;
+
+        stats.chunks_freed += 1;
+    }
 
     // consolidate(&head);
 }
