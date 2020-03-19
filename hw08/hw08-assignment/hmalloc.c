@@ -112,6 +112,22 @@ fl_cell* search_size(fl_cell* cell, size_t size) {
     }
 }
 
+void divvy_up(fl_cell* cell, size_t size) {
+    
+    size_t leftover = cell->size - size;
+    fl_cell* og_next = cell->next;
+
+    fl_cell second_half;
+    fl_cell* new_cell = make_fl_cell(&second_half, leftover);
+
+    new_cell->next = og_next;
+
+    cell->size = size;
+    cell->next = new_cell;
+    
+}
+
+
 void* hmalloc(size_t size) {
     stats.chunks_allocated += 1;
     size += sizeof(size_t);
@@ -130,8 +146,8 @@ void* hmalloc(size_t size) {
         size_t difference = any_free->size - size;
         
         if (difference > sizeof(fl_cell)) {
-            // Divvy them up first
-
+            divvy_up(any_free, size);
+            // return &any_free->size + sizeof(size_t);??
         }
         else {
           // Give them the whole block
@@ -140,7 +156,7 @@ void* hmalloc(size_t size) {
           // return void* addr;
           // but how do i make sure im not giving them the addr of the cell
           // they should only be getting the size
-          // So do i do do this?: 
+          // So do i do do this?:
           // return &any_free->size + sizeof(size_t);
 
         }
@@ -154,7 +170,7 @@ void* hmalloc(size_t size) {
 
         void* new_page = mmap(NULL, 4096, prot, flags, -1, 0);
 
-        fl_cell* last_cell = (fl_cell*) find_last(&head);
+        fl_cell* last_cell = find_last(&head);
         
         fl_cell* new_cell = make_fl_cell(new_page, 4096);
         
@@ -166,13 +182,25 @@ void* hmalloc(size_t size) {
     return (void*) 0xDEADBEEF;
 }
 
-void hfree(void* item) {
+void consolidate(fl_cell* cell) {
     
+    // Go through the free list and figure out if any pointers are close?
+    // Requires pointer arithmetic to count up the bytes of size, right?
+    // How does my fl_cell struct fit in with the actual usable memory?
+
+}
+
+void hfree(void* item) {
+
     // Find the info about the given chunk (size, anything else?)
     // Maybe initialize all that to 0?
     // Place cell into the free list
+    
 
+    
+    // What is this stats thing for??
     stats.chunks_freed += 1;
 
+    // consolidate(&head);
 }
 
