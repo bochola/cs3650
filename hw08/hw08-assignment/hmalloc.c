@@ -72,7 +72,6 @@ long fl_length(fl_cell* cell) {
 }
 
 long free_list_length() {
-    // TO-DONE?: Calculate the length of the free list.
     return fl_length(head);
 }
 
@@ -168,22 +167,15 @@ fl_cell* search_size(fl_cell* cell, size_t size) {
 void split_chunk(fl_cell* cell, size_t size) {
    
     size_t leftover = cell->size - size;
-    fl_cell* og_next = cell->next;
-
+    cell->size = size;
+    
     fl_cell* second_half = (fl_cell*) (((char*) cell) + size);
     fl_cell* new_cell = make_fl_cell(second_half, leftover);
-
-    new_cell->next = og_next;
-
-    cell->size = size;
-    cell->next = new_cell;
-    //printf("\n After split_chunk:\n");
-    //print_fl(head);
+    insert_fl_cell(new_cell);
 }
 
 
 void* hmalloc(size_t size) {
-    //print_fl(head);    
     size += sizeof(size_t);
 
     if (size < sizeof(fl_cell)) {
@@ -233,8 +225,7 @@ void* hmalloc(size_t size) {
         if (head == any_free) {
             head = next;
         }
-        //printf("Allocated chunk\n");
-        //print_fl(head);
+
         stats.chunks_allocated += 1;
         return address;
     }
@@ -249,9 +240,8 @@ void* hmalloc(size_t size) {
         stats.pages_mapped += 1;
 
         fl_cell* new_cell = make_fl_cell(new_page, PAGE_SIZE);
-        //print_fl(head);
         insert_fl_cell(new_cell);
-        //print_fl(head);
+        
         coalesce(new_cell);
         
         return hmalloc(size - sizeof(size_t));
@@ -259,7 +249,6 @@ void* hmalloc(size_t size) {
 }
 
 void coalesce(fl_cell* cell) {
-    //print_fl(head);    
     char* cell_addr = (char*) cell;
     char* cell_end = ((char*) cell) + cell->size;
 
@@ -303,8 +292,7 @@ void coalesce(fl_cell* cell) {
 }
 
 void hfree(void* item) {
-    //printf("Freeing\n");
-    size_t* size = (size_t*)item - 1;
+    size_t* size = ((size_t*) item) - 1;
     
     if (*size >= PAGE_SIZE) {
         munmap(item, div_up(*size) * PAGE_SIZE);
@@ -315,8 +303,6 @@ void hfree(void* item) {
         fl_cell* returned = make_fl_cell(size, *size);
         insert_fl_cell(returned);
         coalesce(returned);
-        
-        //print_fl(head);
         stats.chunks_freed += 1;
     }
 
