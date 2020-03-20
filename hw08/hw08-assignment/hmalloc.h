@@ -14,8 +14,8 @@ typedef struct hm_stats {
 
 typedef struct fl_cell {
     size_t size;
-    void* next;
-    void* last;
+    struct fl_cell* next;
+    struct fl_cell* last;
 } fl_cell;
 
 hm_stats* hgetstats();
@@ -23,5 +23,6 @@ void hprintstats();
 
 void* hmalloc(size_t size);
 void hfree(void* item);
+void coalesce(fl_cell* cell);
 
 #endif

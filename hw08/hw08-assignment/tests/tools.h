@@ -57,7 +57,7 @@ char*
 hstrdup(const char* text)
 {
     size_t len = strlen(text);
-    printf("Entered hstrdup\n");
+    //printf("Entered hstrdup\n");
     char*  ss  = hmalloc(len + 1);
     strcpy(ss, text);
     return ss;

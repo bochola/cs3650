@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "hmalloc.h"
 
@@ -29,10 +30,10 @@ static hm_stats stats; // This initializes the stats to 0.
 static fl_cell* head; // I dont want to have to initialize head every single time...
                      // but how do i make sure that the entire free list is after it?
 
-fl_cell* make_fl_cell(void* addr, size_t size, fl_cell* last) {
+fl_cell* make_fl_cell(void* addr, size_t size) {
     fl_cell* flc = addr;
     flc->size = size;
-    flc->last = last;
+    flc->last = NULL;
     flc->next = NULL;
 
     return flc;    
@@ -45,12 +46,12 @@ void print_fl(fl_cell* cell) {
         printf("Last cell was 0x%x. ", cell->last);
 
         if (cell->next) {
-            printf("Next cell is 0x%x.", cell->next);
+            printf("Next cell is 0x%x. ", cell->next);
             printf("\n");
             print_fl(cell->next);
         }
         else {
-            printf("Without a next.");
+            printf("Without a next. ");
         }
 
         printf("\n");
@@ -60,23 +61,19 @@ void print_fl(fl_cell* cell) {
     }
 }
 
-long list_chunks(fl_cell* start, long count) {
+long fl_length(fl_cell* cell) {
     
-    count += (long) start->size;
-    
-    if (start->next) {
-        count += list_chunks(start->next, count);
+    if (!cell) {
+        return 0;
     }
-
-    return count;
+    else {
+        return 1 + fl_length(cell->next);
+    }
 }
 
 long free_list_length() {
     // TO-DONE?: Calculate the length of the free list.
-    long pages = stats.pages_mapped * PAGE_SIZE;
-    long chunks = list_chunks(head, 0);
-    
-    return chunks - pages;
+    return fl_length(head);
 }
 
 hm_stats* hgetstats() {
@@ -107,6 +104,40 @@ static size_t div_up(size_t xx) {
     }
 }
 
+void insert_fl_cell(fl_cell* cell) {
+
+    if (!head) {
+        cell->last = NULL;
+        cell->next = NULL;
+        head = cell;
+        return;
+    }
+
+    for (fl_cell* cur = head; cur; cur = cur->next) {
+        if (cur > cell) {
+            
+            if (cur->last) {
+                cur->last->next = cell;
+                cell->last = cur->last;
+            }
+            else {
+                cell->last = NULL;
+                head = cell;
+            }
+            
+            cell->next = cur;
+            cur->last = cell;
+            break;
+        }
+        else if (!cur->next) {
+            cur->next = cell;
+            cell->last = cur;
+            cell->next = NULL;
+            break;
+        }
+    }
+}
+
 void* find_last(fl_cell* cell) {
     if (!cell) {
         return 0;
@@ -134,27 +165,30 @@ fl_cell* search_size(fl_cell* cell, size_t size) {
     return search_size(cell->next, size);
 }
 
-void divvy_up(fl_cell* cell, size_t size) {
+void split_chunk(fl_cell* cell, size_t size) {
    
     size_t leftover = cell->size - size;
     fl_cell* og_next = cell->next;
 
     fl_cell* second_half = (fl_cell*) (((char*) cell) + size);
-    fl_cell* new_cell = make_fl_cell(second_half, leftover, cell);
+    fl_cell* new_cell = make_fl_cell(second_half, leftover);
 
     new_cell->next = og_next;
 
     cell->size = size;
     cell->next = new_cell;
-    printf("\n After divvy_up:\n");
-    print_fl(head);
+    //printf("\n After split_chunk:\n");
+    //print_fl(head);
 }
 
 
 void* hmalloc(size_t size) {
+    //print_fl(head);    
     size += sizeof(size_t);
-    print_fl(head);
-    printf("malloc-ing %ld bytes\n", size);
+
+    if (size < sizeof(fl_cell)) {
+        size = sizeof(fl_cell);
+    }
 
     if (size >= PAGE_SIZE) {
         size_t num_mmap = div_up(size);
@@ -163,10 +197,12 @@ void* hmalloc(size_t size) {
         int flags = MAP_PRIVATE | MAP_ANONYMOUS;
 
         void* new_page = mmap(NULL, num_mmap * PAGE_SIZE, prot, flags, -1, 0);
-
+        stats.pages_mapped += num_mmap;
+        
         size_t* add_size = new_page;
         *add_size = num_mmap * PAGE_SIZE;
 
+        stats.chunks_allocated += 1;
         return add_size + 1;
     }
     
@@ -174,103 +210,115 @@ void* hmalloc(size_t size) {
     fl_cell* any_free = search_size(head, size);
 
     if (any_free) {
-        printf("Found a suitable chunk\n");
 
         size_t difference = any_free->size - size;
         
         if (difference > sizeof(fl_cell)) {
-            printf("Chunk large enough to split\n");
-            divvy_up(any_free, size);
+            split_chunk(any_free, size);
         }
          
         size_t* address = (size_t*) any_free;
         address += 1;
-        printf("After divvy up\n");  
         fl_cell* last = any_free->last;
         fl_cell* next = any_free->next;
-        printf("Last is at 0x%x\nNext is at 0x%x\n", last, next);
-        printf("After last and next assignment\n");
-        if (last != NULL) {
-            printf("Before line 195. Last is 0x%x\n", last);
+
+        if (last) {
             last->next = next;
-            printf("After line 195\n");
         }
         
         if (next) {
-            printf("Before line 199\n");
             next->last = last;
-            printf("After line 199\n");
         }
-        printf("After if(last) and if(next)\n");
+
         if (head == any_free) {
             head = next;
         }
-
+        //printf("Allocated chunk\n");
+        //print_fl(head);
         stats.chunks_allocated += 1;
-        print_fl(head);
         return address;
     }
     else {
         
         // If there aren't any chunks large enough
 
-        printf("No chunks large enough, adding page\n");
         int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
         int flags = MAP_PRIVATE | MAP_ANONYMOUS;
 
         void* new_page = mmap(NULL, PAGE_SIZE, prot, flags, -1, 0);
+        stats.pages_mapped += 1;
 
-        printf("Page added, updating free list\n");
+        fl_cell* new_cell = make_fl_cell(new_page, PAGE_SIZE);
+        //print_fl(head);
+        insert_fl_cell(new_cell);
+        //print_fl(head);
+        coalesce(new_cell);
         
-        fl_cell* last_cell = find_last(head);
-        
-        fl_cell* new_cell = make_fl_cell(new_page, PAGE_SIZE, last_cell);
-        
-        if (last_cell) {
-            last_cell->next = new_cell;
-        }
-        else {
-            printf("Updated head\n");
-            head = new_cell;
-        }
-
         return hmalloc(size - sizeof(size_t));
     }
 }
 
-void consolidate(fl_cell* cell) {
-    
-    // Go through the free list and figure out if any pointers are close?
-    // Cast to char*, add size, check if equal to next cell address
+void coalesce(fl_cell* cell) {
+    //print_fl(head);    
+    char* cell_addr = (char*) cell;
+    char* cell_end = ((char*) cell) + cell->size;
 
+    if (cell->next) {
+        
+        fl_cell* next = cell->next;
+        char* next_addr = (char*) next;
+
+        if (cell_end == next_addr) {
+            cell->next = next->next;
+            cell->size += next->size;
+            
+            if (next->next) {
+                next->next->last = cell;
+            }
+        }
+        else if ((next_addr < cell_end) && (next > cell)) {
+            printf("Unreachable, next cell cant be located in current\n");
+            assert(0);
+        }
+    }
+
+    if (cell->last) {
+
+        fl_cell* last = cell->last;
+        char* last_end = ((char*) last) + last->size;
+
+        if (last_end == cell_addr) {
+            last->next = cell->next;
+            last->size += cell->size;
+
+            if (cell->next) {
+                cell->next->last = last;
+            }
+        }
+        else if ((cell_addr < last_end) && (cell > last)) {
+            printf("Unreachable, current cell cant be located in last\n");
+            assert(0);
+        }
+    }
 }
 
 void hfree(void* item) {
-
-    printf("Entered hfree\n");
-    
-    print_fl(head);
-
+    //printf("Freeing\n");
     size_t* size = (size_t*)item - 1;
-    printf("Freeing %ld bytes\n", *size);
     
     if (*size >= PAGE_SIZE) {
         munmap(item, div_up(*size) * PAGE_SIZE);
         stats.pages_unmapped += div_up(*size);
+        stats.chunks_freed += 1;
     }
     else {
-        printf("Smaller free\n");
-        fl_cell* last_cell = find_last(head);
-        printf("Found last cell\n");
-        fl_cell* returned = make_fl_cell(size, *size, last_cell);
-        printf("Added cell back to list\n");
-        if (last_cell) {
-            last_cell->next = returned;
-        }
-        printf("Finished\n");
+        fl_cell* returned = make_fl_cell(size, *size);
+        insert_fl_cell(returned);
+        coalesce(returned);
+        
+        //print_fl(head);
         stats.chunks_freed += 1;
     }
 
-    // consolidate(head);
 }
 
