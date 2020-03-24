@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "hmalloc.h"
+#include "xmalloc.h"
 
 /*
   typedef struct hm_stats {
@@ -42,11 +42,11 @@ fl_cell* make_fl_cell(void* addr, size_t size) {
 void print_fl(fl_cell* cell) {
     
     if (cell) {
-        printf("This cell is %ld bytes at 0x%x. ", cell->size, cell);
-        printf("Last cell was 0x%x. ", cell->last);
+        printf("This cell is %ld bytes at 0x%p. ", cell->size, cell);
+        printf("Last cell was 0x%p. ", cell->last);
 
         if (cell->next) {
-            printf("Next cell is 0x%x. ", cell->next);
+            printf("Next cell is 0x%p. ", cell->next);
             printf("\n");
             print_fl(cell->next);
         }
@@ -175,7 +175,7 @@ void split_chunk(fl_cell* cell, size_t size) {
 }
 
 
-void* hmalloc(size_t size) {
+void* xmalloc(size_t size) {
     size += sizeof(size_t);
 
     if (size < sizeof(fl_cell)) {
@@ -244,7 +244,7 @@ void* hmalloc(size_t size) {
         
         coalesce(new_cell);
         
-        return hmalloc(size - sizeof(size_t));
+        return xmalloc(size - sizeof(size_t));
     }
 }
 
@@ -291,7 +291,7 @@ void coalesce(fl_cell* cell) {
     }
 }
 
-void hfree(void* item) {
+void xfree(void* item) {
     size_t* size = ((size_t*) item) - 1;
     
     if (*size >= PAGE_SIZE) {
@@ -308,7 +308,7 @@ void hfree(void* item) {
 
 }
 
-void* realloc(void* item, size_t new_size) {
+void* xrealloc(void* item, size_t new_size) {
     
     // Find a chunk that is large enough for item size + n
     /*
@@ -324,6 +324,7 @@ void* realloc(void* item, size_t new_size) {
      * an earlier call to malloc(), calloc(), or realloc().  If the 
      * area pointed to was moved, a free(ptr) is done.
      */
-
+    
+    return (void*) 0xDEADBEEF;
 
 }

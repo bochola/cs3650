@@ -4,6 +4,8 @@
 // Husky Malloc Interface
 // cs3650 Starter Code
 
+#include <stddef.h>
+
 typedef struct hm_stats {
     long pages_mapped;
     long pages_unmapped;
@@ -21,8 +23,9 @@ typedef struct fl_cell {
 hm_stats* hgetstats();
 void hprintstats();
 
-void* hmalloc(size_t size);
-void hfree(void* item);
+void* xmalloc(size_t size);
+void xfree(void* item);
+void* xrealloc(void* item, size_t new_size);
 void coalesce(fl_cell* cell);
 
 #endif
