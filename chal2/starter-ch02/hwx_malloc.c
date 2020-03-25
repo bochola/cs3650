@@ -4,6 +4,8 @@
 #include <sys/mman.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
+#include <pthread.h>
 
 #include "xmalloc.h"
 
@@ -26,9 +28,9 @@
 */
 
 const size_t PAGE_SIZE = 4096;
-static hm_stats stats; // This initializes the stats to 0.
-static fl_cell* head; // I dont want to have to initialize head every single time...
-                     // but how do i make sure that the entire free list is after it?
+static hm_stats stats;
+static fl_cell* head; 
+static pthread_mutex_t fl_lock = PTHREAD_MUTEX_INITIALIZER;
 
 fl_cell* make_fl_cell(void* addr, size_t size) {
     fl_cell* flc = addr;
@@ -199,6 +201,7 @@ void* xmalloc(size_t size) {
     }
     
     
+    pthread_mutex_lock(&fl_lock);
     fl_cell* any_free = search_size(head, size);
 
     if (any_free) {
@@ -227,6 +230,8 @@ void* xmalloc(size_t size) {
         }
 
         stats.chunks_allocated += 1;
+        pthread_mutex_unlock(&fl_lock);
+        
         return address;
     }
     else {
@@ -243,6 +248,7 @@ void* xmalloc(size_t size) {
         insert_fl_cell(new_cell);
         
         coalesce(new_cell);
+        pthread_mutex_unlock(&fl_lock);
         
         return xmalloc(size - sizeof(size_t));
     }
@@ -291,7 +297,8 @@ void coalesce(fl_cell* cell) {
     }
 }
 
-void xfree(void* item) {
+
+void xfree_helper(void* item) {
     size_t* size = ((size_t*) item) - 1;
     
     if (*size >= PAGE_SIZE) {
@@ -306,6 +313,14 @@ void xfree(void* item) {
         stats.chunks_freed += 1;
     }
 
+}
+
+void xfree(void* item) {
+    
+    pthread_mutex_lock(&fl_lock);
+    xfree_helper(item);
+    pthread_mutex_unlock(&fl_lock);
+    
 }
 
 void* xrealloc(void* item, size_t new_size) {
@@ -324,7 +339,24 @@ void* xrealloc(void* item, size_t new_size) {
      * an earlier call to malloc(), calloc(), or realloc().  If the 
      * area pointed to was moved, a free(ptr) is done.
      */
-    
-    return (void*) 0xDEADBEEF;
 
+	if(new_size == 0) {
+		xfree(item);
+		return NULL; // ??????
+	}
+
+	size_t* item_size = (size_t*)item - 1;
+
+	if(*item_size < new_size) {
+		void* new_item = xmalloc(*item_size);
+		memcpy(new_item, item, *item_size);
+		xfree(item);
+		return new_item;
+	}
+	else {
+		void* new_item = xmalloc(new_size);
+		memcpy(new_item, item, new_size);
+		xfree(item);
+		return new_item;
+	}
 }
