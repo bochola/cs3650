@@ -9,14 +9,6 @@
 #include "xmalloc.h"
 
 /*
-  typedef struct hm_stats {
-    long pages_mapped;
-    long pages_unmapped;
-    long chunks_allocated;
-    long chunks_freed;
-    long free_length;
-  } hm_stats;
-
   // Free list cell
   // min allocation is a user request of 8bytes, so anything smaller
   // needs to be rounded up
@@ -25,16 +17,14 @@
     fl_cell* next;
   } fl_cell;
 */
+
 const int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
 const int flags = MAP_PRIVATE | MAP_ANONYMOUS;
 const size_t PAGE_SIZE = 4096;
-static hm_stats stats;
-static __thread fl_cell* head[21];
-const int HEAP_SIZE =  1048576;
-void split_chunk(fl_cell* cell, int i);
-static __thread pthread_mutex_t fl_lock = PTHREAD_MUTEX_INITIALIZER;
-//head[20] = make_fl_cell(mmap(NULL, HEAP_SIZE, prot, flags, -1, 0), HEAP_SIZE);
-
+const int HEAP_SIZE = 1048576;
+static fl_cell* heads[16]; 
+// head[0] starts a fl_cell chain of sizes 2^(0+5) = 32 bytes
+static pthread_mutex_t fl_lock = PTHREAD_MUTEX_INITIALIZER;
 
 fl_cell* make_fl_cell(void* addr, size_t size) {
     fl_cell* flc = addr;
@@ -67,267 +57,171 @@ void print_fl(fl_cell* cell) {
     }
 }
 
-long fl_length(fl_cell* cell) {
-    
-    if (!cell) {
-        return 0;
-    }
-    else {
-        return 1 + fl_length(cell->next);
-    }
-}
-
-static size_t div_up(size_t xx) {
-    // This is useful to calculate # of pages
-    // for large allocations.
-    size_t zz = xx / PAGE_SIZE;
-
-    if (zz * PAGE_SIZE == xx) {
-        return zz;
-    }
-    else {
-        return zz + 1;
-    }
+// Returns the head of the fl at heads[index]
+// and repairs the link
+fl_cell* pop(int index) {
+    fl_cell* temp = heads[index];
+    heads[index] = heads[index]->next;
+    return temp;
 }
 
 void insert_fl_cell(int i, fl_cell* cell) {
 
-    if (!head[i]) {
-        cell->last = NULL;
-        cell->next = NULL;
-        head[i] = cell;
-        return;
-    }
-
-    for (fl_cell* cur = head[i]; cur; cur = cur->next) {
-        if (cur > cell) {
-            
-            if (cur->last) {
-                cur->last->next = cell;
-                cell->last = cur->last;
-            }
-            else {
-                cell->last = NULL;
-                head[i] = cell;
-            }
-            
-            cell->next = cur;
-            cur->last = cell;
-            break;
-        }
-        else if (!cur->next) {
-            cur->next = cell;
-            cell->last = cur;
-            cell->next = NULL;
-            break;
-        }
-    }
+    cell->next = heads[i];
+    heads[i] = cell;
 }
 
-void break_up_chunk(int i) {
-   if(i >= 20) {
-       head[20] = mmap(NULL, HEAP_SIZE, prot, flags, -1, 0);
-   }
-   else if(head[i + 1]) {
-       //break up
-       fl_cell* temp = head[i + 1];
-       head[i+1] = head[i+1]->next;
-       split_chunk(temp, i);
-       insert_fl_cell(i, temp);
-   }
-   else if(i+1 == 20) {
-       head[20] = mmap(NULL, HEAP_SIZE, prot, flags, -1, 0);
-       break_up_chunk(i);
-   }
-   else {
-       break_up_chunk(i+1);
-       break_up_chunk(i);
-   }
+void pull_from_above(int i) {
+    
+    fl_cell* snatched = pop(i + 1);
+    
+    size_t size = (size_t) pow(2, i + 5);
+    snatched->size = size;
+    
+    void* new_cell_ptr = ((char*) snatched) + size;
+    fl_cell* new_cell = make_fl_cell(new_cell_ptr, size);
+
+    insert_fl_cell(i, new_cell);
+    insert_fl_cell(i, snatched);
+}
+
+void redistribute(int i) {
+
+    // Given an index i, redistribute should:
+    //      1. Check if heads[i] is empty
+    //          a. If it isnt empty, return
+    //          b. If it is empty, continue
+    //      2. Try to grab a cell from i + 1
+    //          a. Split that cell in half and add both cells to 
+    //             heads[i]
+    //      3. If the free list at array i + 1 is also empty, then
+    //         do the same for i + 2 and cascade down until back at
+    //         i
+    //      4. If the last free list (heads[15]) is empty, then mmap
+    //         more space and add that to heads[15].
+    //
+
+    if (heads[i]) {
+        return;
+    }
+    
+    if (i == 15) {
+        void* new_cell = mmap(NULL, HEAP_SIZE, prot, flags, -1, 0);
+        heads[15] = make_fl_cell(new_cell, HEAP_SIZE);
+        return;
+    }
+    
+    redistribute(i + 1);
+    pull_from_above(i);
 }
 
 int get_fl_index(size_t size) {
 
-   for(int i = 6; i < 21; i++) {
-	if(pow((double)2, (double)i) > size) {
-	    return i;
+    for(int i = 0; i < 16; i++) {
+        if(pow(2, i + 5) > size) {
+	        return i;
         }
-   }
-   return -1;
+    }
+    assert(0); // Shouldnt ever get here
 }
 
-
-fl_cell* search_size(fl_cell** cell, size_t size) {
-
-   // find which freelist we are looking in
-   int arr = get_fl_index(size);
-   if (arr == -1) {
-       return NULL;
-    }
-   if (head[arr] == NULL) {
-       break_up_chunk(arr);
-   }
-   fl_cell* temp = head[arr];
-   head[arr] = head[arr]->next;
-   return temp;   
-}
-
-void* find_last(fl_cell* cell) {
-    if (!cell) {
-        return 0;
-    }
-
-    if (cell->next) {
-        return find_last(cell->next);
-    }
-    else {
-        return cell;
-    }
-
-}
-
-
-void split_chunk(fl_cell* cell, int i) {
-    
-    size_t size = (size_t)pow(2, i);
-    size_t leftover = cell->size - size;
-    cell->size = size;
-    
-    fl_cell* second_half = (fl_cell*) (((char*) cell) + size);
-    fl_cell* new_cell = make_fl_cell(second_half, leftover);
-    insert_fl_cell(i, new_cell);
-}
-
-void coalesce(fl_cell* cell) {
-    
-}
-
-//MODIFY FOR BUDDY
-void xfree_helper(void* item) {
-    size_t* size = ((size_t*) item) - 1;
-    
-    if (*size >= PAGE_SIZE) {
-        munmap(item, div_up(*size) * PAGE_SIZE);
-    }
-    else {
-        fl_cell* returned = make_fl_cell(size, *size);
-        insert_fl_cell(get_fl_index(*size), returned);
-        coalesce(returned);
-        stats.chunks_freed += 1;
-    }
-
-}
-
-void*
-xmalloc(size_t size)
-{
-    pthread_mutex_lock(&fl_lock);
-    size += sizeof(size_t);
+void* xmalloc_helper(size_t size) {
     
     if (size < sizeof(fl_cell)) {
         size = sizeof(fl_cell);
     }
-    if (size >= HEAP_SIZE) {
-        size_t num_mmap = div_up(size);
-        
-        
 
-        void* new_page = mmap(NULL, num_mmap * PAGE_SIZE, prot, flags, -1, 0);
-        stats.pages_mapped += num_mmap;
+    if (size > HEAP_SIZE) {
+        void* new_page = mmap(NULL, size, prot, flags, -1, 0);
         
         size_t* add_size = new_page;
-        *add_size = num_mmap * PAGE_SIZE;
+        *add_size = size;
 
-        stats.chunks_allocated += 1;
-        pthread_mutex_unlock(&fl_lock);
         return add_size + 1;
     }
-    //pthread_mutex_lock(&fl_lock);
-    fl_cell* any_free = search_size(head, size); 
+    
+    int fl_index = get_fl_index(size);
+    //int power = fl_index + 5;
 
-    if (any_free) {
+    redistribute(fl_index);
+    fl_cell* designated = pop(fl_index);
 
-        size_t difference = any_free->size - size;
-        
-        if (difference > sizeof(fl_cell)) {
-            split_chunk(any_free, size);
-        }
-         
-        size_t* address = (size_t*) any_free;
-        address += 1;
-        fl_cell* last = any_free->last;
-        fl_cell* next = any_free->next;
+    if (!designated) {
+        assert(0); // Shouldnt ever get here
+                   // assign_fl should create cells of the correct
+                   // size
+    }
+    
+    return ((size_t*) designated) + 1;
+}
 
-        if (last) {
-            last->next = next;
-        }
-        
-        if (next) {
-            next->last = last;
-        }
+void* xmalloc(size_t size) {
 
-        if (head[get_fl_index(size)] == any_free) {
-            head[get_fl_index(size)] = next;
-        }
+    pthread_mutex_lock(&fl_lock);
+    void* ptr = xmalloc_helper(size + sizeof(size_t));
+    pthread_mutex_unlock(&fl_lock);
 
-        stats.chunks_allocated += 1;
-        pthread_mutex_unlock(&fl_lock);
-        
-        return address;
+    return ptr;
+}
+
+void xfree_helper(void* item) {
+
+    fl_cell* cell_addr = (fl_cell*)(((size_t*) item) - 1);
+    size_t size = cell_addr->size;
+    
+    if (size > HEAP_SIZE) {
+        munmap(cell_addr, size);
     }
     else {
         
-        // If there aren't any chunks large enough
-
-        int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
-        int flags = MAP_PRIVATE | MAP_ANONYMOUS;
-        size_t num_mmap = div_up(size);
-
-        void* new_page = mmap(NULL, PAGE_SIZE * num_mmap, prot, flags, -1, 0);
-        stats.pages_mapped += 1;
-
-        fl_cell* new_cell = make_fl_cell(new_page, PAGE_SIZE * num_mmap);
-        insert_fl_cell(get_fl_index(PAGE_SIZE * num_mmap), new_cell);
-        
-        coalesce(new_cell);
-        pthread_mutex_unlock(&fl_lock);
-        
-        return xmalloc(size - sizeof(size_t));
+        int fl_index = get_fl_index(size);
+        insert_fl_cell(fl_index, cell_addr);
     }
-
-    return 0;
 }
 
-void
-xfree(void* item)
-{
+void xfree(void* item) {
     pthread_mutex_lock(&fl_lock);
     xfree_helper(item);
     pthread_mutex_unlock(&fl_lock);
 }
 
-void*
-xrealloc(void* item, size_t new_size)
-{
-    // TODO: write an optimized realloc
-        if(new_size == 0) {
-		xfree(item);
-		printf("Size is 0, return null\n");
-		return NULL; // ??????
+void* xrealloc_helper(void* item, size_t new_size) {
+    
+    /* The realloc() function changes the size of the memory block pointed to by ptr to size bytes.  The contents will be unchanged in the range from the start of the region up  to  the
+       minimum  of  the  old  and new sizes.  If the new size is larger than the old size, the added memory will not be initialized.  If ptr is NULL, then the call is equivalent to mal‐
+       loc(size), for all values of size; if size is equal to zero, and ptr is not NULL, then the call is equivalent to free(ptr).  Unless ptr is NULL, it must have been returned by  an
+       earlier call to malloc(), calloc(), or realloc().  If the area pointed to was moved, a free(ptr) is done.
+    */
+
+	if(!item) {
+		return xmalloc_helper(new_size);
+	}
+	if(new_size == 0) {
+		xfree_helper(item);
+		return NULL;
 	}
 
-	size_t* item_size = (size_t*)item - 1;
+    new_size += sizeof(size_t);
 
-	if(*item_size < new_size) {
-		void* new_item = xmalloc(*item_size);
-		memcpy(new_item, item, *item_size);
-		xfree(item);
-		return new_item;
-	}
-	else {
-		void* new_item = xmalloc(new_size);
-		memcpy(new_item, item, new_size);
-		xfree(item);
-		return new_item;
-	}
-    return 0;
+    fl_cell* cell_addr = (fl_cell*)(((size_t*) item) - 1);
+    size_t size = cell_addr->size;
+    
+    if (new_size <= size) {
+        return item;
+    }
+    
+    void* new_item = xmalloc_helper(new_size);
+    memcpy(new_item, item, size);
+    xfree_helper(item);
+
+	return new_item;
+}
+
+void* xrealloc(void* item, size_t new_size) {
+    
+	pthread_mutex_lock(&fl_lock);
+    void* ptr = xrealloc_helper(item, new_size);
+    pthread_mutex_unlock(&fl_lock);
+
+    return ptr;
 }

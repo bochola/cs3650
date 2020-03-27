@@ -1,4 +1,4 @@
-// hmalloc.c
+// hwx_malloc.c
 
 #include <stdlib.h>
 #include <sys/mman.h>
@@ -11,14 +11,6 @@
 #include "xmalloc.h"
 
 /*
-  typedef struct hm_stats {
-    long pages_mapped;
-    long pages_unmapped;
-    long chunks_allocated;
-    long chunks_freed;
-    long free_length;
-  } hm_stats;
-
   // Free list cell
   // min allocation is a user request of 8bytes, so anything smaller
   // needs to be rounded up
@@ -28,34 +20,11 @@
   } fl_cell;
 */
 
-typedef struct arena {
-    fl_cell* head;
-    pthread_mutex_t fl_lock;
-} arena;
-
-static arena* a[16];
-
+const int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
+const int flags = MAP_PRIVATE | MAP_ANONYMOUS;
 const size_t PAGE_SIZE = 4096;
-static hm_stats stats;
-static __thread fl_cell* head;
-static __thread pthread_mutex_t fl_lock;
-
-int
-get_arena() {
-	for(int i =0; i < 16; i++) {
-	    pthread_mutex_t temp = a[i]->fl_lock;
-	    int pt = pthread_mutex_trylock(&temp);
-	    if(pt == 0) {
-	       head = a[i]->head;
-	       fl_lock = a[i]->fl_lock;
-	       return i;
-	    }
-	    else if(pt == atol("ENIVAL")) {
-           	pthread_mutex_init(&temp, 0);
-	    }
-        }
-        return get_arena();
-}
+static fl_cell* head;
+static pthread_mutex_t fl_lock = PTHREAD_MUTEX_INITIALIZER;
 
 fl_cell* make_fl_cell(void* addr, size_t size) {
     fl_cell* flc = addr;
@@ -102,20 +71,6 @@ long free_list_length() {
     return fl_length(head);
 }
 
-hm_stats* hgetstats() {
-    stats.free_length = free_list_length();
-    return &stats;
-}
-
-void hprintstats() {
-    stats.free_length = free_list_length();
-    fprintf(stderr, "\n== husky malloc stats ==\n");
-    fprintf(stderr, "Mapped:   %ld\n", stats.pages_mapped);
-    fprintf(stderr, "Unmapped: %ld\n", stats.pages_unmapped);
-    fprintf(stderr, "Allocs:   %ld\n", stats.chunks_allocated);
-    fprintf(stderr, "Frees:    %ld\n", stats.chunks_freed);
-    fprintf(stderr, "Freelen:  %ld\n", stats.free_length);
-}
 
 static size_t div_up(size_t xx) {
     // This is useful to calculate # of pages
@@ -181,11 +136,9 @@ void* find_last(fl_cell* cell) {
 fl_cell* search_size(fl_cell* cell, size_t size) {
     
     if (!cell) {
-	printf("chunk of memory big enough\n");
         return 0;
     }
     assert(cell->size);
-    printf("size = %ld\ncell->size = %ld\n", size, cell->size);
     if (cell->size >= size) {
 	
         return cell;
@@ -195,7 +148,6 @@ fl_cell* search_size(fl_cell* cell, size_t size) {
 }
 
 void split_chunk(fl_cell* cell, size_t size) {
-    printf("Split Chunk: size = %d\n", (int)size);
     size_t leftover = cell->size - size;
     assert(leftover > sizeof(fl_cell));
     cell->size = size;
@@ -205,98 +157,6 @@ void split_chunk(fl_cell* cell, size_t size) {
     insert_fl_cell(new_cell);
 }
 
-
-void* xmalloc(size_t size) {
-    //pthread_key_t hkey;
-    //pthread_key_create(&hkey, (void*)head);
-    //pthread_key_t pkey;
-    //pthread_key_create(&pkey, (void*)&fl_lock);
-    //int i = get_arena();
-    //head = a[i]->head;
-    //fl_lock = a[i]->fl_lock;
-    pthread_mutex_lock(&fl_lock);
-    size += sizeof(size_t);
-    printf("Size + size_t = %ld\n", size);
-
-    if (size < sizeof(fl_cell)) {
-        size = sizeof(fl_cell);
-    }
-
-    if (size >= PAGE_SIZE) {
-        size_t num_mmap = div_up(size);
-        printf("pages = %ld\n", num_mmap);
-        int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
-        int flags = MAP_PRIVATE | MAP_ANONYMOUS;
-
-        void* new_page = mmap(NULL, num_mmap * PAGE_SIZE, prot, flags, -1, 0);
-        stats.pages_mapped += num_mmap;
-        
-        size_t* add_size = new_page;
-        *add_size = num_mmap * PAGE_SIZE;
-
-        stats.chunks_allocated += 1;
-        //pthread_key_delete(hkey);
-        //pthread_key_delete(pkey);
-        pthread_mutex_unlock(&fl_lock);
-        return add_size + 1;
-    }
-    
-    
-    printf("Start search ...\n");
-    fl_cell* any_free = search_size(head, size);
-    printf("finish search\n");
-
-    if (any_free) {
-	printf("any_free is not null\n");
-        size_t difference = any_free->size - size;
-        
-        if (difference > sizeof(fl_cell)) {
-            split_chunk(any_free, size);
-        }
-         
-        size_t* address = (size_t*) any_free;
-        address += 1;
-        fl_cell* last = any_free->last;
-        fl_cell* next = any_free->next;
-
-        if (last) {
-            last->next = next;
-        }
-        
-        if (next) {
-            next->last = last;
-        }
-
-        if (head == any_free) {
-            head = next;
-        }
-
-        stats.chunks_allocated += 1;
-        pthread_mutex_unlock(&fl_lock);
-        //pthread_key_delete(hkey);
-        //pthread_key_delete(pkey);
-        return address;
-    }
-    else {
-        printf("any_free is null\n");
-        // If there aren't any chunks large enough
-
-        int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
-        int flags = MAP_PRIVATE | MAP_ANONYMOUS;
-
-        void* new_page = mmap(NULL, PAGE_SIZE, prot, flags, -1, 0);
-        stats.pages_mapped += 1;
-
-        fl_cell* new_cell = make_fl_cell(new_page, PAGE_SIZE);
-        insert_fl_cell(new_cell);
-        
-        coalesce(new_cell);
-        pthread_mutex_unlock(&fl_lock);
-        //pthread_key_delete(hkey);
-        //pthread_key_delete(pkey);
-        return xmalloc(size - sizeof(size_t));
-    }
-}
 
 void coalesce(fl_cell* cell) {
     char* cell_addr = (char*) cell;
@@ -341,99 +201,126 @@ void coalesce(fl_cell* cell) {
     }
 }
 
-
-void xfree_helper(void* item) {
-    size_t* size = ((size_t*) item) - 1;
+void* xmalloc_helper(size_t size) {
     
-    if (*size >= PAGE_SIZE) {
-        munmap(item, div_up(*size) * PAGE_SIZE);
-        stats.pages_unmapped += div_up(*size);
-        stats.chunks_freed += 1;
+    if (size < sizeof(fl_cell)) {
+        size = sizeof(fl_cell);
+    }
+
+    if (size >= PAGE_SIZE) {
+        size_t num_pages = div_up(size);
+
+        void* new_page = mmap(NULL, num_pages * PAGE_SIZE, prot, flags, -1, 0);
+        
+        size_t* add_size = new_page;
+        *add_size = num_pages * PAGE_SIZE;
+
+        return add_size + 1;
+    }
+    
+    fl_cell* any_free = search_size(head, size);
+
+    if (!any_free) {
+        void* new_page = mmap(NULL, PAGE_SIZE, prot, flags, -1, 0);
+
+        fl_cell* new_cell = make_fl_cell(new_page, PAGE_SIZE);
+        insert_fl_cell(new_cell);
+        
+        coalesce(new_cell);
+        return xmalloc_helper(size);
+    }
+
+    size_t difference = any_free->size - size;
+        
+    if (difference > sizeof(fl_cell)) {
+        split_chunk(any_free, size);
+    }
+     
+    fl_cell* last = any_free->last;
+    fl_cell* next = any_free->next;
+
+    if (last) {
+        last->next = next;
     }
     else {
-        fl_cell* returned = make_fl_cell(size, *size);
+        head = next;
+    }
+    
+    if (next) {
+        next->last = last;
+    }
+
+    return ((size_t*) any_free) + 1;
+}
+
+void* xmalloc(size_t size) {
+
+    pthread_mutex_lock(&fl_lock);
+    void* ptr = xmalloc_helper(size + sizeof(size_t));
+    pthread_mutex_unlock(&fl_lock);
+
+    return ptr;
+}
+
+
+
+void xfree_helper(void* item) {
+    fl_cell* cell_addr = (fl_cell*)(((size_t*) item) - 1);
+    size_t size = cell_addr->size;
+    
+    if (size >= PAGE_SIZE) {
+        munmap(cell_addr, div_up(size) * PAGE_SIZE);
+    }
+    else {
+        fl_cell* returned = make_fl_cell(cell_addr, size);
         insert_fl_cell(returned);
         coalesce(returned);
-        stats.chunks_freed += 1;
     }
 
 }
 
 void xfree(void* item) {
-    //pthread_key_t hkey;
-    //pthread_key_create(&hkey, (void*)head);
-    //pthread_key_t pkey;
-    //pthread_key_create(&pkey, (void*)&fl_lock);
-    //int i = get_arena();
-    //head = a[i]->head;
-    //fl_lock = a[i]->fl_lock;
     pthread_mutex_lock(&fl_lock);
-    if(item) {
-        xfree_helper(item);
-    }
+    assert(item);
+    xfree_helper(item);
     pthread_mutex_unlock(&fl_lock);
-    //pthread_key_delete(hkey);
-    //pthread_key_delete(pkey);
-    
 }
 
-void* xrealloc(void* item, size_t new_size) {
+void* xrealloc_helper(void* item, size_t new_size) {
     
-    // Find a chunk that is large enough for item size + n
-    /*
-     * The realloc() function changes the size of the memory block 
-     * pointed to by ptr to size bytes.  The contents will be 
-     * unchanged in the range from the start of the region up  to  
-     * the minimum  of  the  old  and new sizes.  If the new size is 
-     * larger than the old size, the added memory will not be 
-     * initialized.  If ptr is NULL, then the call is equivalent to 
-     * malloc(size), for all values of size; if size is equal to 
-     * zero, and ptr is not NULL, then the call is equivalent to 
-     * free(ptr).  Unless ptr is NULL, it must have been returned by
-     * an earlier call to malloc(), calloc(), or realloc().  If the 
-     * area pointed to was moved, a free(ptr) is done.
-     */
-	pthread_mutex_lock(&fl_lock);
 	if(!item && new_size) {
-                pthread_mutex_unlock(&fl_lock);
-		printf("item null\n");
-		return xmalloc(new_size);
+		return xmalloc_helper(new_size);
 	}
 	if(!item && !new_size) {
-		printf("item and size null\n");
 		return NULL;
 	}
 	if(new_size == 0) {
-                printf("Size is 0, return null\n");
-		pthread_mutex_unlock(&fl_lock);
-		xfree(item);
+		xfree_helper(item);
 		return NULL; // ??????
 	}
-	
 
 	size_t* item_size = (size_t*)item - 1;
-	printf("item location= %p\n", item);
+
+    void* new_item = xmalloc_helper(new_size);
 
 	if(*item_size < new_size) {
-                pthread_mutex_unlock(&fl_lock);
-		void* new_item = xmalloc(*item_size);
-		pthread_mutex_lock(&fl_lock);
 		memcpy(new_item, item, *item_size);
-		printf("Call if xfree\n");
-		pthread_mutex_unlock(&fl_lock);
-		xfree(item);
-		printf("Finished if Free new_item=%p\n", new_item);
-		return new_item;
 	}
 	else {
-		pthread_mutex_unlock(&fl_lock);
-		void* new_item = xmalloc(new_size);
-		pthread_mutex_lock(&fl_lock);
 		memcpy(new_item, item, new_size);
-		printf("Call free else \n");
-		pthread_mutex_unlock(&fl_lock);
-		xfree(item);
-		printf("finished else free\n");
-		return new_item;
 	}
+
+    xfree_helper(item);
+	return new_item;
+
 }
+
+void* xrealloc(void* item, size_t new_size) {
+
+	pthread_mutex_lock(&fl_lock);
+    void* ptr = xrealloc_helper(item, new_size);
+    pthread_mutex_unlock(&fl_lock);
+
+    return ptr;
+}
+
