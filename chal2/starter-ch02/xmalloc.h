@@ -22,7 +22,7 @@ typedef struct fl_cell {
 
 hm_stats* hgetstats();
 void hprintstats();
-
+fl_cell* make_fl_cell(void* addr, size_t size);
 void* xmalloc(size_t size);
 void xfree(void* item);
 void* xrealloc(void* item, size_t new_size);

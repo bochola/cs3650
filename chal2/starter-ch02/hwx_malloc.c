@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <string.h>
 #include <pthread.h>
+#include <math.h>
 
 #include "xmalloc.h"
 
@@ -27,10 +28,34 @@
   } fl_cell;
 */
 
+typedef struct arena {
+    fl_cell* head;
+    pthread_mutex_t fl_lock;
+} arena;
+
+static arena* a[16];
+
 const size_t PAGE_SIZE = 4096;
 static hm_stats stats;
-static fl_cell* head; 
-static pthread_mutex_t fl_lock = PTHREAD_MUTEX_INITIALIZER;
+static __thread fl_cell* head;
+static __thread pthread_mutex_t fl_lock;
+
+int
+get_arena() {
+	for(int i =0; i < 16; i++) {
+	    pthread_mutex_t temp = a[i]->fl_lock;
+	    int pt = pthread_mutex_trylock(&temp);
+	    if(pt == 0) {
+	       head = a[i]->head;
+	       fl_lock = a[i]->fl_lock;
+	       return i;
+	    }
+	    else if(pt == atol("ENIVAL")) {
+           	pthread_mutex_init(&temp, 0);
+	    }
+        }
+        return get_arena();
+}
 
 fl_cell* make_fl_cell(void* addr, size_t size) {
     fl_cell* flc = addr;
@@ -156,10 +181,13 @@ void* find_last(fl_cell* cell) {
 fl_cell* search_size(fl_cell* cell, size_t size) {
     
     if (!cell) {
+	printf("chunk of memory big enough\n");
         return 0;
     }
-
+    assert(cell->size);
+    printf("size = %ld\ncell->size = %ld\n", size, cell->size);
     if (cell->size >= size) {
+	
         return cell;
     }
 
@@ -167,8 +195,9 @@ fl_cell* search_size(fl_cell* cell, size_t size) {
 }
 
 void split_chunk(fl_cell* cell, size_t size) {
-   
+    printf("Split Chunk: size = %d\n", (int)size);
     size_t leftover = cell->size - size;
+    assert(leftover > sizeof(fl_cell));
     cell->size = size;
     
     fl_cell* second_half = (fl_cell*) (((char*) cell) + size);
@@ -178,7 +207,16 @@ void split_chunk(fl_cell* cell, size_t size) {
 
 
 void* xmalloc(size_t size) {
+    //pthread_key_t hkey;
+    //pthread_key_create(&hkey, (void*)head);
+    //pthread_key_t pkey;
+    //pthread_key_create(&pkey, (void*)&fl_lock);
+    //int i = get_arena();
+    //head = a[i]->head;
+    //fl_lock = a[i]->fl_lock;
+    pthread_mutex_lock(&fl_lock);
     size += sizeof(size_t);
+    printf("Size + size_t = %ld\n", size);
 
     if (size < sizeof(fl_cell)) {
         size = sizeof(fl_cell);
@@ -186,7 +224,7 @@ void* xmalloc(size_t size) {
 
     if (size >= PAGE_SIZE) {
         size_t num_mmap = div_up(size);
-        
+        printf("pages = %ld\n", num_mmap);
         int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
         int flags = MAP_PRIVATE | MAP_ANONYMOUS;
 
@@ -197,15 +235,19 @@ void* xmalloc(size_t size) {
         *add_size = num_mmap * PAGE_SIZE;
 
         stats.chunks_allocated += 1;
+        //pthread_key_delete(hkey);
+        //pthread_key_delete(pkey);
+        pthread_mutex_unlock(&fl_lock);
         return add_size + 1;
     }
     
     
-    pthread_mutex_lock(&fl_lock);
+    printf("Start search ...\n");
     fl_cell* any_free = search_size(head, size);
+    printf("finish search\n");
 
     if (any_free) {
-
+	printf("any_free is not null\n");
         size_t difference = any_free->size - size;
         
         if (difference > sizeof(fl_cell)) {
@@ -231,11 +273,12 @@ void* xmalloc(size_t size) {
 
         stats.chunks_allocated += 1;
         pthread_mutex_unlock(&fl_lock);
-        
+        //pthread_key_delete(hkey);
+        //pthread_key_delete(pkey);
         return address;
     }
     else {
-        
+        printf("any_free is null\n");
         // If there aren't any chunks large enough
 
         int prot = PROT_EXEC | PROT_READ | PROT_WRITE;
@@ -249,7 +292,8 @@ void* xmalloc(size_t size) {
         
         coalesce(new_cell);
         pthread_mutex_unlock(&fl_lock);
-        
+        //pthread_key_delete(hkey);
+        //pthread_key_delete(pkey);
         return xmalloc(size - sizeof(size_t));
     }
 }
@@ -316,10 +360,20 @@ void xfree_helper(void* item) {
 }
 
 void xfree(void* item) {
-    
+    //pthread_key_t hkey;
+    //pthread_key_create(&hkey, (void*)head);
+    //pthread_key_t pkey;
+    //pthread_key_create(&pkey, (void*)&fl_lock);
+    //int i = get_arena();
+    //head = a[i]->head;
+    //fl_lock = a[i]->fl_lock;
     pthread_mutex_lock(&fl_lock);
-    xfree_helper(item);
+    if(item) {
+        xfree_helper(item);
+    }
     pthread_mutex_unlock(&fl_lock);
+    //pthread_key_delete(hkey);
+    //pthread_key_delete(pkey);
     
 }
 
@@ -339,24 +393,47 @@ void* xrealloc(void* item, size_t new_size) {
      * an earlier call to malloc(), calloc(), or realloc().  If the 
      * area pointed to was moved, a free(ptr) is done.
      */
-
+	pthread_mutex_lock(&fl_lock);
+	if(!item && new_size) {
+                pthread_mutex_unlock(&fl_lock);
+		printf("item null\n");
+		return xmalloc(new_size);
+	}
+	if(!item && !new_size) {
+		printf("item and size null\n");
+		return NULL;
+	}
 	if(new_size == 0) {
+                printf("Size is 0, return null\n");
+		pthread_mutex_unlock(&fl_lock);
 		xfree(item);
 		return NULL; // ??????
 	}
+	
 
 	size_t* item_size = (size_t*)item - 1;
+	printf("item location= %p\n", item);
 
 	if(*item_size < new_size) {
+                pthread_mutex_unlock(&fl_lock);
 		void* new_item = xmalloc(*item_size);
+		pthread_mutex_lock(&fl_lock);
 		memcpy(new_item, item, *item_size);
+		printf("Call if xfree\n");
+		pthread_mutex_unlock(&fl_lock);
 		xfree(item);
+		printf("Finished if Free new_item=%p\n", new_item);
 		return new_item;
 	}
 	else {
+		pthread_mutex_unlock(&fl_lock);
 		void* new_item = xmalloc(new_size);
+		pthread_mutex_lock(&fl_lock);
 		memcpy(new_item, item, new_size);
+		printf("Call free else \n");
+		pthread_mutex_unlock(&fl_lock);
 		xfree(item);
+		printf("finished else free\n");
 		return new_item;
 	}
 }
