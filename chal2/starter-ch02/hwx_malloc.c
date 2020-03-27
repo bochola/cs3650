@@ -289,6 +289,7 @@ void xfree(void* item) {
 void* xrealloc_helper(void* item, size_t new_size) {
     
 	if(!item && new_size) {
+        new_size += sizeof(size_t);
 		return xmalloc_helper(new_size);
 	}
 	if(!item && !new_size) {
@@ -299,12 +300,13 @@ void* xrealloc_helper(void* item, size_t new_size) {
 		return NULL; // ??????
 	}
 
-	size_t* item_size = (size_t*)item - 1;
+    fl_cell* cell_addr = (fl_cell*)(((size_t*) item) - 1);
+    size_t size = cell_addr->size;
 
     void* new_item = xmalloc_helper(new_size);
 
-	if(*item_size < new_size) {
-		memcpy(new_item, item, *item_size);
+	if(size < new_size) {
+		memcpy(new_item, item, size);
 	}
 	else {
 		memcpy(new_item, item, new_size);

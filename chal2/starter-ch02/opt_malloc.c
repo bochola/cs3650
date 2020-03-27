@@ -194,7 +194,7 @@ void* xrealloc_helper(void* item, size_t new_size) {
     */
 
 	if(!item) {
-		return xmalloc_helper(new_size);
+		return xmalloc_helper(new_size + sizeof(size_t));
 	}
 	if(new_size == 0) {
 		xfree_helper(item);
