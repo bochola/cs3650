@@ -58,7 +58,7 @@ void print_fl(fl_cell* cell) {
 
 long fl_length(fl_cell* cell) {
     
-    printf("Entering fl_length\n");
+    //printf("Entering fl_length\n");
     if (!cell) {
         return 0;
     }
@@ -84,7 +84,7 @@ void print_headcount() {
 // and repairs the link
 fl_cell* pop(int index) {
     fl_cell* temp = heads[index];
-    printf("Popping index %d\n", index);
+    //printf("Popping index %d\n", index);
     heads[index] = heads[index]->next;
     return temp;
 }
@@ -109,8 +109,7 @@ void pull_from_above(int i) {
 }
 
 void redistribute(int i) {
-    printf("Redistributing for %d...\n", i);
-    print_headcount();
+    //printf("Redistributing for %d...\n", i);
     // Given an index i, redistribute should:
     //      1. Check if heads[i] is empty
     //          a. If it isnt empty, return
@@ -125,8 +124,7 @@ void redistribute(int i) {
     //         more space and add that to heads[15].
     //
     if (heads[i]) {
-        print_headcount();
-        printf("Sucessful redistribution for %d\n\n", i);
+        //printf("Sucessful redistribution for %d\n\n", i);
         return;
     }
     
@@ -136,20 +134,16 @@ void redistribute(int i) {
         return;
     }
     redistribute(i + 1);
-    printf("Pulling from above for %d\n", i);
-    print_headcount();
+    //printf("Pulling from above for %d\n", i);
     pull_from_above(i);
-    printf("Yanked down 2 cells for %d\n", i);
-    print_headcount();
+    //printf("Yanked down 2 cells for %d\n", i);
 
-    print_headcount();
-    printf("Sucessful redistribution for %d\n\n", i);
 }
 
 int get_fl_index(size_t size) {
 
     for(int i = 0; i < 16; i++) {
-        if(pow(2, i + 5) > size) {
+        if(pow(2, i + 5) >= size) {
 	        return i;
         }
     }
@@ -158,8 +152,7 @@ int get_fl_index(size_t size) {
 
 void* xmalloc_helper(size_t size) {
     
-    print_headcount();
-    printf("\nEntering malloc\n"); 
+    //printf("\nEntering malloc\n"); 
     if (size < sizeof(fl_cell)) {
         size = sizeof(fl_cell);
     }
@@ -170,16 +163,14 @@ void* xmalloc_helper(size_t size) {
         size_t* add_size = new_page;
         *add_size = size;
 
-        print_headcount();
-        printf("Leaving malloc with mmap\n");
+        //printf("Leaving malloc with mmap\n");
         return add_size + 1;
     }
     
     int fl_index = get_fl_index(size);
     //int power = fl_index + 5;
     
-    print_headcount();
-    printf("Redistributing for %d from malloc\n", fl_index);
+    //printf("Redistributing for %d from malloc\n", fl_index);
     redistribute(fl_index);
     fl_cell* designated = pop(fl_index);
 
@@ -188,8 +179,7 @@ void* xmalloc_helper(size_t size) {
                    // assign_fl should create cells of the correct
                    // size
     }
-    print_headcount();
-    printf("Leaving malloc\n");
+    //printf("Leaving malloc\n");
     return ((size_t*) designated) + 1;
 }
 
@@ -204,21 +194,19 @@ void* xmalloc(size_t size) {
 
 void xfree_helper(void* item) {
 
-    
-    print_headcount();
-    printf("Entering free\n");
+    //printf("Entering free\n");
     fl_cell* cell_addr = (fl_cell*)(((size_t*) item) - 1);
     size_t size = cell_addr->size;
     
     if (size > HEAP_SIZE) {
         munmap(cell_addr, size);
-        printf("Munmap complete\n");
+        //printf("Munmap complete\n");
     }
     else {
         
         int fl_index = get_fl_index(size);
         insert_fl_cell(fl_index, cell_addr);
-        printf("Free complete\n");
+        //printf("Free complete\n");
     }
 }
 
@@ -230,14 +218,13 @@ void xfree(void* item) {
 
 void* xrealloc_helper(void* item, size_t new_size) {
     
-    print_headcount();
-    printf("Inside realloc\n");
+    //printf("Inside realloc\n");
 	if(!item) {
 		return xmalloc_helper(new_size + sizeof(size_t));
 	}
 	if(new_size == 0) {
 		xfree_helper(item);
-        printf("Leaving realloc\n");
+        //printf("Leaving realloc\n");
 		return NULL;
 	}
 
@@ -247,27 +234,23 @@ void* xrealloc_helper(void* item, size_t new_size) {
     size_t size = cell_addr->size;
     
     if (new_size <= size) {
-        printf("Leaving realloc\n");
+        //printf("Leaving realloc\n");
         return item;
     }
     
-    print_headcount();
     void* new_item = xmalloc_helper(new_size);
-    print_headcount();
-    printf("Good xmalloc\n");
+    //printf("Good xmalloc\n");
     memcpy(new_item, item, size - sizeof(size_t));
-    print_headcount();
-    printf("Good memcpy\n");
+    //printf("Good memcpy\n");
     xfree_helper(item);
-    print_headcount();
-    printf("Good free, leaving realloc\n");
+    //printf("Good free, leaving realloc\n");
 
 	return new_item;
 }
 
 void* xrealloc(void* item, size_t new_size) {
     
-	pthread_mutex_lock(&fl_lock);
+    pthread_mutex_lock(&fl_lock);
     void* ptr = xrealloc_helper(item, new_size);
     pthread_mutex_unlock(&fl_lock);
 

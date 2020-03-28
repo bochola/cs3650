@@ -1,3 +1,50 @@
 Report.txt
 
+Program Name            Highest number under 10s
+Collatz-list-sys                  100000 
+Collatz-ivec-sys                  100000 
+Collatz-list-hwx                  10000 
+Collatz-ivec-hwx                  10000 
+Collatz-list-opt                  100000 
+Collatz-ivec-opt                  100000 
+
+Optimized vs Hwx
+
+Optimized vs Sys
+
+
+
+Since we did not complete the optimized allocator, we cannot make 
+andy comparisons to the hwx and sys allocators.
+
+We attempted to optimize using the bin method, where instead of
+dynamically allocating space based on the user input, we simply
+give the user the closest fitting bin instead. The plan was to 
+implement arenas as well, but unfortunately we ran out of time.
+
+The optimized allocator handles reallocation by first checking
+to see if the requested new size can be fit by the cell that the
+user requests to over-write. If the cell that they give can hold
+the requested size, then the realloc function simply gives the user
+the same cell back. This potentially eliminates an entire malloc 
+call.
+
+The most significant challenge in building both of these allocators
+was debugging. Frequently, we ran into segfault issues that we could
+not figure out because there were multiple threads running at the
+time, which led to confusion about what exactly was causing the
+issue. Currently, we think there is an issue where the data is being
+corrupted after a malloc call or perhaps after a realloc call, but 
+our usual method of litering the code with printf's did not help
+enlighten us to any issues. That may change in the next hour or two,
+who knows.
+
+I think that the current implementation is a good one, however if we
+were to re-write this, I would make sure that we write the code from
+the ground up instead. We tried to copy over functions from hwx that
+would require very little adaption for the optimized allocator, and
+I think that may have introduced miniscule problems that we are
+overlooking. The bin strategy coupled with the (unimplemented) arena
+strategy is a good idea that I believe would work well if we were
+able to complete it.
 
