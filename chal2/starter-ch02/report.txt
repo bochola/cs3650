@@ -8,15 +8,26 @@ Collatz-ivec-hwx                  10000
 Collatz-list-opt                  100000 
 Collatz-ivec-opt                  100000 
 
-Optimized vs Hwx
+         Optimized   vs     Hwx
+list      0.537            10.82s 
+ivec      0.136             4.69s
 
-Optimized vs Sys
+HWX is slower, and with an input of 10,000 it takes anywhere
+between 8.96 and 12.96 seconds for list and between 4.5 and 
+9.1 seconds for ivec.
+Opt runs between 0.45 and 0.53 seconds for list and 0.12 and
+0.15 seconds for ivec.
 
 
+        Optimized   vs      Sys
+list      6.844s           2.391s 
+ivec      1.119s           0.439s
 
-Since we did not complete the optimized allocator, we cannot make 
-andy comparisons to the hwx and sys allocators.
+Our optimized function is slower than the system, with an input of
+100,000 it takes about 7 seconds for the list test, and 1 for ivec.
 
+
+                     Analysis
 We attempted to optimize using the bin method, where instead of
 dynamically allocating space based on the user input, we simply
 give the user the closest fitting bin instead. The plan was to 
