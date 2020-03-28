@@ -39,7 +39,6 @@ void print_fl(fl_cell* cell) {
     
     if (cell) {
         printf("This cell is %ld bytes at 0x%p. ", cell->size, cell);
-        printf("Last cell was 0x%p. ", cell->last);
 
         if (cell->next) {
             printf("Next cell is 0x%p. ", cell->next);
@@ -57,16 +56,40 @@ void print_fl(fl_cell* cell) {
     }
 }
 
+long fl_length(fl_cell* cell) {
+    
+    printf("Entering fl_length\n");
+    if (!cell) {
+        return 0;
+    }
+    else {
+        return 1 + fl_length(cell->next);
+    }
+}
+
+void print_headcount() {
+    long x;
+    //printf("\n");
+    for (int i = 0; i < 16; i++) {
+        //printf("Before fl_length test\n");
+        long ans = fl_length(heads[i]);
+        x += ans;
+        //printf("fl_length works\n");
+        //printf("head[%d] count = %ld\n", i, ans);
+    }
+    //printf("\n");
+}
+
 // Returns the head of the fl at heads[index]
 // and repairs the link
 fl_cell* pop(int index) {
     fl_cell* temp = heads[index];
+    printf("Popping index %d\n", index);
     heads[index] = heads[index]->next;
     return temp;
 }
 
 void insert_fl_cell(int i, fl_cell* cell) {
-
     cell->next = heads[i];
     heads[i] = cell;
 }
@@ -86,7 +109,8 @@ void pull_from_above(int i) {
 }
 
 void redistribute(int i) {
-
+    printf("Redistributing for %d...\n", i);
+    print_headcount();
     // Given an index i, redistribute should:
     //      1. Check if heads[i] is empty
     //          a. If it isnt empty, return
@@ -100,8 +124,9 @@ void redistribute(int i) {
     //      4. If the last free list (heads[15]) is empty, then mmap
     //         more space and add that to heads[15].
     //
-
     if (heads[i]) {
+        print_headcount();
+        printf("Sucessful redistribution for %d\n\n", i);
         return;
     }
     
@@ -110,9 +135,15 @@ void redistribute(int i) {
         heads[15] = make_fl_cell(new_cell, HEAP_SIZE);
         return;
     }
-    
     redistribute(i + 1);
+    printf("Pulling from above for %d\n", i);
+    print_headcount();
     pull_from_above(i);
+    printf("Yanked down 2 cells for %d\n", i);
+    print_headcount();
+
+    print_headcount();
+    printf("Sucessful redistribution for %d\n\n", i);
 }
 
 int get_fl_index(size_t size) {
@@ -127,6 +158,8 @@ int get_fl_index(size_t size) {
 
 void* xmalloc_helper(size_t size) {
     
+    print_headcount();
+    printf("\nEntering malloc\n"); 
     if (size < sizeof(fl_cell)) {
         size = sizeof(fl_cell);
     }
@@ -137,12 +170,16 @@ void* xmalloc_helper(size_t size) {
         size_t* add_size = new_page;
         *add_size = size;
 
+        print_headcount();
+        printf("Leaving malloc with mmap\n");
         return add_size + 1;
     }
     
     int fl_index = get_fl_index(size);
     //int power = fl_index + 5;
-
+    
+    print_headcount();
+    printf("Redistributing for %d from malloc\n", fl_index);
     redistribute(fl_index);
     fl_cell* designated = pop(fl_index);
 
@@ -151,7 +188,8 @@ void* xmalloc_helper(size_t size) {
                    // assign_fl should create cells of the correct
                    // size
     }
-    
+    print_headcount();
+    printf("Leaving malloc\n");
     return ((size_t*) designated) + 1;
 }
 
@@ -166,16 +204,21 @@ void* xmalloc(size_t size) {
 
 void xfree_helper(void* item) {
 
+    
+    print_headcount();
+    printf("Entering free\n");
     fl_cell* cell_addr = (fl_cell*)(((size_t*) item) - 1);
     size_t size = cell_addr->size;
     
     if (size > HEAP_SIZE) {
         munmap(cell_addr, size);
+        printf("Munmap complete\n");
     }
     else {
         
         int fl_index = get_fl_index(size);
         insert_fl_cell(fl_index, cell_addr);
+        printf("Free complete\n");
     }
 }
 
@@ -187,17 +230,14 @@ void xfree(void* item) {
 
 void* xrealloc_helper(void* item, size_t new_size) {
     
-    /* The realloc() function changes the size of the memory block pointed to by ptr to size bytes.  The contents will be unchanged in the range from the start of the region up  to  the
-       minimum  of  the  old  and new sizes.  If the new size is larger than the old size, the added memory will not be initialized.  If ptr is NULL, then the call is equivalent to mal‐
-       loc(size), for all values of size; if size is equal to zero, and ptr is not NULL, then the call is equivalent to free(ptr).  Unless ptr is NULL, it must have been returned by  an
-       earlier call to malloc(), calloc(), or realloc().  If the area pointed to was moved, a free(ptr) is done.
-    */
-
+    print_headcount();
+    printf("Inside realloc\n");
 	if(!item) {
 		return xmalloc_helper(new_size + sizeof(size_t));
 	}
 	if(new_size == 0) {
 		xfree_helper(item);
+        printf("Leaving realloc\n");
 		return NULL;
 	}
 
@@ -207,12 +247,20 @@ void* xrealloc_helper(void* item, size_t new_size) {
     size_t size = cell_addr->size;
     
     if (new_size <= size) {
+        printf("Leaving realloc\n");
         return item;
     }
     
+    print_headcount();
     void* new_item = xmalloc_helper(new_size);
-    memcpy(new_item, item, size);
+    print_headcount();
+    printf("Good xmalloc\n");
+    memcpy(new_item, item, size - sizeof(size_t));
+    print_headcount();
+    printf("Good memcpy\n");
     xfree_helper(item);
+    print_headcount();
+    printf("Good free, leaving realloc\n");
 
 	return new_item;
 }
