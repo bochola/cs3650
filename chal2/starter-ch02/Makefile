@@ -2,7 +2,7 @@
 BINS := collatz-list-sys collatz-ivec-sys \
 		collatz-list-hwx collatz-ivec-hwx \
 		collatz-list-opt collatz-ivec-opt \
-		frag-opt frag-sys frag-hwx test-hwx
+		frag-opt frag-sys frag-hwx
 
 HDRS := $(wildcard *.h)
 SRCS := $(wildcard *.c)
@@ -38,9 +38,6 @@ frag-sys: frag_main.o sys_malloc.o
 	gcc $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 frag-hwx: frag_main.o hwx_malloc.o
-	gcc $(CFLAGS) -o $@ $^ $(LDLIBS)
-
-test-hwx: test.o hwx_malloc.o
 	gcc $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 %.o : %.c $(HDRS) Makefile
