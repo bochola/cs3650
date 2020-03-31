@@ -1,0 +1,13 @@
+
+REMEMBER TO INCLUDE stat.h IN ALL THESE FILES 
+
+Files to modify (non-comprehensive):
+    
+    cat.c
+    exec.c (maybe??)
+    file.c
+    fs.c
+    ls.c
+    pipe.c (maybe? def qualifies but might not want to)
+    printf.c
+    
