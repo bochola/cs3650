@@ -3,13 +3,16 @@ REMEMBER TO INCLUDE stat.h IN ALL THESE FILES
 
 Files to modify (non-comprehensive):
     
-    cat.c
-    exec.c (maybe??)
-    file.c
-    fs.c
+    cat.c - increase read counter
+    exec.c (maybe??) - what is this file even doing?
+    file.c - fileread and filewrite functions maybe?
+    fs.c - idk, these are really low level, might be too low
     ls.c
     pipe.c (maybe? def qualifies but might not want to)
     printf.c
     stressfs.c
-    sysfile.c (maybe??)
-    
+    sysfile.c (maybe??) - higer level than fs.c, good candidate    
+
+Edit file.h to include the bytes read and written
+Figure out how to make a new system call using an fd
+
