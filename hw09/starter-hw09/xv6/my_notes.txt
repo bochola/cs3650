@@ -10,4 +10,6 @@ Files to modify (non-comprehensive):
     ls.c
     pipe.c (maybe? def qualifies but might not want to)
     printf.c
+    stressfs.c
+    sysfile.c (maybe??)
     

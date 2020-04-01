@@ -7,6 +7,8 @@
 #include "x86.h"
 #include "elf.h"
 
+// Is this the file that should reset the fd count when called?
+
 int
 exec(char *path, char **argv)
 {
