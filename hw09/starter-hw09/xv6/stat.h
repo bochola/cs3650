@@ -14,5 +14,3 @@ struct iostats {
     uint read_bytes;
     uint write_bytes;
 };
-
-int getiostats(int fd, struct iostats* stats);

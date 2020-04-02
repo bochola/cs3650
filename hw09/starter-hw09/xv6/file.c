@@ -9,6 +9,7 @@
 #include "spinlock.h"
 #include "sleeplock.h"
 #include "file.h"
+#include "stat.h"
 
 struct devsw devsw[NDEV];
 struct {
@@ -98,16 +99,21 @@ fileread(struct file *f, char *addr, int n)
 {
   int r;
 
-  if(f->readable == 0)
+  if(f->readable == 0) {
     return -1;
-  if(f->type == FD_PIPE)
+  }
+  if(f->type == FD_PIPE) {
+    f->read_bytes += n;
     return piperead(f->pipe, addr, n);
+  }
   if(f->type == FD_INODE){
     ilock(f->ip);
-    if((r = readi(f->ip, addr, f->off, n)) > 0)
+    if((r = readi(f->ip, addr, f->off, n)) > 0) {
       f->off += r;
+    f->read_bytes += n;
     iunlock(f->ip);
     return r;
+    }
   }
   panic("fileread");
 }
@@ -119,10 +125,13 @@ filewrite(struct file *f, char *addr, int n)
 {
   int r;
 
-  if(f->writable == 0)
+  if(f->writable == 0) {
     return -1;
-  if(f->type == FD_PIPE)
+  }
+  if(f->type == FD_PIPE) {
+    f->write_bytes += n;
     return pipewrite(f->pipe, addr, n);
+  }
   if(f->type == FD_INODE){
     // write a few blocks at a time to avoid exceeding
     // the maximum log transaction size, including
@@ -150,8 +159,20 @@ filewrite(struct file *f, char *addr, int n)
         panic("short filewrite");
       i += r;
     }
+    f->write_bytes += n;
     return i == n ? n : -1;
   }
   panic("filewrite");
 }
 
+int getiostats(struct file* f, struct iostats* stat) {
+
+  if(f->type == FD_INODE){
+    ilock(f->ip);
+    stat->read_bytes = f->read_bytes;
+    stat->write_bytes = f->write_bytes; 
+    iunlock(f->ip);
+    return 0;
+  }
+  return -1;
+}

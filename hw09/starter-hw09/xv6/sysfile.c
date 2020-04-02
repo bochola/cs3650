@@ -442,3 +442,18 @@ sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
+
+// Inserting sys call
+int sys_getiostats(void) {
+    
+    struct file* f;
+    struct iostats* stat;
+
+    // Should I use this function??
+    if(argfd(0, 0, &f) < 0 || argptr(1, (void*)&stat, sizeof(*stat)) < 0)
+       return -1;
+
+    return getiostats(f, stat);
+
+}
+
