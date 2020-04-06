@@ -5,6 +5,7 @@
 
 typedef struct inode {
     int mode; // permission & type; zero for unused
+              // 1 for reserved, 1 < mode < 0xFFFF otherwise
     int size; // bytes
     // inode #x always uses data page #x
 } inode;

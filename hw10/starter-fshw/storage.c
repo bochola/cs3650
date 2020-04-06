@@ -1,3 +1,4 @@
+//storage.c
 
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -152,6 +153,7 @@ storage_unlink(const char* path)
 int
 storage_link(const char* from, const char* to)
 {
+    //TODO: Write storage_link, right now this does nothing
     return -ENOENT;
 }
 
@@ -173,6 +175,7 @@ storage_rename(const char* from, const char* to)
 int
 storage_set_time(const char* path, const struct timespec ts[2])
 {
+    //TODO: Write storage_set_time, right now this does nothing
     // Maybe we need space in a pnode for timestamps.
     return 0;
 }

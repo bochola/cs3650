@@ -1,0 +1,5 @@
+The single inderect blocks for storing larger data files is a bit confusing to me
+Nat's video at ( https://www.youtube.com/watch?v=E1OxG2zlAnE&feature=youtu.be  )
+at the 12 minute mark he starts talking about it and I dont get what he means by blocks
+exactly. Does he mean like, the pointers are stored in the actual data block? Where is
+he getting this 12 number from, why are there 12 to work with?

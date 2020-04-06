@@ -1,3 +1,4 @@
+//inode.c
 
 #include <stdint.h>
 
@@ -18,11 +19,13 @@ get_inode(int inum)
 int
 alloc_inode()
 {
+
+    // This loop should probably change to account for the ext FS
     for (int ii = 1; ii < INODE_COUNT; ++ii) {
         inode* node = get_inode(ii);
         if (node->mode == 0) {
             memset(node, 0, sizeof(inode));
-            node->mode = 010644;
+            node->mode = 010644; // There are more than 2 states for modes now
             printf("+ alloc_inode() -> %d\n", ii);
             return ii;
         }
