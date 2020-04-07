@@ -20,6 +20,7 @@ nufsmount: $(filter-out nufstool.o, $(OBJS))
 clean: unmount
 	rm -f nufsmount nufstool *.o test.log data.nufs
 	rmdir mnt || true
+	rm my_test
 
 mount: nufsmount
 	mkdir -p mnt || true
@@ -34,5 +35,8 @@ test: all
 gdb: nufsmount
 	mkdir -p mnt || true
 	gdb --args ./nufsmount -s -f mnt data.nufs
+
+my_test: my_test.o bitmap.o
+	gcc -std=c99 my_test.o bitmap.o -o my_test
 
 .PHONY: all clean mount unmount gdb

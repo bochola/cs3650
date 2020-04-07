@@ -7,12 +7,10 @@
 
 typedef struct inode {
     int refs; // how many things point to this inode
-    int mode; // permission & type; zero for unused
-              // 1 for reserved, 1 < mode < 0xFFFF otherwise
+    int mode; // permission & type (directory or file) 
     int size; // bytes
     int dptrs[2]; // direct pointers
     int iptr; // indirect pointer
-    // inode #x always uses data page #x
 } inode;
 
 void print_inode(inode* node);

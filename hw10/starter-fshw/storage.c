@@ -155,7 +155,20 @@ storage_link(const char* from, const char* to)
 {
     //TODO: Write storage_link, right now this does nothing
     // Hard link they share the same inode
-    // Sym link the from is essentially a pointer to to
+
+    int first = tree_lookup(from);
+    int second = tree_lookup(to);
+    
+    if (!(first && second)) {
+        printf("Please select two valid paths to link");
+        return -ENOENT;
+    }
+    
+    inode* trashed = get_inode(first);
+    inode* kept = get_inode(second);
+    
+    // Okay, i have the inodes, now what??
+    
     return -ENOENT;
 }
 
