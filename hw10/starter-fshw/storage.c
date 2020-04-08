@@ -184,10 +184,11 @@ storage_unlink(const char* path)
 {
     char* full = strdup(path);
     char* dir_name = dirname(full);
-    int dir_num = tree_lookup(full);
+    int dir_num = tree_lookup(dir_name);
     free(full);
     inode* dir = get_inode(dir_num);
-    return directory_delete(dir, path);
+    printf("Dir: %s\nPath: %s\n", dir_name, path);
+    return directory_delete(dir, basename(strdup(path)));
 }
 
 int
@@ -218,8 +219,8 @@ storage_link(const char* from, const char* to)
     }
     
     inode* dir = get_inode(dir_num);
-    
-    return directory_put(dir, to, first);
+    char* base = basename(strdup(to));    
+    return directory_put(dir, base, first);
 }
 
 int storage_symlink(const char* from, const char* to) {
@@ -234,9 +235,7 @@ storage_rename(const char* from, const char* to)
         return link_rv;
     }
 
-    int trash = tree_lookup(from);
-    return directory_delete(get_inode(trash), from);
-    
+    return storage_unlink(from); 
 }
 
 int

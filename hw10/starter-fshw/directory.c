@@ -116,6 +116,7 @@ directory_delete(inode* dir, const char* name)
     
     int dir_index;
     for (int i = 0; i < 64; i++) {
+        printf("i: %d\nstart[i].name: %s\n", i, start[i].name);
         if (streq(start[i].name, name)) {
             dir_index = i;
             break;
@@ -128,9 +129,9 @@ directory_delete(inode* dir, const char* name)
     
     dirent* trashed = start + dir_index;
     trashed->name[0] = 0;
+    free_inode(trashed->inum);
     trashed->inum = 0;
     
-    free_inode(dir);
     return 0;
 }
 

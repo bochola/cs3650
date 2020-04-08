@@ -42,6 +42,11 @@ int alloc_inode() {
 void free_inode(int inum) {
 
     printf("+ free_inode(%d)\n", inum);
+    
+    if (inum < 0) {
+        printf("Invalid inode number. inode.c: 47\n");
+        return;
+    }
 
     inode* node = get_inode(inum);
     node->refs--;
