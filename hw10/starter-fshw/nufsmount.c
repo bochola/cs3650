@@ -52,12 +52,13 @@ nufs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 
     filler(buf, ".", &st, 0);
 
-    slist* items = storage_list("/");
+    slist* items = storage_list(path);
     for (slist* xs = items; xs != 0; xs = xs->next) {
         printf("+ looking at path: '%s'\n", xs->data);
-        item_path[0] = '/';
-        strlcpy(item_path + 1, xs->data, 127);
-        rv = storage_stat(item_path, &st);
+        char* goodies = path_join(path, xs->data);
+        rv = storage_stat(goodies, &st);
+        free(goodies);
+        printf("Item Path:\n%s\nrv: %d\n", item_path, rv);        
         assert(rv == 0);
         filler(buf, xs->data, &st, 0);
     }
