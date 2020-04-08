@@ -64,11 +64,12 @@ void* get_pages_bitmap() {
 }
 
 void* get_inode_bitmap() {
-    return (uint8_t) (pages_base + 32);
+    return ((uint8_t*) pages_base) + 32;
 }
 
 void* get_inode_base() {
-    return (uint8_t) (get_inode_bitmap() + 32);
+    return ((uint8_t*) get_inode_bitmap()) + 32;
+}
 
 int alloc_page() {
     
@@ -86,8 +87,6 @@ int alloc_page() {
 }
 
 void free_page(int pnum) {
-    
     bitmap_set(get_pages_bitmap(), pnum, 0);
-    
 }
 

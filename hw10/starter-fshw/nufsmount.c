@@ -83,7 +83,7 @@ int
 nufs_mkdir(const char *path, mode_t mode)
 {
     //TODO: Write mkdir, right now this does nothing
-    int rv = -1;
+    int rv = storage_mknod(path, mode | 040000);
     printf("mkdir(%s) -> %d\n", path, rv);
     return rv;
 }

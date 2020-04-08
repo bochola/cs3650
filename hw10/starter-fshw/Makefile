@@ -36,7 +36,7 @@ gdb: nufsmount
 	mkdir -p mnt || true
 	gdb --args ./nufsmount -s -f mnt data.nufs
 
-my_test: my_test.o bitmap.o
-	gcc -std=c99 my_test.o bitmap.o -o my_test
+#my_test: my_test.o bitmap.o
+#	gcc -std=c99 my_test.o bitmap.o -o my_test
 
 .PHONY: all clean mount unmount gdb

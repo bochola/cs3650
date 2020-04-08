@@ -19,31 +19,26 @@
 
 #define ENT_SIZE 16
 
-void
+int
 directory_init()
 {
-    inode* rn = get_inode(1);
-
-    if (rn->mode == 0) {
-        rn->size = 0;
-        rn->mode = 040755;
-    }
-}
-
-char*
-directory_get(int ii)
-{
-    char* base = pages_get_page(1);
-    return base + ii*ENT_SIZE;
+    int inum = alloc_inode();
+    inode* rn = get_inode(inum);
+    rn->mode = 040755;
+    grow_inode(rn, 4096);
+    printf("Directory inum: %d\n", inum);
+    return inum;   
 }
 
 int
-directory_lookup(const char* name)
+directory_lookup(inode* dir, const char* name)
 {
-    for (int ii = 0; ii < 256; ++ii) {
-        char* ent = directory_get(ii);
+    dirent* start = pages_get_page(inode_get_pnum(dir, 0));
+    
+    for (int i = 0; i < 64; i++) {
+        char* ent = start[i].name;
         if (streq(ent, name)) {
-            return ii;
+            return start[i].inum;
         }
     }
     return -ENOENT;
@@ -52,54 +47,104 @@ directory_lookup(const char* name)
 int
 tree_lookup(const char* path)
 {
+    printf("Path: %s\n", path);
     assert(path[0] == '/');
 
-    if (streq(path, "/")) {
-        return 1;
-    }
+    slist* s_path = s_split(path, '/');
+    
+    int cur_inum = 0;
+    for (slist* cur = s_path; cur; cur = cur->next) {
+        char* base = cur->data;
+        inode* cur_dir = get_inode(cur_inum);
+        cur_inum = directory_lookup(cur_dir, base);
 
-    return directory_lookup(path + 1);
+        if (cur_inum < 0) {
+            return cur_inum;
+        }
+    }
+    
+    return cur_inum;
 }
 
 int
-directory_put(const char* name, int inum)
+directory_put(inode* dir, const char* name, int inum)
 {
-    char* ent = pages_get_page(1) + inum*ENT_SIZE;
-    strlcpy(ent, name, ENT_SIZE);
-    printf("+ dirent = '%s'\n", ent);
+    dirent* start = pages_get_page(inode_get_pnum(dir, 0));
+    
+    int check = directory_lookup(dir, name);
+    if (check > 0) {
+        printf("Destination already exists, please fix\n");
+        return -1;
+    }
+    if (strlen(name) > 60) {
+        printf("Destination name is too long\n");
+        return -1;
+    }    
 
-    inode* node = get_inode(inum);
+    int empty_index;
+    for (int i = 0; i < 64; i++) {
+        if (start[i].name[0] == 0) {
+            empty_index = i;
+            break;
+        }
+
+        if (i == 63) {
+            return -1;
+        }
+    }
+    
+    dirent* new_ent = start + empty_index;
+    strncpy(new_ent->name, name, 59);
+    new_ent->name[59] = '\0';
+    new_ent->inum = inum;
+
+    inode* og = get_inode(inum);
+    og->refs++;
+    
     printf("+ directory_put(..., %s, %d) -> 0\n", name, inum);
-    print_inode(node);
+    print_inode(og);
 
     return 0;
 }
 
 int
-directory_delete(const char* name)
+directory_delete(inode* dir, const char* name)
 {
     printf(" + directory_delete(%s)\n", name);
 
-    int inum = directory_lookup(name);
-    free_inode(inum);
+    dirent* start = pages_get_page(inode_get_pnum(dir, 0));
+    
+    int dir_index;
+    for (int i = 0; i < 64; i++) {
+        if (streq(start[i].name, name)) {
+            dir_index = i;
+            break;
+        }
 
-    char* ent = pages_get_page(1) + inum*ENT_SIZE;
-    ent[0] = 0;
-
+        if (i == 63) {
+            return -ENOENT;
+        }
+    }
+    
+    dirent* trashed = start + dir_index;
+    trashed->name[0] = 0;
+    trashed->inum = 0;
+    
+    free_inode(dir);
     return 0;
 }
 
 slist*
-directory_list()
+directory_list(inode* dir)
 {
     printf("+ directory_list()\n");
     slist* ys = 0;
 
-    for (int ii = 0; ii < 256; ++ii) {
-        char* ent = directory_get(ii);
-        if (ent[0]) {
-            printf(" - %d: %s [%d]\n", ii, ent, ii);
-            ys = s_cons(ent, ys);
+    dirent* start = pages_get_page(inode_get_pnum(dir, 0));
+    
+    for (int i = 0; i < 64; i++) {
+        if (start[i].name[0] != 0) {
+            ys = s_cons(start[i].name, ys);
         }
     }
 

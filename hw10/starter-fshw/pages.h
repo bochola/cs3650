@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 
+#include "inode.h"
+
 void pages_init(const char* path, int create);
 void pages_free();
 void* pages_get_page(int pnum);
@@ -15,5 +17,5 @@ void* get_inode_bitmap();
 void* get_inode_base();
 int alloc_page();
 void free_page(int pnum);
-
+int pages_owned(inode* node);
 #endif

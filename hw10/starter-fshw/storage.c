@@ -1,5 +1,13 @@
 //storage.c
 
+#include <libgen.h>
+//#undef basename      
+#include <string.h>
+// According to advice from stack overflow at
+// https://stackoverflow.com/questions/5802191/
+// Lines 3-5 get me the dirname and basename functions for 
+// making nodes
+
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -9,8 +17,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <alloca.h>
-#include <string.h>
-#include <libgen.h>
 #include <bsd/string.h>
 #include <stdint.h>
 
@@ -49,6 +55,7 @@ storage_stat(const char* path, struct stat* st)
     st->st_mode  = node->mode;
     st->st_size  = node->size;
     st->st_nlink = 1;
+    st->st_blocks = pages_owned(node) * 4;
     return 0;
 }
 
@@ -99,6 +106,18 @@ storage_write(const char* path, const char* buf, size_t size, off_t offset)
     return size;
 }
 
+int div_up(off_t size) {
+    
+    off_t nearest = size / 4096;
+
+    if (nearest * 4096 == size) {
+        return nearest;
+    }
+    else {
+        return nearest + 1;
+    }
+}
+
 int
 storage_truncate(const char *path, off_t size)
 {
@@ -107,84 +126,117 @@ storage_truncate(const char *path, off_t size)
         return inum;
     }
 
+    int new_size = div_up(size);
+
     inode* node = get_inode(inum);
+    int rv;
+    if (node->size > size) {
+        rv = shrink_inode(node, size);
+    }
+    else if (node->size < size) {
+        rv = grow_inode(node, size);
+    }
+    
     node->size = size;
-    return 0;
+    return rv;
 }
 
 int
 storage_mknod(const char* path, int mode)
 {
-    char* tmp1 = alloca(strlen(path));
-    char* tmp2 = alloca(strlen(path));
-    strcpy(tmp1, path);
-    strcpy(tmp2, path);
-
-    const char* name = path + 1;
-
-    if (directory_lookup(name) != -ENOENT) {
+    if (tree_lookup(path) != -ENOENT) {
         printf("mknod fail: already exist\n");
         return -EEXIST;
     }
-
-    int    inum = alloc_inode();
-    inode* node = get_inode(inum);
-    node->mode = mode;
-    node->size = 0;
+    int inum;
+    printf("Mode requested: %o", mode);
+    int dir_bit = mode & 040000;
+    if (dir_bit) {
+        printf("Was directory bit, calling directory_init\n");
+        inum = directory_init();
+    }
+    else {
+        inum = alloc_inode();
+    }
 
     printf("+ mknod create %s [%04o] - #%d\n", path, mode, inum);
+    
+    char* full = strdup(path);
+    char* dir_name = dirname(full);
+    int dir_num = tree_lookup(dir_name);
+    free(full);
+    inode* dir = get_inode(dir_num);
+    char* base = basename(strdup(path));
 
-    return directory_put(name, inum);
+    return directory_put(dir, base, inum);
 }
 
 slist*
 storage_list(const char* path)
 {
-    return directory_list(path);
+    int dir_num = tree_lookup(path);
+    inode* dir = get_inode(dir_num);
+    return directory_list(dir);
 }
 
 int
 storage_unlink(const char* path)
 {
-    const char* name = path + 1;
-    return directory_delete(name);
+    char* full = strdup(path);
+    char* dir_name = dirname(full);
+    int dir_num = tree_lookup(full);
+    free(full);
+    inode* dir = get_inode(dir_num);
+    return directory_delete(dir, path);
 }
 
 int
 storage_link(const char* from, const char* to)
 {
-    //TODO: Write storage_link, right now this does nothing
     // Hard link they share the same inode
 
     int first = tree_lookup(from);
     int second = tree_lookup(to);
     
-    if (!(first && second)) {
-        printf("Please select two valid paths to link");
+    if (first < 0) {
+        printf("Destination file doesn't exist\n");
+        return -ENOENT;
+    }
+    if (second > 0) {
+        printf("Destination must not already exist\n");
+        return -1;
+    }
+    
+    char* full = strdup(to);
+    char* dir_name = dirname(full);
+    int dir_num = tree_lookup(dir_name);
+    free(full);
+
+    if (dir_num < 0) {
+        printf("Directory path does not exist\n");
         return -ENOENT;
     }
     
-    inode* trashed = get_inode(first);
-    inode* kept = get_inode(second);
+    inode* dir = get_inode(dir_num);
     
-    // Okay, i have the inodes, now what??
-    
-    return -ENOENT;
+    return directory_put(dir, to, first);
+}
+
+int storage_symlink(const char* from, const char* to) {
+    //TODO: Implement symlinks
 }
 
 int
 storage_rename(const char* from, const char* to)
 {
-    int inum = directory_lookup(from + 1);
-    if (inum < 0) {
-        printf("mknod fail");
-        return inum;
+    int link_rv = storage_link(from, to);
+    if (link_rv < 0) {
+        return link_rv;
     }
 
-    char* ent = directory_get(inum);
-    strlcpy(ent, to + 1, 16);
-
-    return 0;
+    int trash = tree_lookup(from);
+    return directory_delete(get_inode(trash), from);
+    
 }
 
 int
